@@ -90,6 +90,16 @@ button{
   letter-spacing:0;
 }
 
+.dashboard-app-title{
+  margin:2px 0 18px;
+  color:#fff;
+  font-size:22px;
+  line-height:1.2;
+  font-weight:900;
+  letter-spacing:0;
+  text-align:center;
+}
+
 .muted,
 .app-subtitle{
   color:#b8c0cc;

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'treino-kayque-v1';
+const CACHE_NAME = 'treino-kayque-v2';
 
 const APP_ASSETS = [
   './',

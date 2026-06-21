@@ -211,6 +211,8 @@ function renderDashboard(){
   const activityEstimate = getTodayActivityEstimate(today);
 
   dashboard.innerHTML = `
+    <h1 class="dashboard-app-title">Treino Kayque</h1>
+
     <div class="today-panel">
       <div class="today-card">
         <span>Data</span>
