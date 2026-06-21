@@ -1,0 +1,18 @@
+TREINO KAYQUE PWA — COMO TESTAR
+
+IMPORTANTE
+Abrir index.html diretamente não ativa instalação nem modo offline. PWAs exigem HTTPS ou localhost.
+
+TESTE NO COMPUTADOR
+1. Abra um terminal nesta pasta.
+2. Execute: python -m http.server 8080
+3. Abra: http://localhost:8080
+4. Use o botão "Instalar aplicativo" quando ele aparecer.
+
+TESTE NO SMARTPHONE
+1. Publique esta pasta em um serviço HTTPS, como GitHub Pages, Netlify ou Vercel.
+2. Abra o endereço publicado no navegador do celular.
+3. Android/Chrome: toque em "Instalar aplicativo" ou use o menu > Instalar app.
+4. iPhone/Safari: toque em Compartilhar > Adicionar à Tela de Início.
+
+Depois da primeira abertura completa, os arquivos do app e os GIFs ficam disponíveis offline.

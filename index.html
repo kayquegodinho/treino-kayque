@@ -1,0 +1,335 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta
+name="viewport"
+content="
+width=device-width,
+initial-scale=1.0
+"
+/>
+
+<meta name="theme-color" content="#050505" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Treino Kayque" />
+
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+
+<title>
+Treino Kayque Premium
+</title>
+
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com"
+/>
+
+<link
+rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin
+/>
+
+<link
+href="
+https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap
+"
+rel="stylesheet"
+/>
+
+<link
+rel="stylesheet"
+href="css/style.css"
+/>
+
+</head>
+
+<body>
+
+<div class="app">
+
+<h1 class="app-title">
+Treino Kayque
+</h1>
+
+<p class="app-subtitle">
+Controle de treino, recuperação e progressão.
+</p>
+
+<button id="installAppButton" class="install-app-btn" type="button" hidden>
+Instalar aplicativo
+</button>
+
+<!-- AQUECER -->
+
+<section
+id="aquecerSection"
+class="tab-section"
+style="display:none;"
+>
+
+<div class="card">
+
+<div class="section-title">
+Rotina 5 min
+</div>
+
+<p>
+Aquecimento antes do treino.
+</p>
+
+</div>
+
+</section>
+
+<!-- MOBILIDADE -->
+
+<section
+id="mobilidadeSection"
+class="tab-section"
+style="display:none;"
+>
+
+<div class="card">
+
+<div class="section-title">
+Mobilidade
+</div>
+
+<p>
+Rotina diária de 5 minutos.
+</p>
+
+</div>
+
+</section>
+
+<!-- TREINO -->
+
+<section
+id="treinoSection"
+class="tab-section"
+>
+
+</section>
+
+<!-- ALONGAR -->
+
+<section
+id="alongarSection"
+class="tab-section"
+style="display:none;"
+>
+
+<div class="card">
+
+<div class="section-title">
+Alongar
+</div>
+
+<p>
+Alongamentos pós-treino.
+</p>
+
+</div>
+
+</section>
+
+<!-- PROGRESSÃO -->
+
+<section
+id="progressaoSection"
+class="tab-section"
+style="display:none;"
+>
+
+<div class="card">
+
+<div class="section-title">
+Progressão
+</div>
+
+<p>
+Evolução semanal.
+</p>
+
+</div>
+
+</section>
+
+<!-- DASHBOARD -->
+
+<section
+id="dashboardSection"
+class="tab-section"
+style="display:none;"
+>
+
+<div class="card">
+
+<div class="section-title">
+Dashboard
+</div>
+
+<p>
+Estatísticas do treino.
+</p>
+
+</div>
+
+</section>
+
+</div>
+
+<div
+id="floatingTimer"
+style="display:none;"
+>
+<div class="timer-topline">
+<span id="timerModeLabel">Descanso</span>
+</div>
+<div id="timerDisplay">00:00</div>
+<div class="progress-shell" aria-label="Progresso da rotina">
+<div id="timerProgressBar" class="progress-bar"></div>
+</div>
+<div class="timer-footer">
+<div id="timerMeta" class="timer-meta">0/0 etapas concluídas</div>
+<button class="timer-reset-btn" data-action="reset-timer">Zerar</button>
+</div>
+</div>
+
+<!-- NAV -->
+
+<nav class="tabs">
+
+<button
+class="tab active"
+data-tab="dashboard"
+>
+<span class="nav-icon">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>
+</span>
+<span>Dashboard</span>
+</button>
+
+<button
+class="tab"
+data-tab="aquecer"
+>
+<span class="nav-icon">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3s1 3-2 6c-2 2-3 4-3 6a5 5 0 0 0 10 0c0-3-2-5-3-7 0 3-2 4-2 4s-1-2 0-5z"/></svg>
+</span>
+<span>Aquecer</span>
+</button>
+
+<button
+class="tab"
+data-tab="mobilidade"
+>
+<span class="nav-icon">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM8 8h8l2 5-2 1-1-3h-2v3l4 6h-3l-3-4-3 4H7l4-6v-3H9l-1 3-2-1z"/></svg>
+</span>
+<span>Mobilidade</span>
+</button>
+
+<button
+class="tab"
+data-tab="treino"
+>
+<span class="nav-icon">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v3h3v4h-3v3H7v-3H4v-4h3zM9 9v6h6V9z"/></svg>
+</span>
+<span>Treino</span>
+</button>
+
+<button
+class="tab"
+data-tab="alongar"
+>
+<span class="nav-icon">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM9 10l3-1 3 1 3 4-2 1-2-3v8h-4v-8l-2 3-2-1z"/></svg>
+</span>
+<span>Alongar</span>
+</button>
+
+<button
+class="tab"
+data-tab="progressao"
+>
+<span class="nav-icon">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17h3v3H4zM10 13h3v7h-3zM16 8h3v12h-3zM5 11l5-5 4 4 5-6 1 4-6 7-4-4-4 4z"/></svg>
+</span>
+<span>Progresso</span>
+</button>
+
+</nav>
+
+<div
+id="gifModal"
+class="gif-modal"
+data-action="close-gif"
+>
+<div
+class="gif-modal-card"
+data-action="stop-propagation"
+>
+<button
+class="gif-modal-close"
+data-action="close-gif"
+>
+Fechar
+</button>
+<div
+id="gifModalTitle"
+class="gif-modal-title"
+>
+Referência
+</div>
+<img
+id="gifModalImage"
+src=""
+alt=""
+/>
+<div
+id="gifModalSource"
+class="gif-modal-source"
+></div>
+<a
+id="gifModalVideo"
+class="gif-modal-video"
+href="#"
+target="_blank"
+rel="noopener noreferrer"
+>
+Ver video curto
+</a>
+</div>
+</div>
+
+<!-- JS -->
+
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/timer.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/progression.js"></script>
+<script src="js/swipe.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/workouts.js"></script>
+<script src="js/app.js"></script>
+<script src="js/events.js"></script>
+<script src="js/pwa.js"></script>
+
+</body>
+</html>
