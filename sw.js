@@ -1,15 +1,15 @@
-const CACHE_NAME = 'treino-kayque-v2';
+const CACHE_NAME = 'treino-kayque-v3';
 
 const APP_ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './css/style.css',
+  './css/style.css?v=3',
   './js/data.js',
   './js/storage.js',
   './js/utils.js',
   './js/timer.js',
-  './js/dashboard.js',
+  './js/dashboard.js?v=3',
   './js/progression.js',
   './js/swipe.js',
   './js/ui.js',
