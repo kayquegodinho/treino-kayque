@@ -1,3 +1,0 @@
-// js/swipe.js
-
-// reservado
