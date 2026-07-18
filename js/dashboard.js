@@ -29,7 +29,7 @@ function getEstimatedSetSeconds(reps){
 }
 
 function getEstimatedWorkoutMinutes(workout){
-  const warmupSeconds = 5 * 60;
+  const warmupSeconds = 9 * 60;
   const transitionSeconds = Math.max(0, workout.length - 1) * 20;
   const workoutSeconds = workout.reduce((total, exercise) => {
     const series = Number(exercise.series) || 1;
@@ -47,14 +47,14 @@ function getTodayActivityEstimate(date = new Date()){
   if(todayPlan?.tipo === 'treino-a'){
     return {
       duration: `~${getEstimatedWorkoutMinutes(treinoA)} min`,
-      note: 'Inclui 5 min de aquecimento, séries, descansos e transições.'
+      note: 'Inclui 8-10 min de aquecimento, séries, descansos e transições.'
     };
   }
 
   if(todayPlan?.tipo === 'treino-b'){
     return {
       duration: `~${getEstimatedWorkoutMinutes(treinoB)} min`,
-      note: 'Inclui 5 min de aquecimento, séries, descansos e transições.'
+      note: 'Inclui 8-10 min de aquecimento, séries, descansos e transições.'
     };
   }
 
@@ -81,27 +81,31 @@ function getTodayActivityEstimate(date = new Date()){
 const referenceWeeks = [
   {
     ...progressaoSemanal[0],
-    inicio: new Date(2026, 5, 21),
-    fim: new Date(2026, 5, 27),
-    periodo: '21/06 até 27/06'
+    controleSemana: 5,
+    inicio: new Date(2026, 6, 19),
+    fim: new Date(2026, 6, 25),
+    periodo: '19/07 a 25/07'
   },
   {
     ...progressaoSemanal[1],
-    inicio: new Date(2026, 5, 28),
-    fim: new Date(2026, 6, 4),
-    periodo: '28/06 até 04/07'
+    controleSemana: 6,
+    inicio: new Date(2026, 6, 26),
+    fim: new Date(2026, 7, 1),
+    periodo: '26/07 a 01/08'
   },
   {
     ...progressaoSemanal[2],
-    inicio: new Date(2026, 6, 5),
-    fim: new Date(2026, 6, 11),
-    periodo: '05/07 até 11/07'
+    controleSemana: 7,
+    inicio: new Date(2026, 7, 2),
+    fim: new Date(2026, 7, 8),
+    periodo: '02/08 a 08/08'
   },
   {
     ...progressaoSemanal[3],
-    inicio: new Date(2026, 6, 12),
-    fim: new Date(2026, 6, 18),
-    periodo: '12/07 até 18/07'
+    controleSemana: 8,
+    inicio: new Date(2026, 7, 9),
+    fim: new Date(2026, 7, 15),
+    periodo: '09/08 a 15/08'
   }
 ];
 
@@ -212,8 +216,6 @@ function renderDashboard(){
 
   dashboard.innerHTML = `
     <div class="today-panel">
-      <h1 class="dashboard-app-title">Treino Kayque</h1>
-
       <div class="today-card">
         <span>Data</span>
         <strong>${getLongDate(today)}</strong>
@@ -221,7 +223,7 @@ function renderDashboard(){
 
       <div class="today-card">
         <span>Semana da planilha</span>
-        <strong>${currentWeek.semana.replace('Semana ', '')}/4</strong>
+        <strong>${currentWeek.semana.replace('Semana ', '')}/8</strong>
       </div>
 
       <div class="today-card">

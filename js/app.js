@@ -103,6 +103,10 @@ function getBaseRoutineSeries(item){
 }
 
 function getRoutineSetLabels(item, scope){
+  if(Array.isArray(item.setLabels) && item.setLabels.length){
+    return item.setLabels;
+  }
+
   const value = String(item.tempo || '');
   const baseSeries = getBaseRoutineSeries(item);
   const timedBySide = /cada lado/i.test(value) && /\d+(?:-\d+)?s/i.test(value);
@@ -438,7 +442,7 @@ function renderAquecimento(){
     <div class="section-heading">
       <div>
         <div class="section-title">Aquecimento</div>
-        <p class="muted">Sequência oficial de 5 minutos antes do Full Body A.</p>
+        <p class="muted">Sequência de 8-10 minutos antes dos treinos Full Body.</p>
       </div>
     </div>
 

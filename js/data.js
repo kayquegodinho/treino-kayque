@@ -1,6 +1,6 @@
 /* =====================================================
 TREINO KAYQUE PREMIUM
-Dados importados da Planilha_Treino_Kayque_Atualizada_20_06_2026.xlsx
+Dados atualizados com Planilha_Master_Kayque_Semanas5_8.xlsx
 ===================================================== */
 
 function normalizeGifKey(name){
@@ -122,7 +122,7 @@ const weeklyPlan = [
   },
   {
     dia: 'Segunda',
-    atividade: 'Mobilidade + Pilates',
+    atividade: 'Mobilidade + Estabilidade',
     detalhes: 'Recuperação e cuidado com a virilha',
     tipo: 'mobilidade'
   },
@@ -134,7 +134,7 @@ const weeklyPlan = [
   },
   {
     dia: 'Quarta',
-    atividade: 'Ativacao + Futebol',
+    atividade: 'Futebol + ativacao',
     detalhes: 'Intensidade moderada, sem testar limites',
     tipo: 'ativacao'
   },
@@ -146,7 +146,7 @@ const weeklyPlan = [
   },
   {
     dia: 'Sexta',
-    atividade: 'Mobilidade + Pilates',
+    atividade: 'Mobilidade + Estabilidade',
     detalhes: 'Recuperacao e preparo para sabado',
     tipo: 'mobilidade'
   },
@@ -274,8 +274,9 @@ const treinoA = [
     id: 'step-up',
     nome: 'Step-up',
     obs: 'Subir no degrau e descer em 3 segundos',
-    series: 3,
-    reps: '10/cada',
+    series: 7,
+    setLabels: ['Direita 1', 'Direita 2', 'Direita 3', 'Esquerda 1', 'Esquerda 2', 'Esquerda 3', 'Esquerda 4'],
+    reps: '10',
     carga: 'Peso corporal',
     progressao: 'stepUp',
     descanso: '60-90s',
@@ -286,9 +287,10 @@ const treinoA = [
     id: 'leg-press-unilateral',
     nome: 'Leg Press unilateral',
     obs: 'Empurrar sem travar o joelho',
-    series: 3,
+    series: 7,
+    setLabels: ['Direita 1', 'Direita 2', 'Direita 3', 'Esquerda 1', 'Esquerda 2', 'Esquerda 3', 'Esquerda 4'],
     reps: '10',
-    carga: '15 kg',
+    carga: '20 kg',
     progressao: 'legPress',
     descanso: '90s',
     descansoSegundos: 90,
@@ -312,7 +314,7 @@ const treinoA = [
     obs: 'Quadril para tras e coluna reta',
     series: 3,
     reps: '10',
-    carga: '25 kg',
+    carga: '30 kg',
     progressao: 'stiff',
     descanso: '90s',
     descansoSegundos: 90,
@@ -324,7 +326,7 @@ const treinoA = [
     obs: 'Movimento lento',
     series: 3,
     reps: '15',
-    carga: '25 kg',
+    carga: '35 kg',
     progressao: 'adutora',
     descanso: '60s',
     descansoSegundos: 60,
@@ -336,7 +338,7 @@ const treinoA = [
     obs: 'Controle total',
     series: 3,
     reps: '10-12',
-    carga: '25-35 kg',
+    carga: '30 kg',
     descanso: '60-90s',
     descansoSegundos: 75,
     gif: gifFor('Supino maquina')
@@ -347,7 +349,7 @@ const treinoA = [
     obs: 'Puxar até o peito',
     series: 3,
     reps: '10-12',
-    carga: '25-35 kg',
+    carga: '40 kg',
     descanso: '60-90s',
     descansoSegundos: 75,
     gif: gifFor('Puxador frente')
@@ -358,7 +360,7 @@ const treinoA = [
     obs: 'Sem travar cotovelo',
     series: 3,
     reps: '10',
-    carga: '15-25 kg',
+    carga: '30 kg',
     descanso: '60-90s',
     descansoSegundos: 75,
     gif: gifFor('Desenvolvimento maquina')
@@ -368,7 +370,7 @@ const treinoA = [
     nome: 'Prancha',
     obs: 'Corpo reto',
     series: 3,
-    reps: '30s',
+    reps: '35s',
     carga: 'Peso corporal',
     descanso: '30-45s',
     descansoSegundos: 40,
@@ -379,7 +381,7 @@ const treinoA = [
 const treinoB = [
   {
     id: 'extensora-unilateral',
-    nome: 'Extensora unilateral',
+    nome: 'Extensora',
     obs: 'Descida lenta',
     series: 3,
     reps: '15',
@@ -387,15 +389,16 @@ const treinoB = [
     progressao: 'extensora',
     descanso: '60s',
     descansoSegundos: 60,
-    gif: gifFor('Extensora unilateral')
+    gif: gifFor('Extensora')
   },
   {
     id: 'step-up-leve',
     nome: 'Step-up leve',
     obs: 'Controle',
-    series: 2,
+    series: 5,
+    setLabels: ['Direita 1', 'Direita 2', 'Esquerda 1', 'Esquerda 2', 'Esquerda 3'],
     reps: '10',
-    carga: 'Sem peso',
+    carga: 'Peso corporal',
     descanso: '60s',
     descansoSegundos: 60,
     gif: gifFor('Step-up leve')
@@ -406,7 +409,7 @@ const treinoB = [
     obs: 'Leve',
     series: 2,
     reps: '10',
-    carga: '0-2 kg',
+    carga: '4 kg/lado',
     descanso: '60s',
     descansoSegundos: 60,
     gif: gifFor('Afundo leve')
@@ -417,7 +420,7 @@ const treinoB = [
     obs: 'Movimento lento',
     series: 3,
     reps: '15',
-    carga: '25 kg',
+    carga: '35 kg',
     progressao: 'adutora',
     descanso: '60s',
     descansoSegundos: 60,
@@ -441,7 +444,7 @@ const treinoB = [
     obs: 'Movimento completo',
     series: 3,
     reps: '12',
-    carga: '20-30 kg',
+    carga: '45 kg',
     progressao: 'panturrilha',
     descanso: '45-60s',
     descansoSegundos: 55,
@@ -453,7 +456,7 @@ const treinoB = [
     obs: 'Controle',
     series: 2,
     reps: '12',
-    carga: '20-25 kg',
+    carga: '30 kg',
     descanso: '60s',
     descansoSegundos: 60,
     gif: gifFor('Supino leve')
@@ -464,7 +467,7 @@ const treinoB = [
     obs: 'Controle',
     series: 2,
     reps: '12',
-    carga: '20-30 kg',
+    carga: '35 kg',
     descanso: '60s',
     descansoSegundos: 60,
     gif: gifFor('Remada')
@@ -473,8 +476,8 @@ const treinoB = [
     id: 'prancha-b',
     nome: 'Prancha',
     obs: 'Corpo reto',
-    series: 2,
-    reps: '30s',
+    series: 3,
+    reps: '35s',
     carga: 'Peso corporal',
     descanso: '30-45s',
     descansoSegundos: 40,
@@ -483,21 +486,19 @@ const treinoB = [
 ];
 
 const mobilidadeBase = [
-  { id: 'mobilidade-respiracao', grupo: 'Respiracao', nome: 'Respiracao diafragmatica', descricao: 'Respire pelo nariz, expandindo abdome e costelas, sem elevar os ombros.', tempo: '3 min', gif: gifFor('Respiracao diafragmatica') },
+  { id: 'mobilidade-respiracao', grupo: 'Respiracao', nome: 'Respiracao diafragmatica', descricao: 'Respire pelo nariz, expandindo abdome e costelas, sem elevar os ombros.', tempo: '3x10', gif: gifFor('Respiracao diafragmatica') },
   { id: 'mobilidade-cat-camel', grupo: 'Mobilidade', nome: 'Cat-Camel', descricao: 'Alterne arredondar e estender a coluna lentamente.', tempo: '2x10', gif: gifFor('Cat-Camel') },
-  { id: 'mobilidade-quadril', grupo: 'Mobilidade', nome: 'Mobilidade de quadril', descricao: 'Mova o quadril com amplitude confortável, sem provocar a virilha.', tempo: '2x10 cada lado', gif: gifFor('Mobilidade de quadril') },
-  { id: 'mobilidade-flexor-quadril', grupo: 'Mobilidade', nome: 'Alongamento flexor quadril', descricao: 'Alongue a frente do quadril sem arquear a lombar.', tempo: '30s cada lado', gif: gifFor('Alongamento flexor quadril') },
   { id: 'mobilidade-rotacao-toracica', grupo: 'Mobilidade', nome: 'Rotacao toracica', descricao: 'Gire o tronco lentamente, mantendo quadril e joelhos estaveis.', tempo: '2x10', gif: gifFor('Rotacao toracica') },
+  { id: 'mobilidade-quadril', grupo: 'Mobilidade', nome: 'Mobilidade de quadril', descricao: 'Mova o quadril com amplitude confortável, sem provocar a virilha.', tempo: '2x10 cada lado', gif: gifFor('Mobilidade de quadril') },
   { id: 'mobilidade-ponte-gluteo', grupo: 'Estabilidade', nome: 'Ponte de gluteo', descricao: 'Eleve o quadril contraindo gluteos, sem compensar na lombar.', tempo: '3x12', gif: gifFor('Ponte de gluteo') },
-  { id: 'mobilidade-ponte-unilateral', grupo: 'Estabilidade', nome: 'Ponte unilateral', descricao: 'Mantenha a pelve nivelada e eleve o quadril usando uma perna.', tempo: '3x10 cada lado', gif: gifFor('Ponte unilateral') },
+  { id: 'mobilidade-ponte-unilateral', grupo: 'Estabilidade', nome: 'Ponte unilateral', descricao: 'Mantenha a pelve nivelada e eleve o quadril usando uma perna.', tempo: 'D3x10/E4x10', setLabels: ['Direita 1', 'Direita 2', 'Direita 3', 'Esquerda 1', 'Esquerda 2', 'Esquerda 3', 'Esquerda 4'], gif: gifFor('Ponte unilateral') },
   { id: 'mobilidade-dead-bug', grupo: 'Estabilidade', nome: 'Dead Bug', descricao: 'Mantenha lombar estavel e mova braco e perna opostos.', tempo: '3x10', gif: gifFor('Dead Bug') },
-  { id: 'mobilidade-bird-dog', grupo: 'Estabilidade', nome: 'Bird Dog', descricao: 'Estenda braco e perna opostos sem rodar o quadril.', tempo: '3x10 cada lado', gif: gifFor('Bird Dog') },
-  { id: 'mobilidade-clamshell', grupo: 'Estabilidade', nome: 'Clamshell', descricao: 'Abra o joelho mantendo pes juntos e quadril parado.', tempo: '3x12', gif: gifFor('Clamshell') },
-  { id: 'mobilidade-prancha-lateral', grupo: 'Virilha / Adutores', nome: 'Prancha lateral', descricao: 'Mantenha corpo alinhado e pelve firme, sem afundar o quadril.', tempo: '2x20-30s cada lado', gif: gifFor('Prancha lateral') },
+  { id: 'mobilidade-bird-dog', grupo: 'Estabilidade', nome: 'Bird Dog', descricao: 'Estenda braco e perna opostos sem rodar o quadril; sustente 3s no apoio esquerdo.', tempo: '3x10', gif: gifFor('Bird Dog') },
+  { id: 'mobilidade-clamshell', grupo: 'Estabilidade', nome: 'Clamshell', descricao: 'Abra o joelho mantendo pes juntos e quadril parado.', tempo: '3x15', gif: gifFor('Clamshell') },
+  { id: 'mobilidade-prancha-lateral', grupo: 'Virilha / Adutores', nome: 'Prancha lateral', descricao: 'Mantenha corpo alinhado e pelve firme, sem afundar o quadril.', tempo: '3x25s', gif: gifFor('Prancha lateral') },
   { id: 'mobilidade-copenhagen', grupo: 'Virilha / Adutores', nome: 'Copenhagen leve', descricao: 'Use apoio curto e mantenha a contracao confortavel nos adutores.', tempo: '2x15s cada lado', gif: gifFor('Copenhagen leve') },
-  { id: 'mobilidade-isometria-adutor', grupo: 'Virilha / Adutores', nome: 'Isometria de adutor', descricao: 'Aperte uma almofada entre os joelhos sem provocar dor na virilha.', tempo: '3x20-30s', gif: gifFor('Isometria de adutor') },
-  { id: 'mobilidade-extensao-joelho', grupo: 'Virilha / Adutores', nome: 'Extensao de joelho sentado', descricao: 'Estenda o joelho com controle e desca lentamente.', tempo: '2x15', gif: gifFor('Extensao de joelho sentado') },
-  { id: 'mobilidade-step-up-leve', grupo: 'Virilha / Adutores', nome: 'Step-up leve', descricao: 'Suba no apoio baixo e desca com controle, sem impulso.', tempo: '2x10', gif: gifFor('Step-up leve') }
+  { id: 'mobilidade-isometria-adutor', grupo: 'Virilha / Adutores', nome: 'Isometria de adutores', descricao: 'Aperte uma almofada entre os joelhos sem provocar dor na virilha.', tempo: '3x30s', gif: gifFor('Isometria de adutor') },
+  { id: 'mobilidade-step-up-leve', grupo: 'Virilha / Adutores', nome: 'Step-up leve', descricao: 'Suba no apoio baixo e desca com controle, sem impulso.', tempo: 'D2x10/E3x10', setLabels: ['Direita 1', 'Direita 2', 'Esquerda 1', 'Esquerda 2', 'Esquerda 3'], gif: gifFor('Step-up leve') }
 ];
 
 const mobilidadeA = mobilidadeBase.map(item => ({ ...item, id: `${item.id}-a` }));
@@ -505,10 +506,10 @@ const mobilidadeB = mobilidadeBase.map(item => ({ ...item, id: `${item.id}-b` })
 const mobilidade = [...mobilidadeA, ...mobilidadeB];
 
 const progressaoSemanal = [
-  { semana: 'Semana 1', legPress: '15 kg', stiff: '25 kg', stepUp: 'Peso corporal', afundo: '4 kg/lado', extensora: '15 kg', adutora: '25 kg', abdutora: '35 kg', panturrilha: '20-30 kg' },
-  { semana: 'Semana 2', legPress: '20 kg', stiff: '30 kg', stepUp: 'Peso corporal', afundo: '4 kg/lado', extensora: '15 kg', adutora: '25 kg', abdutora: '35 kg', panturrilha: '25-35 kg' },
-  { semana: 'Semana 3', legPress: '25 kg', stiff: '35 kg', stepUp: '+2 kg', afundo: '4 kg/lado', extensora: '15 kg', adutora: '25 kg', abdutora: '35 kg', panturrilha: '30-40 kg' },
-  { semana: 'Semana 4', legPress: '25 kg', stiff: '35 kg', stepUp: '+2 kg', afundo: '4 kg/lado', extensora: '15 kg', adutora: '25 kg', abdutora: '35 kg', panturrilha: '30-40 kg' }
+  { semana: 'Semana 5', legPress: '20 kg', stiff: '30 kg', stepUp: 'Peso corporal', afundo: '4 kg/lado', extensora: '15 kg', adutora: '35 kg', abdutora: '35 kg', panturrilha: '45 kg', supino: '30 kg', puxador: '40 kg', desenvolvimento: '30 kg' },
+  { semana: 'Semana 5', legPress: '20 kg', stiff: '30 kg', stepUp: 'Peso corporal', afundo: '4 kg/lado', extensora: '15 kg', adutora: '35 kg', abdutora: '35 kg', panturrilha: '45 kg', supino: '30 kg', puxador: '40 kg', desenvolvimento: '30 kg' },
+  { semana: 'Semana 5', legPress: '20 kg', stiff: '30 kg', stepUp: 'Peso corporal', afundo: '4 kg/lado', extensora: '15 kg', adutora: '35 kg', abdutora: '35 kg', panturrilha: '45 kg', supino: '30 kg', puxador: '40 kg', desenvolvimento: '30 kg' },
+  { semana: 'Semana 5', legPress: '20 kg', stiff: '30 kg', stepUp: 'Peso corporal', afundo: '4 kg/lado', extensora: '15 kg', adutora: '35 kg', abdutora: '35 kg', panturrilha: '45 kg', supino: '30 kg', puxador: '40 kg', desenvolvimento: '30 kg' }
 ];
 
 const alongamentos = [

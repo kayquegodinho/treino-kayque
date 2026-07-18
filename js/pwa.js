@@ -3,7 +3,7 @@ const installButton = document.getElementById('installAppButton');
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(error => {
+    navigator.serviceWorker.register('./sw.js?v=4').catch(error => {
       console.warn('Não foi possível ativar o modo offline.', error);
     });
   });

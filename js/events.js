@@ -52,6 +52,13 @@ document.addEventListener('click', event => {
   handler?.({ element, event });
 });
 
+document.addEventListener('input', event => {
+  const element = event.target.closest('[data-checkin-field]');
+  if(element){
+    updateWeeklyCheckin(element.dataset.checkinWeek, element.dataset.checkinField, element.value);
+  }
+});
+
 document.querySelectorAll('.tab').forEach(tab => {
   tab.dataset.action = 'show-tab';
 });

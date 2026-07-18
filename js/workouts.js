@@ -278,7 +278,7 @@ function renderWorkout(){
       <div class="workout-phase-card">
         <div>
           <span>Antes do treino</span>
-          <strong>Aquecimento de 5 minutos</strong>
+          <strong>Aquecimento de 8-10 minutos</strong>
         </div>
         <button data-action="show-tab" data-tab="aquecer">Abrir</button>
       </div>
@@ -335,7 +335,7 @@ function renderWorkout(){
                       data-index="${index}"
                       data-seconds="${exercise.descansoSegundos}"
                     >
-                      ${isDone ? `Série ${index + 1} OK` : `Série ${index + 1}`}
+                      ${isDone ? `${exercise.setLabels?.[index] || `Série ${index + 1}`} OK` : (exercise.setLabels?.[index] || `Série ${index + 1}`)}
                     </button>
                   `;
                 }).join('')}
