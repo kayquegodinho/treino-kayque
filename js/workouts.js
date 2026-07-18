@@ -1,5 +1,5 @@
 let activeWorkout = load('activeWorkout', 'A');
-let activeTrainingDay = Number(load('activeTrainingDay', new Date().getDay()));
+let activeTrainingDay = new Date().getDay();
 let completedSets = load('completedSets', {});
 let finishedWorkouts = load('finishedWorkouts', {});
 let expandedExerciseId = load('expandedExerciseId', null);
@@ -7,6 +7,8 @@ let expandedExerciseId = load('expandedExerciseId', null);
 if(Number.isNaN(activeTrainingDay) || activeTrainingDay < 0 || activeTrainingDay > 6){
   activeTrainingDay = new Date().getDay();
 }
+
+save('activeTrainingDay', activeTrainingDay);
 
 function getPlanDay(index = activeTrainingDay){
   return weeklyPlan[index] || weeklyPlan[0];
