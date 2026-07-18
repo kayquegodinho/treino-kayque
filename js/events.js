@@ -39,7 +39,9 @@ const actionHandlers = {
       Number(element.dataset.index),
       Number(element.dataset.seconds)
     ),
-  'finish-workout': () => finishWorkout()
+  'finish-workout': () => finishWorkout(),
+  'finish-daily-activity': ({ element }) =>
+    finishDailyActivity(element.dataset.activityType)
 };
 
 document.addEventListener('click', event => {

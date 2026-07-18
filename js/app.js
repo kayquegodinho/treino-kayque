@@ -26,7 +26,7 @@ function toggleChecklistItem(storageKey, itemId, items, renderFn){
 
   const allDone = items.every(item => state[item.id]);
 
-  if(allDone){
+  if(allDone && scope !== 'mobilidade'){
     items.forEach(item => {
       state[item.id] = false;
     });
@@ -456,6 +456,10 @@ function renderMobilidade(){
   const mobilidadeSection = document.getElementById('mobilidadeSection');
   const mobilityList = getMobilityList();
   const mobilityDay = activeMobility === 'B' ? 'Sexta-feira' : 'Segunda-feira';
+  const mobilityComplete = mobilityList.every(item =>
+    isRoutineItemComplete('mobilidade', item, completedMobility)
+  );
+  const mobilityFinished = isDailyActivityFinished('mobility');
 
   mobilidadeSection.innerHTML = `
     <div class="section-heading">
@@ -485,6 +489,15 @@ function renderMobilidade(){
         ${renderRoutineItem(item, 'mobilidade', completedMobility)}
       `).join('')}
     </div>
+
+    <button
+      class="finish-btn ${mobilityFinished ? 'finished' : ''}"
+      data-action="finish-daily-activity"
+      data-activity-type="mobility"
+      ${mobilityComplete || mobilityFinished ? '' : 'disabled'}
+    >
+      ${mobilityFinished ? 'Mobilidade finalizada' : 'Finalizar mobilidade'}
+    </button>
   `;
 }
 

@@ -42,6 +42,34 @@ function getWorkoutFinishKey(){
   return `${activeWorkout}:${getDateKey()}`;
 }
 
+function getDailyActivityFinishKey(type, date = new Date()){
+  return `${type}:${getDateKey(date)}`;
+}
+
+function isDailyActivityFinished(type){
+  return Boolean(finishedWorkouts[getDailyActivityFinishKey(type)]);
+}
+
+function finishDailyActivity(type){
+  const labels = {
+    mobility: 'Mobilidade + Estabilidade',
+    activeRest: 'Descanso ativo'
+  };
+
+  finishedWorkouts[getDailyActivityFinishKey(type)] = {
+    workout: labels[type] || type,
+    date: getToday(),
+    dateKey: getDateKey()
+  };
+
+  save('finishedWorkouts', finishedWorkouts);
+  renderWorkout();
+  renderDashboard();
+  if(type === 'mobility'){
+    renderMobilidade();
+  }
+}
+
 function getCompletedCount(exercise){
   return Array.from({ length: exercise.series }, (_, index) =>
     completedSets[getSetKey(exercise.id, index)]
@@ -373,6 +401,15 @@ function renderWorkout(){
           </ul>
         </div>
         ${action ? `<button data-action="show-tab" data-tab="${action.tab}" ${action.mobility ? `data-mobility="${action.mobility}"` : ''}>${action.label}</button>` : ''}
+        ${selectedPlanDay.tipo === 'descanso' ? `
+          <button
+            class="finish-btn ${isDailyActivityFinished('activeRest') ? 'finished' : ''}"
+            data-action="finish-daily-activity"
+            data-activity-type="activeRest"
+          >
+            ${isDailyActivityFinished('activeRest') ? 'Descanso ativo concluído' : 'Concluir descanso ativo'}
+          </button>
+        ` : ''}
       </div>
     `}
   `;
