@@ -39,13 +39,26 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 </head>
 <body>
 <div class="app">
-<header><h1>Atlas • Treino & Recuperação <span class="version-pill" id="appVersion">v2.3.1</span></h1><div class="subtitle" id="todayLabel"></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
+<header><h1>Atlas • Treino & Recuperação <span class="version-pill" id="appVersion">v2.3.2</span></h1><div class="subtitle" id="todayLabel"></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
 <section id="home" class="active">
 <div class="card hero"><div class="small">Treino de hoje</div><h2 id="todayTitle" style="margin:4px 0 6px"></h2><div id="todayObjective" class="subtitle"></div><div class="row" style="margin-top:12px"><span class="badge green">Joelho</span><span class="badge blue">Hipertrofia</span><span class="badge yellow">Virilha/Core</span></div></div>
 <div class="card"><div class="grid2"><div><label>Como foi seu sono?</label><select id="sleepMode"><option value="normal">🟢 Razoável / bom</option><option value="tired">🟡 Noite ruim / cansado</option><option value="exhausted">🔴 Exausto</option></select></div><div><label>Dor geral hoje (0–10)</label><input id="dailyPain" type="number" min="0" max="10" value="0"></div></div><p class="small" id="sleepAdvice"></p></div>
 <div id="adaptiveHome"></div><div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><div><b>Progresso do treino</b><div class="small" id="progressText"></div></div><button class="btn secondary" id="resetToday">Limpar hoje</button></div><div class="progress" style="margin-top:10px"><div id="progressBar"></div></div></div>
 <div id="todayWorkout"></div>
-<div class="card"><h3 style="margin-top:0">Check-out</h3><div class="grid2"><div><label>Dor joelho pós-treino</label><input id="kneePost" type="number" min="0" max="10"></div><div><label>Dor virilha pós-treino</label><input id="groinPost" type="number" min="0" max="10"></div><div><label>Energia (0–10)</label><input id="energyPost" type="number" min="0" max="10"></div><div><label>Confiança perna esquerda (0–10)</label><input id="leftConfidence" type="number" min="0" max="10"></div></div><label style="margin-top:10px">Observações</label><textarea id="dailyNotes" rows="3" placeholder="Ex.: extensora confortável, virilha 2/10..."></textarea><button class="btn full" id="saveDay" style="margin-top:10px">Salvar dia</button></div>
+<div class="card">
+  <h3 style="margin-top:0">🍽️ Alimentação de hoje</h3>
+  <div class="small" style="margin-bottom:10px">Registre o que realmente comeu. Não precisa pesar ou calcular calorias; detalhes simples já ajudam na revisão quinzenal.</div>
+  <label>Café da manhã</label>
+  <textarea id="breakfastFood" rows="2" placeholder="Ex.: café com leite, 2 ovos, pão, fruta..."></textarea>
+  <label style="margin-top:10px">Almoço</label>
+  <textarea id="lunchFood" rows="2" placeholder="Ex.: arroz, feijão, frango, salada..."></textarea>
+  <label style="margin-top:10px">Jantar</label>
+  <textarea id="dinnerFood" rows="2" placeholder="Ex.: omelete, arroz, carne, legumes..."></textarea>
+  <div class="grid2" style="margin-top:10px">
+    <div><label>Fome ao longo do dia (0–10)</label><input id="hungerDay" type="number" min="0" max="10"></div>
+    <div><label>Qualidade da alimentação hoje (0–10)</label><input id="foodQuality" type="number" min="0" max="10"></div>
+  </div>
+</div><div class="card"><h3 style="margin-top:0">Check-out</h3><div class="grid2"><div><label>Dor joelho pós-treino</label><input id="kneePost" type="number" min="0" max="10"></div><div><label>Dor virilha pós-treino</label><input id="groinPost" type="number" min="0" max="10"></div><div><label>Energia (0–10)</label><input id="energyPost" type="number" min="0" max="10"></div><div><label>Confiança perna esquerda (0–10)</label><input id="leftConfidence" type="number" min="0" max="10"></div></div><label style="margin-top:10px">Observações</label><textarea id="dailyNotes" rows="3" placeholder="Ex.: extensora confortável, virilha 2/10..."></textarea><button class="btn full" id="saveDay" style="margin-top:10px">Salvar dia</button></div>
 </section>
 <section id="week"><div class="card"><h3 style="margin-top:0">Rotina semanal</h3><div class="small">A semana começa no domingo. Trabalho 08h–17h; treino de academia só depois do expediente. Pela manhã, no máximo atividades leves em casa.</div></div><div id="weekCards"></div></section>
 
@@ -79,13 +92,13 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
   <div class="card hero">
     <div class="small">Revisão adaptativa</div>
     <h2 style="margin:4px 0 6px">Avaliação a cada 14 dias</h2>
-    <div class="subtitle">O Atlas usa seus registros de dor, energia, confiança e execução para escolher entre progredir, manter ou reduzir temporariamente o treino.</div>
+    <div class="subtitle">O Atlas usa seus registros de dor, energia, confiança, execução e alimentação para organizar a revisão dos próximos 14 dias.</div>
   </div>
   <div id="reviewStatus"></div>
   <div class="card">
     <button class="btn full" id="runReviewNow">Analisar últimos 14 dias agora</button>
     <button class="btn secondary full" id="copyReview" style="margin-top:8px">Copiar resumo para enviar ao Atlas no ChatGPT</button>
-    <div class="small" style="margin-top:8px">A revisão automática local ocorre no fim do sábado a cada 14 dias; se o app estiver fechado, ela roda na próxima abertura. Para uma avaliação feita por mim no ChatGPT, use o botão de copiar.</div>
+    <div class="small" style="margin-top:8px">A revisão automática local ocorre no fim do sábado a cada 14 dias; se o app estiver fechado, ela roda na próxima abertura. O app registra suas refeições, mas a interpretação nutricional detalhada do texto é feita quando você usa “Copiar resumo” e me envia no ChatGPT.</div>
   </div>
   <div class="card"><h3 style="margin-top:0">Histórico de revisões</h3><div id="reviewHistory"></div></div>
 </section>
@@ -122,11 +135,11 @@ const today=new Date(),dateKey=today.toISOString().slice(0,10),dow=today.getDay(
 function storage(){return JSON.parse(localStorage.getItem("atlasData")||'{"days":{},"measures":[]}')}function saveStorage(d){localStorage.setItem("atlasData",JSON.stringify(d))}
 function showTab(id){document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));document.querySelectorAll(".bottomnav button").forEach(b=>b.classList.toggle("active",b.dataset.nav===id))}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));document.querySelectorAll(".bottomnav button").forEach(b=>b.onclick=()=>showTab(b.dataset.nav));
-function renderToday(){const d=days[dow];document.getElementById("todayLabel").textContent=`${d.name} • ${today.toLocaleDateString("pt-BR")}`;document.getElementById("todayTitle").textContent=d.title;document.getElementById("todayObjective").textContent=d.objective;const data=storage(),saved=data.days[dateKey]||{};sleepMode.value=saved.sleep||"normal";dailyPain.value=saved.dailyPain??0;kneePost.value=saved.kneePost??"";groinPost.value=saved.groinPost??"";energyPost.value=saved.energyPost??"";leftConfidence.value=saved.leftConfidence??"";dailyNotes.value=saved.notes??"";updateSleepAdvice();const wrap=document.getElementById("todayWorkout");wrap.innerHTML="";d.exercises.forEach((e,i)=>{const done=saved.exercises?.[i]?.done||false,ex=saved.exercises?.[i]||{},div=document.createElement("div");div.className="card exercise"+(done?" done":"");div.innerHTML=`<h4>${i+1}. ${e[0]}</h4><div class="meta"><b>${e[1]}</b> • ${e[2]}</div><div class="exercise-grid"><div><label>Carga</label><input data-i="${i}" data-f="load" value="${ex.load||""}" placeholder="kg"></div><div><label>Reps feitas</label><input data-i="${i}" data-f="reps" value="${ex.reps||""}" placeholder="ex.: 10,10,10"></div><div><label>Dor 0–10</label><input data-i="${i}" data-f="pain" type="number" min="0" max="10" value="${ex.pain??""}"></div></div><div class="checkline"><input type="checkbox" data-check="${i}" ${done?"checked":""}><span>Concluído</span></div>`;wrap.appendChild(div)});document.querySelectorAll("[data-check]").forEach(c=>c.onchange=saveExerciseState);document.querySelectorAll("[data-i]").forEach(inp=>inp.onchange=saveExerciseState);updateProgress()}
+function renderToday(){const d=days[dow];document.getElementById("todayLabel").textContent=`${d.name} • ${today.toLocaleDateString("pt-BR")}`;document.getElementById("todayTitle").textContent=d.title;document.getElementById("todayObjective").textContent=d.objective;const data=storage(),saved=data.days[dateKey]||{};sleepMode.value=saved.sleep||"normal";dailyPain.value=saved.dailyPain??0;kneePost.value=saved.kneePost??"";groinPost.value=saved.groinPost??"";energyPost.value=saved.energyPost??"";leftConfidence.value=saved.leftConfidence??"";dailyNotes.value=saved.notes??"";if(window.breakfastFood)breakfastFood.value=saved.breakfastFood??"";if(window.lunchFood)lunchFood.value=saved.lunchFood??"";if(window.dinnerFood)dinnerFood.value=saved.dinnerFood??"";if(window.hungerDay)hungerDay.value=saved.hungerDay??"";if(window.foodQuality)foodQuality.value=saved.foodQuality??"";updateSleepAdvice();const wrap=document.getElementById("todayWorkout");wrap.innerHTML="";d.exercises.forEach((e,i)=>{const done=saved.exercises?.[i]?.done||false,ex=saved.exercises?.[i]||{},div=document.createElement("div");div.className="card exercise"+(done?" done":"");div.innerHTML=`<h4>${i+1}. ${e[0]}</h4><div class="meta"><b>${e[1]}</b> • ${e[2]}</div><div class="exercise-grid"><div><label>Carga</label><input data-i="${i}" data-f="load" value="${ex.load||""}" placeholder="kg"></div><div><label>Reps feitas</label><input data-i="${i}" data-f="reps" value="${ex.reps||""}" placeholder="ex.: 10,10,10"></div><div><label>Dor 0–10</label><input data-i="${i}" data-f="pain" type="number" min="0" max="10" value="${ex.pain??""}"></div></div><div class="checkline"><input type="checkbox" data-check="${i}" ${done?"checked":""}><span>Concluído</span></div>`;wrap.appendChild(div)});document.querySelectorAll("[data-check]").forEach(c=>c.onchange=saveExerciseState);document.querySelectorAll("[data-i]").forEach(inp=>inp.onchange=saveExerciseState);updateProgress()}
 function saveExerciseState(){const data=storage();data.days[dateKey]=data.days[dateKey]||{};data.days[dateKey].exercises=data.days[dateKey].exercises||{};document.querySelectorAll(".exercise").forEach((div,i)=>{data.days[dateKey].exercises[i]=data.days[dateKey].exercises[i]||{};const ex=data.days[dateKey].exercises[i],chk=div.querySelector("[data-check]");ex.done=chk.checked;div.querySelectorAll("[data-i]").forEach(inp=>ex[inp.dataset.f]=inp.value);div.classList.toggle("done",chk.checked)});saveStorage(data);updateProgress()}
 function updateProgress(){const d=days[dow],data=storage(),ex=data.days[dateKey]?.exercises||{},total=d.exercises.length,done=Object.values(ex).filter(x=>x.done).length,pct=Math.round(done/total*100);progressText.textContent=`${done}/${total} concluídos`;progressBar.style.width=pct+"%"}
 function updateSleepAdvice(){const v=sleepMode.value,t={normal:"Treino completo. Mantenha a margem de 3–4 repetições na reserva na reentrada.",tired:"Faça o treino, mas retire 1 série dos exercícios principais e não aumente carga hoje.",exhausted:"Troque treino pesado por caminhada leve + mobilidade. Priorize recuperação e família."};sleepAdvice.textContent=t[v]}sleepMode.onchange=updateSleepAdvice;
-saveDay.onclick=()=>{const data=storage();data.days[dateKey]=data.days[dateKey]||{};Object.assign(data.days[dateKey],{sleep:sleepMode.value,dailyPain:dailyPain.value,kneePost:kneePost.value,groinPost:groinPost.value,energyPost:energyPost.value,leftConfidence:leftConfidence.value,notes:dailyNotes.value,title:days[dow].title});saveStorage(data);alert("Dia salvo no aparelho.");renderHistory()};
+saveDay.onclick=()=>{const data=storage();data.days[dateKey]=data.days[dateKey]||{};Object.assign(data.days[dateKey],{sleep:sleepMode.value,dailyPain:dailyPain.value,kneePost:kneePost.value,groinPost:groinPost.value,energyPost:energyPost.value,leftConfidence:leftConfidence.value,notes:dailyNotes.value,breakfastFood:window.breakfastFood?breakfastFood.value:"",lunchFood:window.lunchFood?lunchFood.value:"",dinnerFood:window.dinnerFood?dinnerFood.value:"",hungerDay:window.hungerDay?hungerDay.value:"",foodQuality:window.foodQuality?foodQuality.value:"",title:days[dow].title});saveStorage(data);alert("Dia salvo no aparelho.");renderHistory()};
 resetToday.onclick=()=>{if(confirm("Limpar o registro de hoje?")){const data=storage();delete data.days[dateKey];saveStorage(data);renderToday();renderHistory()}};
 function renderWeek(){const wrap=weekCards;wrap.innerHTML="";[0,1,2,3,4,5,6].forEach(k=>{const d=days[k],div=document.createElement("div");div.className="card day-card";div.innerHTML=`<div class="small">${d.name}</div><h3 style="margin:4px 0">${d.title}</h3><div class="small">${d.objective}</div><hr>${d.exercises.map(e=>`<div style="margin:8px 0"><b>${e[0]}</b> — ${e[1]}<div class="small">${e[2]}</div></div>`).join("")}`;wrap.appendChild(div)})}
 saveMeasures.onclick=()=>{const m={date:new Date().toLocaleDateString("pt-BR"),weight:bodyWeight.value,left:leftThigh.value,right:rightThigh.value,waist:waist.value},data=storage();data.measures.unshift(m);data.measures=data.measures.slice(0,20);saveStorage(data);bodyWeight.value=leftThigh.value=rightThigh.value=waist.value="";renderHistory();alert("Medidas salvas.")};
@@ -186,13 +199,13 @@ function analyze14Days(){
  const now=new Date(), data=storage(); data.reviews=data.reviews||[];
  const start=new Date(now); start.setDate(start.getDate()-13); start.setHours(0,0,0,0);
  const entries=Object.entries(data.days||{}).filter(([k])=>{const dt=new Date(k+"T12:00:00");return dt>=start&&dt<=now});
- const knee=[],groin=[],energy=[],conf=[],general=[],exercisePain=[]; let completed=0,total=0,badSleep=0;
+ const knee=[],groin=[],energy=[],conf=[],general=[],exercisePain=[],hunger=[],foodQuality=[]; const meals=[]; let completed=0,total=0,badSleep=0;
  entries.forEach(([k,x])=>{
    knee.push(x.kneePost);groin.push(x.groinPost);energy.push(x.energyPost);conf.push(x.leftConfidence);general.push(x.dailyPain);
-   if(x.sleep==="tired"||x.sleep==="exhausted") badSleep++;
+   if(x.sleep==="tired"||x.sleep==="exhausted") badSleep++;hunger.push(x.hungerDay);foodQuality.push(x.foodQuality);if(x.breakfastFood||x.lunchFood||x.dinnerFood)meals.push({date:k,breakfast:x.breakfastFood||"",lunch:x.lunchFood||"",dinner:x.dinnerFood||""});
    Object.values(x.exercises||{}).forEach(ex=>{total++;if(ex.done)completed++;exercisePain.push(ex.pain)});
  });
- const ak=_avg(knee),ag=_avg(groin),ae=_avg(energy),ac=_avg(conf),ap=_avg(exercisePain),gd=_avg(general);
+ const ak=_avg(knee),ag=_avg(groin),ae=_avg(energy),ac=_avg(conf),ap=_avg(exercisePain),gd=_avg(general),ah=_avg(hunger),afq=_avg(foodQuality);
  const maxPain=Math.max(0,..._nums([...knee,...groin,...general,...exercisePain]));
  const adherence=total?Math.round(completed/total*100):0;
  let profile="maintain",title="Manter e consolidar",reason="Os registros não mostram necessidade clara de aumentar ou reduzir o treino.";
@@ -201,7 +214,7 @@ function analyze14Days(){
  }else if(entries.length>=6&&ak!==null&&ag!==null&&ae!==null&&ac!==null&&ak<=2.5&&ag<=2.5&&ae>=6&&ac>=6&&maxPain<=4&&badSleep<=4){
    profile="progress";title="Progredir com controle";reason="Boa tolerância geral. O Atlas libera progressão por repetições e depois pequenos aumentos de carga.";
  }
- const result={date:now.toISOString().slice(0,10),profile,title,reason,stats:{days:entries.length,knee:ak,groin:ag,energy:ae,confidence:ac,general:gd,exercisePain:ap,maxPain,adherence,badSleep}};
+ const result={date:now.toISOString().slice(0,10),profile,title,reason,stats:{days:entries.length,knee:ak,groin:ag,energy:ae,confidence:ac,general:gd,exercisePain:ap,maxPain,adherence,badSleep,hunger:ah,foodQuality:afq,mealDays:meals.length},meals};
  data.adaptiveProfile=profile;data.lastReviewDate=result.date;data.reviews.unshift(result);data.reviews=data.reviews.slice(0,12);saveStorage(data);
  renderReview();renderToday();renderWeek();renderRoutine();renderAdaptiveHome();
  return result;
@@ -236,11 +249,11 @@ function renderReview(){
  const data=storage(),r=data.reviews?.[0],p=data.adaptiveProfile||"maintain",status=document.getElementById("reviewStatus"),hist=document.getElementById("reviewHistory");
  if(!status)return;
  if(!r){
-   status.innerHTML='<div class="card adaptive-banner review-watch"><b>Primeira revisão automática: sábado, 03/10/2026, no fim do dia.</b><div class="small">Registre sono, dor, energia, confiança e exercícios. Quanto mais você preencher, melhor a adaptação.</div></div>';
+   status.innerHTML='<div class="card adaptive-banner review-watch"><b>Primeira revisão automática: sábado, 03/10/2026, no fim do dia.</b><div class="small">Registre sono, dor, energia, confiança, exercícios e alimentação. Quanto mais você preencher, melhor a revisão.</div></div>';
  }else{
    const cls=p==="progress"?"review-good":p==="recovery"?"review-recovery":"review-watch";
    const next=new Date(r.date+"T12:00:00"); next.setDate(next.getDate()+14);
-   status.innerHTML=`<div class="card adaptive-banner ${cls}"><b>${r.title}</b><p>${r.reason}</p><div class="review-grid"><div class="review-stat">Joelho <b>${fmtStat(r.stats.knee)}</b></div><div class="review-stat">Virilha <b>${fmtStat(r.stats.groin)}</b></div><div class="review-stat">Energia <b>${fmtStat(r.stats.energy)}</b></div><div class="review-stat">Confiança E <b>${fmtStat(r.stats.confidence)}</b></div><div class="review-stat">Dor máx. <b>${fmtStat(r.stats.maxPain)}</b></div><div class="review-stat">Conclusão <b>${r.stats.adherence}%</b></div></div><div class="small" style="margin-top:10px">Próxima revisão prevista: ${next.toLocaleDateString("pt-BR")}.</div></div>`;
+   status.innerHTML=`<div class="card adaptive-banner ${cls}"><b>${r.title}</b><p>${r.reason}</p><div class="review-grid"><div class="review-stat">Joelho <b>${fmtStat(r.stats.knee)}</b></div><div class="review-stat">Virilha <b>${fmtStat(r.stats.groin)}</b></div><div class="review-stat">Energia <b>${fmtStat(r.stats.energy)}</b></div><div class="review-stat">Confiança E <b>${fmtStat(r.stats.confidence)}</b></div><div class="review-stat">Dor máx. <b>${fmtStat(r.stats.maxPain)}</b></div><div class="review-stat">Conclusão <b>${r.stats.adherence}%</b></div><div class="review-stat">Alimentação <b>${fmtStat(r.stats.foodQuality)}</b></div><div class="review-stat">Fome <b>${fmtStat(r.stats.hunger)}</b></div></div><div class="small" style="margin-top:10px">Próxima revisão prevista: ${next.toLocaleDateString("pt-BR")}.</div></div>`;
  }
  if(hist){
    hist.innerHTML=(data.reviews||[]).map(x=>`<div style="margin:9px 0"><b>${x.date.split("-").reverse().join("/")} — ${x.title}</b><div class="small">Joelho ${fmtStat(x.stats.knee)} • Virilha ${fmtStat(x.stats.groin)} • Energia ${fmtStat(x.stats.energy)} • Confiança E ${fmtStat(x.stats.confidence)}</div></div>`).join("")||'<div class="small">Nenhuma revisão ainda.</div>';
@@ -267,7 +280,7 @@ renderToday();renderWeek();renderHistory();renderRoutine();renderReview();render
 </script>
 \n<script>\nlet deferredPrompt = null;\nconst installBtn = document.getElementById('installAppBtn');\nconst installHint = document.getElementById('installHint');\n\nwindow.addEventListener('beforeinstallprompt', (e) => {\n  e.preventDefault();\n  deferredPrompt = e;\n  if (installBtn) installBtn.style.display = 'block';\n  if (installHint) installHint.textContent = 'Pronto para instalar.';\n});\n\nif (installBtn) {\n  installBtn.addEventListener('click', async () => {\n    if (deferredPrompt) {\n      deferredPrompt.prompt();\n      await deferredPrompt.userChoice;\n      deferredPrompt = null;\n    } else {\n      installHint.textContent = 'Se o botão do navegador não aparecer, abra o menu ⋮ e escolha “Adicionar à tela inicial” ou “Instalar app”.';\n    }\n  });\n}\n\nwindow.addEventListener('appinstalled', () => {\n  if (installHint) installHint.textContent = 'Atlas instalado com sucesso.';\n});\n\nif ('serviceWorker' in navigator) {\n  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));\n}\n</script>\n
 <script>
-const ATLAS_VERSION = "2.3.1";
+const ATLAS_VERSION = "2.3.2";
 let atlasSwRegistration = null;
 let atlasRefreshing = false;
 const atlasUpdateToast = document.getElementById('updateToast');
