@@ -35,18 +35,50 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 .brand-name{font-size:24px;font-weight:900;letter-spacing:.14em;line-height:1}
 .brand-meta{display:flex;align-items:center;gap:8px}
 
+
+/* Atlas v2.4.0 — identidade monocromática */
+:root{--bg:#050505;--card:#101010;--card2:#18181b;--text:#fafafa;--muted:#a1a1aa;--accent:#f4f4f5;--blue:#d4d4d8;--warn:#a3a3a3;--danger:#737373;--line:#2a2a2e}
+body{background:#050505;color:var(--text)}
+header{background:rgba(5,5,5,.96);border-bottom:1px solid #18181b}
+.card{background:#101010;border-color:#27272a;box-shadow:0 8px 24px rgba(0,0,0,.28)}
+.hero{background:linear-gradient(145deg,#171717,#0a0a0a 68%,#202020)}
+.metric,.review-stat{background:#18181b}
+.tab{background:#111113;border-color:#303036;color:#d4d4d8}
+.tab.active{background:#f4f4f5;color:#050505;border-color:#f4f4f5}
+.btn{background:#f4f4f5;color:#050505}
+.btn.secondary{background:#27272a;color:#fafafa;border:1px solid #3f3f46}
+.btn.warn{background:#a3a3a3;color:#050505}
+.btn.danger{background:#3f3f46;color:#fff;border:1px solid #71717a}
+.day-card{border-left-color:#d4d4d8}
+.exercise{background:#0b0b0c;border-color:#27272a}
+.exercise.done{opacity:.72;border-color:#737373}
+input,select,textarea{background:#09090b;color:#fafafa;border-color:#3f3f46}
+.green,.yellow,.red,.blue{background:#1c1c1f;color:#e4e4e7;border:1px solid #3f3f46}
+.progress{background:#27272a}
+.progress>div{background:linear-gradient(90deg,#a1a1aa,#fafafa)}
+.notice{border-left-color:#a3a3a3;background:#171717;color:#e5e5e5}
+.bottomnav{background:rgba(5,5,5,.98);border-top-color:#27272a}
+.bottomnav button{color:#a1a1aa}
+.bottomnav button.active{color:#fff}
+.update-toast{background:#111;border-color:#71717a}
+.version-pill{background:#27272a;color:#e4e4e7;border:1px solid #3f3f46}
+.routine-time{color:#f4f4f5}
+.adaptive-banner,.review-good,.review-watch,.review-recovery{border-left-color:#a3a3a3;background:#171717}
+.copybox{background:#09090b;border-color:#3f3f46;color:#e4e4e7}
+.brand-mark rect{fill:#050505}.brand-mark path:first-of-type{fill:#fff}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="assets/icons/icon.svg">
+<link rel="icon" href="assets/icons/icon-atlas-v240-192.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/icons/icon-atlas-v240-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
 <div class="app">
-<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v2.3.5</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
+<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v2.4.0</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
 <section id="home" class="active">
 <div class="card hero"><div class="small">Treino de hoje</div><h2 id="todayTitle" style="margin:4px 0 6px"></h2><div id="todayObjective" class="subtitle"></div><div class="row" style="margin-top:12px"><span class="badge green">Joelho</span><span class="badge blue">Hipertrofia</span><span class="badge yellow">Virilha/Core</span></div></div>
 <div class="card"><div class="grid2"><div><label>Como foi seu sono?</label><select id="sleepMode"><option value="normal">🟢 Razoável / bom</option><option value="tired">🟡 Noite ruim / cansado</option><option value="exhausted">🔴 Exausto</option></select></div><div><label>Dor geral hoje (0–10)</label><input id="dailyPain" type="number" min="0" max="10" value="0"></div></div><p class="small" id="sleepAdvice"></p></div>
@@ -368,7 +400,7 @@ renderToday();renderWeek();renderHistory();renderRoutine();renderReview();render
 </script>
 \n<script>\nlet deferredPrompt = null;\nconst installBtn = document.getElementById('installAppBtn');\nconst installHint = document.getElementById('installHint');\n\nwindow.addEventListener('beforeinstallprompt', (e) => {\n  e.preventDefault();\n  deferredPrompt = e;\n  if (installBtn) installBtn.style.display = 'block';\n  if (installHint) installHint.textContent = 'Pronto para instalar.';\n});\n\nif (installBtn) {\n  installBtn.addEventListener('click', async () => {\n    if (deferredPrompt) {\n      deferredPrompt.prompt();\n      await deferredPrompt.userChoice;\n      deferredPrompt = null;\n    } else {\n      installHint.textContent = 'Se o botão do navegador não aparecer, abra o menu ⋮ e escolha “Adicionar à tela inicial” ou “Instalar app”.';\n    }\n  });\n}\n\nwindow.addEventListener('appinstalled', () => {\n  if (installHint) installHint.textContent = 'Atlas instalado com sucesso.';\n});\n\nif ('serviceWorker' in navigator) {\n  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));\n}\n</script>\n
 <script>
-const ATLAS_VERSION = "2.3.5";
+const ATLAS_VERSION = "2.4.0";
 let atlasSwRegistration = null;
 let atlasRefreshing = false;
 const atlasUpdateToast = document.getElementById('updateToast');
