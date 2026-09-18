@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Atlas" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:colorAccent">@color/atlas_white</item>
+        <item name="android:navigationBarColor">@color/atlas_black</item>
+        <item name="android:statusBarColor">@color/atlas_black</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">@color/atlas_black</item>
+        <item name="android:windowSplashScreenBackground">@color/atlas_black</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_atlas_foreground</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/atlas_black</item>
+    </style>
+</resources>
