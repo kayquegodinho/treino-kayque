@@ -39,7 +39,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 </head>
 <body>
 <div class="app">
-<header><h1>Atlas • Treino & Recuperação <span class="version-pill" id="appVersion">v2.3.0</span></h1><div class="subtitle" id="todayLabel"></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
+<header><h1>Atlas • Treino & Recuperação <span class="version-pill" id="appVersion">v2.3.1</span></h1><div class="subtitle" id="todayLabel"></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
 <section id="home" class="active">
 <div class="card hero"><div class="small">Treino de hoje</div><h2 id="todayTitle" style="margin:4px 0 6px"></h2><div id="todayObjective" class="subtitle"></div><div class="row" style="margin-top:12px"><span class="badge green">Joelho</span><span class="badge blue">Hipertrofia</span><span class="badge yellow">Virilha/Core</span></div></div>
 <div class="card"><div class="grid2"><div><label>Como foi seu sono?</label><select id="sleepMode"><option value="normal">🟢 Razoável / bom</option><option value="tired">🟡 Noite ruim / cansado</option><option value="exhausted">🔴 Exausto</option></select></div><div><label>Dor geral hoje (0–10)</label><input id="dailyPain" type="number" min="0" max="10" value="0"></div></div><p class="small" id="sleepAdvice"></p></div>
@@ -52,7 +52,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 <section id="routine">
   <div class="card hero">
     <div class="small">Rotina realista</div>
-    <h2 style="margin:4px 0 6px">Trabalho, família, treino, idiomas e hobby</h2>
+    <h2 style="margin:4px 0 6px">Trabalho, treino, idiomas, lazer e recuperação</h2>
     <div class="subtitle">Trabalho 08h–17h • almoço flexível • academia após o expediente • Duolingo 15 min/dia • LoL em janela noturna.</div>
   </div>
   <div class="card">
@@ -98,14 +98,14 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
     <button class="btn full" id="installAppBtn">📲 Instalar aplicativo</button>
     <div class="small" id="installHint" style="margin-top:8px"></div>
   </div>
-<div class="card"><h3 style="margin-top:0">Sua rotina-base</h3><ul>
+<div class="card notice"><b>Rotina com recém-nascida ainda não ativa.</b><div class="small">Ela só será aplicada quando você me avisar que sua filha nasceu. Até lá, o Atlas usa sua rotina atual.</div></div><div class="card"><h3 style="margin-top:0">Sua rotina-base</h3><ul>
   <li>Trabalho: 08h–17h, segunda a sexta.</li>
   <li>Almoço: 12h–13h ou 13h–14h, conforme a intensidade do dia.</li>
   <li>Academia: depois das 17h; sábado à tarde, terminando antes das 17h.</li>
   <li>Manhã: nenhuma sessão pesada; somente caminhada/mobilidade leve em casa, quando fizer sentido.</li>
   <li>Duolingo: mínimo de 15 minutos todos os dias.</li>
   <li>League of Legends: 2 partidas como base; 3ª somente quando não sacrificar sono, treino ou tempo com a família.</li>
-  </ul></div><div class="card"><h3 style="margin-top:0">Regras do Atlas</h3><ul><li>Perna esquerda começa primeiro nos exercícios unilaterais.</li><li>Volume extra pequeno para a esquerda; não dobrar o treino.</li><li>Dor até 2–3/10 pode ser aceitável se não aumentar e normalizar depois.</li><li>Se estiver muito cansado por causa da bebê: reduza 1 série por exercício.</li><li>Se estiver exausto: troque treino pesado por caminhada + mobilidade.</li><li>Se perder um treino de academia, continue a sequência A → B → C; não faça dois treinos pesados no mesmo dia.</li></ul></div><div class="card"><h3 style="margin-top:0">Ciclo de 12 semanas</h3><table><tr><th>Fase</th><th>Foco</th></tr><tr><td>Semanas 1–4</td><td>Reentrada, tolerância do joelho/virilha, técnica.</td></tr><tr><td>Semanas 5–8</td><td>Hipertrofia e força, principalmente quadríceps esquerdo.</td></tr><tr><td>Semanas 9–12</td><td>Força unilateral, estabilidade e preparação para voltar ao futebol.</td></tr></table></div><div class="card"><button class="btn danger full" id="clearAll">Apagar todos os dados salvos</button></div></section>
+  </ul></div><div class="card"><h3 style="margin-top:0">Regras do Atlas</h3><ul><li>Perna esquerda começa primeiro nos exercícios unilaterais.</li><li>Volume extra pequeno para a esquerda; não dobrar o treino.</li><li>Dor até 2–3/10 pode ser aceitável se não aumentar e normalizar depois.</li><li>Se estiver muito cansado ou tiver dormido mal: reduza 1 série por exercício.</li><li>Se estiver exausto: troque treino pesado por caminhada + mobilidade.</li><li>Se perder um treino de academia, continue a sequência A → B → C; não faça dois treinos pesados no mesmo dia.</li></ul></div><div class="card"><h3 style="margin-top:0">Ciclo de 12 semanas</h3><table><tr><th>Fase</th><th>Foco</th></tr><tr><td>Semanas 1–4</td><td>Reentrada, tolerância do joelho/virilha, técnica.</td></tr><tr><td>Semanas 5–8</td><td>Hipertrofia e força, principalmente quadríceps esquerdo.</td></tr><tr><td>Semanas 9–12</td><td>Força unilateral, estabilidade e preparação para voltar ao futebol.</td></tr></table></div><div class="card"><button class="btn danger full" id="clearAll">Apagar todos os dados salvos</button></div></section>
 </div>
 <div class="update-toast" id="updateToast"><div class="msg"><b>Nova versão disponível</b><div class="small">O Atlas será atualizado sem apagar seus registros.</div></div><button class="btn" id="applyUpdate">Atualizar</button></div>
 <nav class="bottomnav"><button data-nav="home" class="active">🏠 Hoje</button><button data-nav="week">📅 Semana</button><button data-nav="routine">🕒 Rotina</button><button data-nav="progress">📈 Evolução</button><button data-nav="review">🔄 14d</button><button data-nav="settings">⚙️ Ajustes</button></nav>
@@ -116,7 +116,7 @@ const days={
 2:{name:"Terça",title:"Cardio + Virilha + Core",objective:"Ajudar na perda de gordura, capacidade aeróbica e fortalecimento da virilha/core.",exercises:[["Cardio leve","25–35 min","Bike, elíptico ou caminhada inclinada. Sem HIIT/corrida."],["Adução isométrica","4×30s","Força moderada."],["Adução leve máquina/polia","2×12","Somente se dor ≤3/10."],["Dead Bug","3×10","Controle."],["Prancha lateral","3×20–30s","Sem provocar virilha."],["Pallof Press","3×10/lado","Controle da pelve/tronco."]]},
 3:{name:"Quarta",title:"Academia B — Posterior + Full Body",objective:"Posteriores, glúteos, tronco e manutenção do trabalho do joelho.",exercises:[["Bicicleta","5–7 min","Aquecimento."],["Agachamento Smith","3×8–10","Amplitude confortável. 3s descida."],["Mesa/Cadeira flexora","3×10–12","Controle."],["Hip Thrust","3×10–12","Segure 2s no topo."],["Abdutora","3×15","Carga moderada."],["Extensora unilateral","2×15","Carga leve/moderada."],["Supino inclinado/máquina","3×10","Controle."],["Remada máquina","3×10–12","Controle."],["Desenvolvimento máquina","2×10–12","Referência ~20 kg na volta."],["Elevação lateral","2×12–15","Leve/moderado."],["Prancha","3×30–40s","Respiração normal."]]},
 4:{name:"Quinta",title:"Recuperação Ativa",objective:"Reduzir fadiga, manter mobilidade e preparar para sábado.",exercises:[["Caminhada","20–30 min","Leve."],["Mobilidade quadril","2×10/lado","Confortável."],["Mobilidade tornozelo","2×10/lado","Confortável."],["Cat-Camel","2×10","Controle."],["Alongamento leve","5–8 min","Quadríceps, posterior, panturrilha, flexor do quadril."],["Adução isométrica","3×20s","Somente se confortável."]]},
-5:{name:"Sexta",title:"Livre / Família",objective:"Dia propositalmente flexível para a rotina com sua filha.",exercises:[["Descanso","Livre","Se estiver bem, caminhada leve opcional. Não precisa compensar."]]},
+5:{name:"Sexta",title:"Livre / Família",objective:"Dia propositalmente flexível para descanso e vida pessoal.",exercises:[["Descanso","Livre","Se estiver bem, caminhada leve opcional. Não precisa compensar."]]},
 6:{name:"Sábado",title:"Academia C — Hipertrofia de Pernas",objective:"Maior foco em hipertrofia das pernas e estímulo extra controlado para a coxa esquerda.",exercises:[["Bicicleta","5–7 min","Aquecimento."],["Leg Press unilateral","E 4×10 • D 3×10","Esquerda primeiro."],["Afundo com apoio","3×8/lado","Sem carga na 1ª semana. Priorize controle."],["Extensora unilateral","E 3×12 • D 2×12","Se dor >3/10, faça 2×12 em ambos."],["Flexora","3×10–12","Controle."],["Hip Thrust","3×10","Controle."],["Adutora","3×12–15","Carga confortável."],["Panturrilha","3×12–15","Pausa no topo."],["Supino máquina","2×12","Moderado."],["Puxador","2×12","Moderado."],["Dead Bug","3×10","Controle."],["Prancha lateral","2×30s/lado","Sem provocar virilha."]]}}
 const today=new Date(),dateKey=today.toISOString().slice(0,10),dow=today.getDay();
 function storage(){return JSON.parse(localStorage.getItem("atlasData")||'{"days":{},"measures":[]}')}function saveStorage(d){localStorage.setItem("atlasData",JSON.stringify(d))}
@@ -134,13 +134,13 @@ function renderHistory(){const data=storage(),h=history,daysList=Object.entries(
 clearAll.onclick=()=>{if(confirm("Apagar TODOS os dados do Atlas salvos neste navegador?")){localStorage.removeItem("atlasData");location.reload()}};
 
 const routineSlots={
-0:[["Manhã","Livre / família. Se quiser, apenas caminhada ou mobilidade leve."],["16:00–16:35","Recuperação + reabilitação em casa."],["17:30–17:45","Duolingo — 15 min."],["Noite","Família / bebê."],["20:30–22:15","League of Legends: 2 partidas; 3ª só se não sacrificar o sono."]],
-1:[["08:00–17:00","Trabalho."],["Almoço","12h–13h ou 13h–14h. Refeição + Duolingo 15 min; caminhada de 5–10 min se sobrar tempo."],["17:45–19:00","Academia A — quadríceps + joelho."],["19:00–20:30","Banho, jantar e família / bebê."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
-2:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["17:45–18:30","Cardio + virilha + core."],["18:30–20:30","Família / bebê + jantar."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
-3:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["17:45–19:00","Academia B — posterior + full body."],["19:00–20:30","Família / bebê + jantar."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
-4:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["18:00–18:30","Recuperação ativa em casa."],["18:30–20:30","Família / bebê."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
-5:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["17:00–20:30","Livre / família / bebê; nenhuma obrigação de treino."],["20:30–22:30","League of Legends: melhor noite para 2–3 partidas, se o sono estiver sob controle."]],
-6:[["Manhã","Livre / família. Nada de treino pesado pela manhã."],["14:30–15:45","Academia C — hipertrofia de pernas; terminar com folga antes das 17h."],["16:00–17:15","Família / recuperação."],["17:15–17:30","Duolingo — 15 min."],["20:00","A cada 14 dias: revisão Atlas."],["20:15–22:30","League of Legends: 2–3 partidas se energia e sono permitirem."]]
+0:[["Manhã","Livre. Se quiser, apenas caminhada ou mobilidade leve."],["16:00–16:35","Recuperação + reabilitação em casa."],["17:30–17:45","Duolingo — 15 min."],["Noite","Tempo livre / recuperação."],["20:30–22:15","League of Legends: 2 partidas; 3ª só se não sacrificar o sono."]],
+1:[["08:00–17:00","Trabalho."],["Almoço","12h–13h ou 13h–14h. Refeição + Duolingo 15 min; caminhada de 5–10 min se sobrar tempo."],["17:45–19:00","Academia A — quadríceps + joelho."],["19:00–20:30","Banho, jantar e tempo livre."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
+2:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["17:45–18:30","Cardio + virilha + core."],["18:30–20:30","Jantar e tempo livre."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
+3:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["17:45–19:00","Academia B — posterior + full body."],["19:00–20:30","Jantar e tempo livre."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
+4:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["18:00–18:30","Recuperação ativa em casa."],["18:30–20:30","Tempo livre / recuperação."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
+5:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["17:00–20:30","Livre; nenhuma obrigação de treino."],["20:30–22:30","League of Legends: melhor noite para 2–3 partidas, se o sono estiver sob controle."]],
+6:[["Manhã","Livre. Nada de treino pesado pela manhã."],["14:30–15:45","Academia C — hipertrofia de pernas; terminar com folga antes das 17h."],["16:00–17:15","Recuperação / tempo livre."],["17:15–17:30","Duolingo — 15 min."],["20:00","A cada 14 dias: revisão Atlas."],["20:15–22:30","League of Legends: 2–3 partidas se energia e sono permitirem."]]
 };
 
 function getAdaptiveProfile(){return storage().adaptiveProfile||"maintain";}
@@ -230,7 +230,7 @@ Confiança perna esquerda: ${fmtStat(r.stats.confidence)}/10
 Conclusão dos exercícios: ${r.stats.adherence}%
 Noites ruins/exaustas: ${r.stats.badSleep}
 
-Quero que você avalie esses dados como Atlas e ajuste meu treino/rotina para os próximos 14 dias, preservando meu trabalho 08h–17h, Duolingo 15 min/dia, tempo com minha filha e espaço para League of Legends.`;
+Quero que você avalie esses dados como Atlas e ajuste meu treino/rotina para os próximos 14 dias, preservando meu trabalho 08h–17h, Duolingo 15 min/dia, tempo livre e recuperação e espaço para League of Legends.`;
 }
 function renderReview(){
  const data=storage(),r=data.reviews?.[0],p=data.adaptiveProfile||"maintain",status=document.getElementById("reviewStatus"),hist=document.getElementById("reviewHistory");
@@ -267,7 +267,7 @@ renderToday();renderWeek();renderHistory();renderRoutine();renderReview();render
 </script>
 \n<script>\nlet deferredPrompt = null;\nconst installBtn = document.getElementById('installAppBtn');\nconst installHint = document.getElementById('installHint');\n\nwindow.addEventListener('beforeinstallprompt', (e) => {\n  e.preventDefault();\n  deferredPrompt = e;\n  if (installBtn) installBtn.style.display = 'block';\n  if (installHint) installHint.textContent = 'Pronto para instalar.';\n});\n\nif (installBtn) {\n  installBtn.addEventListener('click', async () => {\n    if (deferredPrompt) {\n      deferredPrompt.prompt();\n      await deferredPrompt.userChoice;\n      deferredPrompt = null;\n    } else {\n      installHint.textContent = 'Se o botão do navegador não aparecer, abra o menu ⋮ e escolha “Adicionar à tela inicial” ou “Instalar app”.';\n    }\n  });\n}\n\nwindow.addEventListener('appinstalled', () => {\n  if (installHint) installHint.textContent = 'Atlas instalado com sucesso.';\n});\n\nif ('serviceWorker' in navigator) {\n  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));\n}\n</script>\n
 <script>
-const ATLAS_VERSION = "2.3.0";
+const ATLAS_VERSION = "2.3.1";
 let atlasSwRegistration = null;
 let atlasRefreshing = false;
 const atlasUpdateToast = document.getElementById('updateToast');
