@@ -1,109 +1,65 @@
-const CACHE_NAME = 'treino-kayque-v6';
-
-const APP_ASSETS = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './css/style.css?v=6',
-  './js/data.js?v=6',
-  './js/storage.js?v=6',
-  './js/utils.js?v=6',
-  './js/timer.js?v=6',
-  './js/dashboard.js?v=6',
-  './js/progression.js?v=6',
-  './js/swipe.js?v=6',
-  './js/ui.js?v=6',
-  './js/workouts.js?v=6',
-  './js/app.js?v=6',
-  './js/events.js?v=6',
-  './js/pwa.js?v=6',
-  './assets/icons/icon.svg',
-  './assets/icons/icon-192.png',
-  './assets/icons/icon-512.png',
-  './assets/icons/icon-maskable-512.png',
-  './assets/gifs/supino-maquina.gif',
-  './assets/gifs/supino-leve.gif',
-  './assets/gifs/stiff.gif',
-  './assets/gifs/step-up.gif',
-  './assets/gifs/step-up-leve.gif',
-  './assets/gifs/rotacao-toracica.gif',
-  './assets/gifs/respiracao-diafragmatica.gif',
-  './assets/gifs/remada.gif',
-  './assets/gifs/quadriceps.gif',
-  './assets/gifs/puxador-frente.gif',
-  './assets/gifs/prancha.gif',
-  './assets/gifs/ponte-de-gluteo.gif',
-  './assets/gifs/panturrilha.gif',
-  './assets/gifs/mobilidade-de-quadril.gif',
-  './assets/gifs/leg-press-unilateral.gif',
-  './assets/gifs/isometria-de-adutor.gif',
-  './assets/gifs/isometria-adutor.gif',
-  './assets/gifs/extensora.gif',
-  './assets/gifs/extensora-unilateral.gif',
-  './assets/gifs/extensao-de-joelho-sentado.gif',
-  './assets/gifs/elevacoes-de-joelho.gif',
-  './assets/gifs/desenvolvimento-maquina.gif',
-  './assets/gifs/dead-bug.gif',
-  './assets/gifs/clamshell.gif',
-  './assets/gifs/cat-camel.gif',
-  './assets/gifs/caminhada-ou-bike.gif',
-  './assets/gifs/bird-dog.gif',
-  './assets/gifs/alongamento-flexor-quadril.gif',
-  './assets/gifs/agachamentos-leves.gif',
-  './assets/gifs/afundo.gif',
-  './assets/gifs/afundo-leve.gif',
-  './assets/gifs/adutores.gif',
-  './assets/gifs/adutora.gif',
-  './assets/gifs/aberturas-de-perna.gif',
-  './assets/gifs/abdutora.gif'
+const APP_VERSION = "2.1.0";
+const CACHE = `atlas-${APP_VERSION}`;
+const CORE = [
+  "./",
+  "./index.html",
+  "./manifest.webmanifest",
+  "./version.json",
+  "./assets/icons/icon-192.png",
+  "./assets/icons/icon-512.png"
 ];
 
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(APP_ASSETS))
-      .then(() => self.skipWaiting())
-  );
+self.addEventListener("install", event => {
+  self.skipWaiting();
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE)));
 });
 
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(
-        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
-      ))
-      .then(() => self.clients.claim())
-  );
+self.addEventListener("activate", event => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(k => k.startsWith("atlas-") && k !== CACHE).map(k => caches.delete(k)));
+    await self.clients.claim();
+  })());
 });
 
-self.addEventListener('fetch', event => {
-  const request = event.request;
-  const url = new URL(request.url);
+self.addEventListener("fetch", event => {
+  const req = event.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
 
-  if(request.method !== 'GET' || url.origin !== self.location.origin){
+  if (url.pathname.endsWith("/version.json") || url.pathname.endsWith("version.json")) {
+    event.respondWith(fetch(req, {cache:"no-store"}).catch(() => caches.match(req)));
     return;
   }
 
-  if(request.mode === 'navigate'){
-    event.respondWith(
-      fetch(request).catch(() => caches.match('./index.html'))
-    );
-    return;
-  }
-
-  event.respondWith(
-    caches.match(request).then(cachedResponse => {
-      if(cachedResponse){
-        return cachedResponse;
+  if (req.mode === "navigate") {
+    event.respondWith((async () => {
+      try {
+        const fresh = await fetch(req, {cache:"no-store"});
+        const cache = await caches.open(CACHE);
+        cache.put("./index.html", fresh.clone());
+        return fresh;
+      } catch (e) {
+        return (await caches.match("./index.html")) || (await caches.match("./"));
       }
+    })());
+    return;
+  }
 
-      return fetch(request).then(networkResponse => {
-        if(networkResponse.ok){
-          const copy = networkResponse.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-        }
-        return networkResponse;
-      });
-    })
-  );
+  event.respondWith((async () => {
+    const cached = await caches.match(req);
+    const fresh = fetch(req).then(async response => {
+      if (response && response.ok) {
+        const cache = await caches.open(CACHE);
+        cache.put(req, response.clone());
+      }
+      return response;
+    }).catch(() => cached);
+    return cached || fresh;
+  })());
+});
+
+self.addEventListener("message", event => {
+  if (event.data === "SKIP_WAITING") self.skipWaiting();
 });
