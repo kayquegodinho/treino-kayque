@@ -1,4 +1,4 @@
-const APP_VERSION="3.1.0";
+const APP_VERSION="3.1.1";
 const CACHE="atlas-clean-"+APP_VERSION;
 const CORE=["./","./index.html","./manifest-v301.webmanifest","./version.json","./assets/icons/icon-atlas-v301-192.png","./assets/icons/icon-atlas-v301-512.png","./assets/icons/icon-atlas-v301-maskable-512.png"];
 self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)))});
