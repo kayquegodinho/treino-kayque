@@ -38,7 +38,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 .brand-meta{display:flex;align-items:center;gap:8px}
 
 
-/* Atlas v3.1.0 — identidade monocromática */
+/* Atlas v3.1.1 — identidade monocromática */
 :root{--bg:#050505;--card:#101010;--card2:#18181b;--text:#fafafa;--muted:#a1a1aa;--accent:#f4f4f5;--blue:#d4d4d8;--warn:#a3a3a3;--danger:#737373;--line:#2a2a2e}
 body{background:#050505;color:var(--text)}
 header{background:rgba(5,5,5,.96);border-bottom:1px solid #18181b}
@@ -70,7 +70,7 @@ input,select,textarea{background:#09090b;color:#fafafa;border-color:#3f3f46}
 .brand-mark rect{fill:#050505}.brand-mark path:first-of-type{fill:#fff}
 
 
-/* Atlas v3.1.0 — responsividade e áreas seguras */
+/* Atlas v3.1.1 — responsividade e áreas seguras */
 html,body{width:100%;min-height:100%;overflow-x:hidden}
 body{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .app{width:100%;max-width:820px;margin:0 auto;padding:12px 12px 104px}
@@ -119,7 +119,7 @@ textarea{min-height:96px;resize:vertical}
 </head>
 <body>
 <div class="app">
-<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v3.1.0</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
+<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v3.1.1</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
 <section id="home" class="active">
 <div class="card hero"><div class="small">Treino de hoje</div><h2 id="todayTitle" style="margin:4px 0 6px"></h2><div id="todayObjective" class="subtitle"></div><div class="row" style="margin-top:12px"><span class="badge green">Joelho</span><span class="badge blue">Hipertrofia</span><span class="badge yellow">Virilha/Core</span></div></div>
 <div class="card"><div class="grid2"><div><label>Como foi seu sono?</label><select id="sleepMode"><option value="normal">🟢 Razoável / bom</option><option value="tired">🟡 Noite ruim / cansado</option><option value="exhausted">🔴 Exausto</option></select></div><div><label>Dor geral hoje (0–10)</label><input id="dailyPain" type="number" min="0" max="10" value="0"></div></div><p class="small" id="sleepAdvice"></p></div>
@@ -135,6 +135,7 @@ textarea{min-height:96px;resize:vertical}
         <option value="Caminhada">Caminhada</option>
         <option value="Bicicleta">Bicicleta</option>
         <option value="Futebol">Futebol</option>
+        <option value="Limpeza da casa">Limpeza da casa</option>
         <option value="Outro">Outro</option>
       </select>
     </div>
@@ -235,7 +236,8 @@ textarea{min-height:96px;resize:vertical}
   <li>Academia: depois das 17h; sábado à tarde, terminando antes das 17h.</li>
   <li>Manhã: nenhuma sessão pesada; somente caminhada/mobilidade leve em casa, quando fizer sentido.</li>
   <li>Duolingo: mínimo de 15 minutos todos os dias.</li>
-  <li>League of Legends: 2 partidas como base; 3ª somente quando não sacrificar sono, treino ou tempo com a família.</li>
+  <li>League of Legends: 2 partidas como base; 3ª somente quando não sacrificar sono, treino ou recuperação.</li>
+  <li>Limpeza da casa: geralmente no fim da quinta ou da sexta; ocasionalmente no sábado pela manhã. Conta como atividade física leve/moderada quando registrada.</li>
   </ul></div><div class="card"><h3 style="margin-top:0">Regras do Atlas</h3><ul><li>Perna esquerda começa primeiro nos exercícios unilaterais.</li><li>Volume extra pequeno para a esquerda; não dobrar o treino.</li><li>Dor até 2–3/10 pode ser aceitável se não aumentar e normalizar depois.</li><li>Se estiver muito cansado ou tiver dormido mal: reduza 1 série por exercício.</li><li>Se estiver exausto: troque treino pesado por caminhada + mobilidade.</li><li>Se perder um treino de academia, continue a sequência A → B → C; não faça dois treinos pesados no mesmo dia.</li></ul></div><div class="card"><h3 style="margin-top:0">Ciclo de 12 semanas</h3><table><tr><th>Fase</th><th>Foco</th></tr><tr><td>Semanas 1–4</td><td>Reentrada, tolerância do joelho/virilha, técnica.</td></tr><tr><td>Semanas 5–8</td><td>Hipertrofia e força, principalmente quadríceps esquerdo.</td></tr><tr><td>Semanas 9–12</td><td>Força unilateral, estabilidade e preparação para voltar ao futebol.</td></tr></table></div><div class="card"><button class="btn danger full" id="clearAll">Apagar todos os dados salvos</button></div></section>
 </div>
 <div class="update-toast" id="updateToast"><div class="msg"><b>Nova versão disponível</b><div class="small">O Atlas será atualizado sem apagar seus registros.</div></div><button class="btn" id="applyUpdate">Atualizar</button></div>
@@ -311,9 +313,9 @@ const routineSlots={
 1:[["08:00–17:00","Trabalho."],["Almoço","12h–13h ou 13h–14h. Refeição + Duolingo 15 min; caminhada de 5–10 min se sobrar tempo."],["17:45–19:00","Academia A — quadríceps + joelho."],["19:00–20:30","Banho, jantar e tempo livre."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
 2:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["17:45–18:30","Cardio + virilha + core."],["18:30–20:30","Jantar e tempo livre."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
 3:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["17:45–19:00","Academia B — posterior + full body."],["19:00–20:30","Jantar e tempo livre."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
-4:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["18:00–18:30","Recuperação ativa em casa."],["18:30–20:30","Tempo livre / recuperação."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
-5:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["17:00–20:30","Livre; nenhuma obrigação de treino."],["20:30–22:30","League of Legends: melhor noite para 2–3 partidas, se o sono estiver sob controle."]],
-6:[["Manhã","Livre. Nada de treino pesado pela manhã."],["14:30–15:45","Academia C — hipertrofia de pernas; terminar com folga antes das 17h."],["16:00–17:15","Recuperação / tempo livre."],["17:15–17:30","Duolingo — 15 min."],["20:00","A cada 14 dias: revisão Atlas."],["20:15–22:30","League of Legends: 2–3 partidas se energia e sono permitirem."]]
+4:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["Fim do dia","Limpeza da casa, quando fizer na quinta. Conta como atividade física leve/moderada; nesse dia a recuperação ativa pode ser reduzida ou integrada à própria limpeza."],["Após a limpeza","Tempo livre / recuperação."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional se a limpeza e o cansaço do dia permitirem."]],
+5:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["Fim do dia","Limpeza da casa, quando fizer na sexta. É uma das janelas principais da semana para essa tarefa."],["Depois","Livre; nenhuma obrigação de treino."],["20:30–22:30","League of Legends: 2–3 partidas se a limpeza, energia e sono permitirem."]],
+6:[["Manhã (às vezes)","Limpeza da casa, quando não tiver sido concluída na quinta/sexta. Evite transformar a manhã em treino pesado."],["14:30–15:45","Academia C — hipertrofia de pernas; terminar com folga antes das 17h."],["16:00–17:15","Recuperação / tempo livre."],["17:15–17:30","Duolingo — 15 min."],["20:00","A cada 14 dias: revisão Atlas."],["20:15–22:30","League of Legends: 2–3 partidas se energia e sono permitirem."]]
 };
 
 function getAdaptiveProfile(){return storage().adaptiveProfile||"maintain";}
@@ -413,7 +415,7 @@ ${(r.meals||[]).map(m=>`${m.date.split("-").reverse().join("/")} | Café: ${m.br
 Atividades fora do treino:
 ${(r.extraActivities||[]).map(a=>`${a.date.split("-").reverse().join("/")} | ${a.type} | ${a.km||"—"} km | ${a.min||"—"} min | ${a.bouts||"—"} blocos | ${a.intensity||"—"} | esforço ${a.rpe||"—"}/10 | ${a.notes||""}`).join("\n")||"Nenhuma atividade extra registrada."}
 
-Quero que você avalie esses dados como Atlas e ajuste meu treino/rotina para os próximos 14 dias, preservando meu trabalho 08h–17h, Duolingo 15 min/dia, tempo livre, recuperação e espaço para League of Legends.`;
+Quero que você avalie esses dados como Atlas e ajuste meu treino/rotina para os próximos 14 dias, preservando meu trabalho 08h–17h, Duolingo 15 min/dia, limpeza da casa no fim da quinta/sexta ou ocasionalmente sábado de manhã, tempo livre, recuperação e espaço para League of Legends.`;
 }
 function renderReview(){
  const data=storage(),r=data.reviews?.[0],p=data.adaptiveProfile||"maintain",status=document.getElementById("reviewStatus"),hist=document.getElementById("reviewHistory");
@@ -579,7 +581,7 @@ if(importBackupBtn && importBackupFile){
 }
 </script>\n
 <script>
-const ATLAS_VERSION = "3.1.0";
+const ATLAS_VERSION = "3.1.1";
 let atlasSwRegistration = null;
 let atlasRefreshing = false;
 const atlasUpdateToast = document.getElementById('updateToast');
