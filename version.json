@@ -1,1 +1,1 @@
-{"version":"3.0.1","released":"2026-09-18","notes":"Atlas reinstalado na raiz com manifesto, Service Worker e ícones completamente novos."}
+{"version":"3.0.2","released":"2026-09-18","notes":"Corrige o JavaScript do botão de instalação, que estava inválido por um caractere literal no início do script."}
