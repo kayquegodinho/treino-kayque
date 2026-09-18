@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
+<meta name="theme-color" content="#050505">
+<meta name="application-name" content="Atlas">
+<meta name="apple-mobile-web-app-title" content="Atlas">
 <title>Atlas</title>
 <style>
 :root{--bg:#0b1020;--card:#121a2d;--card2:#18223a;--text:#f8fafc;--muted:#9ca3af;--accent:#22c55e;--blue:#38bdf8;--warn:#f59e0b;--danger:#ef4444;--line:#26334f}
@@ -36,7 +38,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 .brand-meta{display:flex;align-items:center;gap:8px}
 
 
-/* Atlas v2.4.0 — identidade monocromática */
+/* Atlas v2.4.1 — identidade monocromática */
 :root{--bg:#050505;--card:#101010;--card2:#18181b;--text:#fafafa;--muted:#a1a1aa;--accent:#f4f4f5;--blue:#d4d4d8;--warn:#a3a3a3;--danger:#737373;--line:#2a2a2e}
 body{background:#050505;color:var(--text)}
 header{background:rgba(5,5,5,.96);border-bottom:1px solid #18181b}
@@ -69,16 +71,16 @@ input,select,textarea{background:#09090b;color:#fafafa;border-color:#3f3f46}
 
 </style>
 
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="assets/icons/icon-atlas-v240-192.png" type="image/png">
-<link rel="apple-touch-icon" href="assets/icons/icon-atlas-v240-192.png">
+<link rel="manifest" href="./atlas-v241.webmanifest?v=241">
+<link rel="icon" href="assets/icons/icon-atlas-v241-192.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/icons/icon-atlas-v241-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
 <div class="app">
-<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v2.4.0</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
+<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v2.4.1</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
 <section id="home" class="active">
 <div class="card hero"><div class="small">Treino de hoje</div><h2 id="todayTitle" style="margin:4px 0 6px"></h2><div id="todayObjective" class="subtitle"></div><div class="row" style="margin-top:12px"><span class="badge green">Joelho</span><span class="badge blue">Hipertrofia</span><span class="badge yellow">Virilha/Core</span></div></div>
 <div class="card"><div class="grid2"><div><label>Como foi seu sono?</label><select id="sleepMode"><option value="normal">🟢 Razoável / bom</option><option value="tired">🟡 Noite ruim / cansado</option><option value="exhausted">🔴 Exausto</option></select></div><div><label>Dor geral hoje (0–10)</label><input id="dailyPain" type="number" min="0" max="10" value="0"></div></div><p class="small" id="sleepAdvice"></p></div>
@@ -400,7 +402,7 @@ renderToday();renderWeek();renderHistory();renderRoutine();renderReview();render
 </script>
 \n<script>\nlet deferredPrompt = null;\nconst installBtn = document.getElementById('installAppBtn');\nconst installHint = document.getElementById('installHint');\n\nwindow.addEventListener('beforeinstallprompt', (e) => {\n  e.preventDefault();\n  deferredPrompt = e;\n  if (installBtn) installBtn.style.display = 'block';\n  if (installHint) installHint.textContent = 'Pronto para instalar.';\n});\n\nif (installBtn) {\n  installBtn.addEventListener('click', async () => {\n    if (deferredPrompt) {\n      deferredPrompt.prompt();\n      await deferredPrompt.userChoice;\n      deferredPrompt = null;\n    } else {\n      installHint.textContent = 'Se o botão do navegador não aparecer, abra o menu ⋮ e escolha “Adicionar à tela inicial” ou “Instalar app”.';\n    }\n  });\n}\n\nwindow.addEventListener('appinstalled', () => {\n  if (installHint) installHint.textContent = 'Atlas instalado com sucesso.';\n});\n\nif ('serviceWorker' in navigator) {\n  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));\n}\n</script>\n
 <script>
-const ATLAS_VERSION = "2.4.0";
+const ATLAS_VERSION = "2.4.1";
 let atlasSwRegistration = null;
 let atlasRefreshing = false;
 const atlasUpdateToast = document.getElementById('updateToast');

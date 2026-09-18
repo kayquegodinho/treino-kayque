@@ -1,13 +1,13 @@
-const APP_VERSION = "2.4.0";
+const APP_VERSION = "2.4.1";
 const CACHE = `atlas-${APP_VERSION}`;
 const CORE = [
   "./",
   "./index.html",
-  "./manifest.webmanifest",
+  "./atlas-v241.webmanifest",
   "./version.json",
-  "./assets/icons/icon-atlas-v240-192.png",
-  "./assets/icons/icon-atlas-v240-512.png",
-  "./assets/icons/icon-atlas-v240-maskable-512.png"
+  "./assets/icons/icon-atlas-v241-192.png",
+  "./assets/icons/icon-atlas-v241-512.png",
+  "./assets/icons/icon-atlas-v241-maskable-512.png"
 ];
 
 self.addEventListener("install", event => {
