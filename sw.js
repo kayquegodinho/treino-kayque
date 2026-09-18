@@ -1,4 +1,4 @@
-const APP_VERSION = "2.3.3";
+const APP_VERSION = "2.3.4";
 const CACHE = `atlas-${APP_VERSION}`;
 const CORE = [
   "./",
