@@ -38,7 +38,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 .brand-meta{display:flex;align-items:center;gap:8px}
 
 
-/* Atlas v2.4.1 — identidade monocromática */
+/* Atlas v2.4.2 — identidade monocromática */
 :root{--bg:#050505;--card:#101010;--card2:#18181b;--text:#fafafa;--muted:#a1a1aa;--accent:#f4f4f5;--blue:#d4d4d8;--warn:#a3a3a3;--danger:#737373;--line:#2a2a2e}
 body{background:#050505;color:var(--text)}
 header{background:rgba(5,5,5,.96);border-bottom:1px solid #18181b}
@@ -80,7 +80,7 @@ input,select,textarea{background:#09090b;color:#fafafa;border-color:#3f3f46}
 </head>
 <body>
 <div class="app">
-<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v2.4.1</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
+<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v2.4.2</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
 <section id="home" class="active">
 <div class="card hero"><div class="small">Treino de hoje</div><h2 id="todayTitle" style="margin:4px 0 6px"></h2><div id="todayObjective" class="subtitle"></div><div class="row" style="margin-top:12px"><span class="badge green">Joelho</span><span class="badge blue">Hipertrofia</span><span class="badge yellow">Virilha/Core</span></div></div>
 <div class="card"><div class="grid2"><div><label>Como foi seu sono?</label><select id="sleepMode"><option value="normal">🟢 Razoável / bom</option><option value="tired">🟡 Noite ruim / cansado</option><option value="exhausted">🔴 Exausto</option></select></div><div><label>Dor geral hoje (0–10)</label><input id="dailyPain" type="number" min="0" max="10" value="0"></div></div><p class="small" id="sleepAdvice"></p></div>
@@ -177,9 +177,18 @@ input,select,textarea{background:#09090b;color:#fafafa;border-color:#3f3f46}
 <section id="settings">
   <div class="card" id="installCard">
     <h3 style="margin-top:0">Instalar Atlas</h3>
-    <div class="small" style="margin-bottom:10px">Quando disponível, toque abaixo para instalar como aplicativo.</div>
-    <button class="btn full" id="installAppBtn">📲 Instalar aplicativo</button>
-    <div class="small" id="installHint" style="margin-top:8px"></div>
+    <div class="small" id="installState" style="margin-bottom:10px">Verificando o estado de instalação…</div>
+    <button class="btn full" id="installAppBtn">📲 Instalar Atlas</button>
+    <button class="btn secondary full" id="checkInstallBtn" style="margin-top:8px">🔄 Verificar instalação</button>
+    <div class="small" id="installHint" style="margin-top:10px"></div>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Backup de segurança</h3>
+    <div class="small" style="margin-bottom:10px">Use antes de remover a instalação antiga. O backup inclui registros, rascunhos, medidas, revisões e configurações locais.</div>
+    <button class="btn full" id="exportBackupBtn">⬇️ Exportar backup</button>
+    <button class="btn secondary full" id="importBackupBtn" style="margin-top:8px">⬆️ Restaurar backup</button>
+    <input id="importBackupFile" type="file" accept="application/json,.json" style="display:none">
+    <div class="small" id="backupHint" style="margin-top:8px"></div>
   </div>
 <div class="card notice"><b>Rotina com recém-nascida ainda não ativa.</b><div class="small">Ela só será aplicada quando você me avisar que sua filha nasceu. Até lá, o Atlas usa sua rotina atual.</div></div><div class="card"><h3 style="margin-top:0">Sua rotina-base</h3><ul>
   <li>Trabalho: 08h–17h, segunda a sexta.</li>
@@ -400,9 +409,135 @@ renderWeek=function(){
 
 renderToday();renderWeek();renderHistory();renderRoutine();renderReview();renderAdaptiveHome();maybeRunReview();
 </script>
-\n<script>\nlet deferredPrompt = null;\nconst installBtn = document.getElementById('installAppBtn');\nconst installHint = document.getElementById('installHint');\n\nwindow.addEventListener('beforeinstallprompt', (e) => {\n  e.preventDefault();\n  deferredPrompt = e;\n  if (installBtn) installBtn.style.display = 'block';\n  if (installHint) installHint.textContent = 'Pronto para instalar.';\n});\n\nif (installBtn) {\n  installBtn.addEventListener('click', async () => {\n    if (deferredPrompt) {\n      deferredPrompt.prompt();\n      await deferredPrompt.userChoice;\n      deferredPrompt = null;\n    } else {\n      installHint.textContent = 'Se o botão do navegador não aparecer, abra o menu ⋮ e escolha “Adicionar à tela inicial” ou “Instalar app”.';\n    }\n  });\n}\n\nwindow.addEventListener('appinstalled', () => {\n  if (installHint) installHint.textContent = 'Atlas instalado com sucesso.';\n});\n\nif ('serviceWorker' in navigator) {\n  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));\n}\n</script>\n
+\n<script>\nlet deferredPrompt = null;
+const installBtn = document.getElementById('installAppBtn');
+const installHint = document.getElementById('installHint');
+const installState = document.getElementById('installState');
+const checkInstallBtn = document.getElementById('checkInstallBtn');
+
+function isStandaloneAtlas(){
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+function isAndroidChrome(){
+  return /Android/i.test(navigator.userAgent) && /Chrome/i.test(navigator.userAgent);
+}
+function refreshInstallUI(){
+  if(!installBtn) return;
+  if(isStandaloneAtlas()){
+    installState.textContent='Este site está aberto em modo aplicativo.';
+    installBtn.disabled=true;
+    installBtn.textContent='✓ Aplicativo já aberto';
+    installHint.textContent='Se o ícone na tela inicial ainda estiver como “Treino Kayque”, essa é a instalação antiga. Faça um backup abaixo, remova somente o app antigo e depois abra o site pelo Chrome para instalar o Atlas.';
+    return;
+  }
+  if(deferredPrompt){
+    installState.textContent='Atlas está pronto para ser instalado.';
+    installBtn.disabled=false;
+    installBtn.textContent='📲 Instalar Atlas';
+    installHint.textContent='Toque em “Instalar Atlas” e confirme a janela do Chrome.';
+  }else{
+    installState.textContent='O Chrome ainda não liberou o pedido de instalação.';
+    installBtn.disabled=false;
+    installBtn.textContent='📲 Como instalar Atlas';
+    installHint.textContent=isAndroidChrome()
+      ? 'Como existe uma instalação antiga “Treino Kayque”, o Chrome pode bloquear um novo prompt. Faça o backup abaixo, desinstale somente o app antigo e reabra este endereço no Chrome.'
+      : 'Abra esta página no Chrome e use o menu do navegador → Instalar app / Adicionar à tela inicial.';
+  }
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  refreshInstallUI();
+});
+
+if (installBtn) {
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installHint.textContent = choice.outcome === 'accepted'
+        ? 'Instalação aceita. Aguarde o Chrome concluir.'
+        : 'Instalação cancelada. Você pode tentar novamente depois.';
+      refreshInstallUI();
+    } else {
+      refreshInstallUI();
+      alert('O Chrome não liberou o prompt de instalação. Se “Treino Kayque” ainda estiver instalado, faça um backup no bloco abaixo, remova essa instalação antiga e volte a abrir o Atlas pelo Chrome.');
+    }
+  });
+}
+
+if(checkInstallBtn){
+  checkInstallBtn.addEventListener('click', async ()=>{
+    installState.textContent='Verificando…';
+    try{
+      if('serviceWorker' in navigator){
+        const reg=await navigator.serviceWorker.ready;
+        await reg.update();
+      }
+      await fetch('./atlas-v241.webmanifest?t='+Date.now(),{cache:'no-store'});
+    }catch(e){}
+    setTimeout(refreshInstallUI,300);
+  });
+}
+
+window.addEventListener('appinstalled', () => {
+  if (installHint) installHint.textContent = 'Atlas instalado com sucesso.';
+  if (installState) installState.textContent = 'Instalação concluída.';
+  refreshInstallUI();
+});
+window.addEventListener('load',refreshInstallUI);
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+}
+
+// Backup e restauração
+const exportBackupBtn=document.getElementById('exportBackupBtn');
+const importBackupBtn=document.getElementById('importBackupBtn');
+const importBackupFile=document.getElementById('importBackupFile');
+const backupHint=document.getElementById('backupHint');
+
+if(exportBackupBtn){
+  exportBackupBtn.addEventListener('click',()=>{
+    const payload={
+      app:'Atlas',
+      schema:1,
+      exportedAt:new Date().toISOString(),
+      atlasData:storage()
+    };
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='atlas-backup-'+new Date().toISOString().slice(0,10)+'.json';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    if(backupHint)backupHint.textContent='Backup exportado. Guarde esse arquivo até confirmar que o Atlas novo está funcionando.';
+  });
+}
+if(importBackupBtn && importBackupFile){
+  importBackupBtn.addEventListener('click',()=>importBackupFile.click());
+  importBackupFile.addEventListener('change',async()=>{
+    const file=importBackupFile.files?.[0]; if(!file)return;
+    try{
+      const parsed=JSON.parse(await file.text());
+      const data=parsed?.atlasData || parsed;
+      if(!data || typeof data!=='object' || !data.days) throw new Error('Formato inválido');
+      if(!confirm('Restaurar este backup? Os dados locais atuais serão substituídos pelo conteúdo do arquivo.'))return;
+      saveStorage(data);
+      if(backupHint)backupHint.textContent='Backup restaurado com sucesso.';
+      alert('Backup restaurado. O Atlas será recarregado.');
+      location.reload();
+    }catch(e){
+      if(backupHint)backupHint.textContent='Não foi possível restaurar: arquivo inválido.';
+    }
+  });
+}
+</script>\n
 <script>
-const ATLAS_VERSION = "2.4.1";
+const ATLAS_VERSION = "2.4.2";
 let atlasSwRegistration = null;
 let atlasRefreshing = false;
 const atlasUpdateToast = document.getElementById('updateToast');
