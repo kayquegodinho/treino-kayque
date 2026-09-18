@@ -1,1 +1,1 @@
-{"version":"2.4.1","released":"2026-09-18","notes":"Força nova identidade PWA Atlas com manifesto, ID e ícones versionados para evitar cache do antigo Treino Kayque Premium."}
+{"version":"2.4.2","released":"2026-09-18","notes":"Adiciona diagnóstico de instalação, orientações para substituir o PWA antigo e backup/restauração local dos dados."}
