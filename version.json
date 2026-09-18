@@ -1,1 +1,1 @@
-{"version":"3.0.3","released":"2026-09-18","notes":"Reconhece o APK Android e oculta os controles de instalação PWA dentro do aplicativo nativo."}
+{"version":"3.1.0","released":"2026-09-18","notes":"Corrige responsividade, sobreposição com barras do Android, espaçamento do cabeçalho, campos e navegação inferior."}

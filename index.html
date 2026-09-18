@@ -38,7 +38,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 .brand-meta{display:flex;align-items:center;gap:8px}
 
 
-/* Atlas v3.0.3 — identidade monocromática */
+/* Atlas v3.1.0 — identidade monocromática */
 :root{--bg:#050505;--card:#101010;--card2:#18181b;--text:#fafafa;--muted:#a1a1aa;--accent:#f4f4f5;--blue:#d4d4d8;--warn:#a3a3a3;--danger:#737373;--line:#2a2a2e}
 body{background:#050505;color:var(--text)}
 header{background:rgba(5,5,5,.96);border-bottom:1px solid #18181b}
@@ -69,6 +69,45 @@ input,select,textarea{background:#09090b;color:#fafafa;border-color:#3f3f46}
 .copybox{background:#09090b;border-color:#3f3f46;color:#e4e4e7}
 .brand-mark rect{fill:#050505}.brand-mark path:first-of-type{fill:#fff}
 
+
+/* Atlas v3.1.0 — responsividade e áreas seguras */
+html,body{width:100%;min-height:100%;overflow-x:hidden}
+body{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.app{width:100%;max-width:820px;margin:0 auto;padding:12px 12px 104px}
+header{top:0;padding:8px 0 10px;margin:0}
+.brand{min-height:48px;gap:9px;margin-bottom:7px}
+.brand-mark{width:36px;height:36px;flex-basis:36px}
+.brand-meta{flex-wrap:wrap;row-gap:4px;column-gap:8px}
+.brand-name{font-size:22px;letter-spacing:.13em}
+.version-pill{margin-left:0}
+.tabs{gap:8px;padding:8px 0 5px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;min-height:44px;padding:10px 16px;font-size:15px;scroll-snap-align:start}
+.card{overflow-wrap:anywhere}
+input,select,textarea{font-size:16px;min-height:50px;padding:12px}
+textarea{min-height:96px;resize:vertical}
+.bottomnav{min-height:66px;align-items:stretch;padding:6px 2px 8px}
+.bottomnav button{min-width:0;max-width:none;padding:7px 2px;font-size:10.5px;line-height:1.18;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.update-toast{bottom:82px}
+@media(max-width:560px){
+  .app{padding:10px 10px 100px}
+  header{padding-top:6px}
+  .brand{min-height:46px}
+  .brand-name{font-size:21px}
+  .brand-mark{width:34px;height:34px;flex-basis:34px}
+  .version-pill{font-size:10px;padding:3px 6px}
+  .tab{padding:10px 15px;font-size:14.5px}
+  .card{padding:15px;border-radius:16px}
+  .bottomnav{min-height:64px}
+  .bottomnav button{font-size:10px}
+}
+@media(max-width:380px){
+  .app{padding-left:8px;padding-right:8px}
+  .brand-name{font-size:20px}
+  .tab{padding:9px 13px;font-size:14px}
+  .bottomnav button{font-size:9.5px;padding-left:1px;padding-right:1px}
+}
+
 </style>
 
 <link rel="manifest" href="./manifest-v301.webmanifest?v=302">
@@ -80,7 +119,7 @@ input,select,textarea{background:#09090b;color:#fafafa;border-color:#3f3f46}
 </head>
 <body>
 <div class="app">
-<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v3.0.3</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
+<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v3.1.0</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
 <section id="home" class="active">
 <div class="card hero"><div class="small">Treino de hoje</div><h2 id="todayTitle" style="margin:4px 0 6px"></h2><div id="todayObjective" class="subtitle"></div><div class="row" style="margin-top:12px"><span class="badge green">Joelho</span><span class="badge blue">Hipertrofia</span><span class="badge yellow">Virilha/Core</span></div></div>
 <div class="card"><div class="grid2"><div><label>Como foi seu sono?</label><select id="sleepMode"><option value="normal">🟢 Razoável / bom</option><option value="tired">🟡 Noite ruim / cansado</option><option value="exhausted">🔴 Exausto</option></select></div><div><label>Dor geral hoje (0–10)</label><input id="dailyPain" type="number" min="0" max="10" value="0"></div></div><p class="small" id="sleepAdvice"></p></div>
@@ -540,7 +579,7 @@ if(importBackupBtn && importBackupFile){
 }
 </script>\n
 <script>
-const ATLAS_VERSION = "3.0.3";
+const ATLAS_VERSION = "3.1.0";
 let atlasSwRegistration = null;
 let atlasRefreshing = false;
 const atlasUpdateToast = document.getElementById('updateToast');
