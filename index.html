@@ -1,18 +1,585 @@
-<!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050505"><title>Atlas</title>
-<style>body{margin:0;background:#050505;color:#fff;font-family:system-ui;display:grid;place-items:center;min-height:100vh}.box{text-align:center;padding:28px}.a{font-size:42px;font-weight:900;letter-spacing:.16em}.s{color:#aaa;margin-top:10px}</style></head>
-<body><div class="box"><div class="a">ATLAS</div><div class="s">Preparando a nova instalação…</div></div>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<meta name="application-name" content="Atlas">
+<meta name="apple-mobile-web-app-title" content="Atlas">
+<title>Atlas</title>
+<style>
+:root{--bg:#0b1020;--card:#121a2d;--card2:#18223a;--text:#f8fafc;--muted:#9ca3af;--accent:#22c55e;--blue:#38bdf8;--warn:#f59e0b;--danger:#ef4444;--line:#26334f}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#08111f,#0b1020 30%,#0b1020);color:var(--text)}
+.app{max-width:820px;margin:auto;padding:14px 14px 90px} header{position:sticky;top:0;z-index:10;background:rgba(11,16,32,.94);backdrop-filter:blur(10px);padding:10px 0 12px}
+h1{font-size:22px;margin:0 0 4px}.subtitle{color:var(--muted);font-size:13px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.hero{background:linear-gradient(135deg,#172554,#0f172a 50%,#052e16)}.row{display:flex;gap:10px;flex-wrap:wrap}.metric{flex:1;min-width:130px;background:var(--card2);border-radius:14px;padding:12px}.metric b{display:block;font-size:22px;margin-top:3px}.small{font-size:12px;color:var(--muted)}
+.tabs{display:flex;gap:8px;overflow:auto;padding:6px 0 2px}.tab{white-space:nowrap;border:1px solid var(--line);background:#0f172a;color:var(--text);padding:10px 13px;border-radius:999px;cursor:pointer}.tab.active{background:var(--accent);color:#07120a;border-color:var(--accent);font-weight:700}
+section{display:none}section.active{display:block}.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:700;cursor:pointer;background:var(--accent);color:#06220f}.btn.secondary{background:#24314e;color:var(--text)}.btn.warn{background:var(--warn);color:#241500}.btn.danger{background:var(--danger);color:white}.btn.full{width:100%}
+.day-card{border-left:4px solid var(--blue)}.exercise{background:#0f172a;border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}.exercise.done{opacity:.62;border-color:#1f7a46}.exercise h4{margin:0 0 6px;font-size:15px}.meta{color:var(--muted);font-size:13px;margin-bottom:9px}
+.exercise-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}input,select,textarea{width:100%;background:#0b1326;color:var(--text);border:1px solid #31405e;border-radius:10px;padding:9px}label{font-size:11px;color:var(--muted);display:block;margin-bottom:4px}.checkline{display:flex;align-items:center;gap:8px;margin-top:10px}.checkline input{width:auto}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;margin-right:5px}.green{background:#143d25;color:#86efac}.yellow{background:#4b350c;color:#fde68a}.red{background:#4c1515;color:#fecaca}.blue{background:#103349;color:#bae6fd}.progress{height:10px;background:#1c2944;border-radius:99px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,var(--accent),var(--blue));width:0}.notice{border-left:4px solid var(--warn);background:#2b210c;padding:12px;border-radius:12px;color:#fde7aa}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px solid var(--line);padding:9px;text-align:left}th{color:#cbd5e1}.bottomnav{position:fixed;bottom:0;left:0;right:0;background:rgba(9,14,28,.97);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:20}.bottomnav button{flex:1;max-width:170px;background:none;border:0;color:#cbd5e1;padding:12px 6px;font-size:12px}.bottomnav button.active{color:#86efac;font-weight:800}hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+@media(max-width:560px){.exercise-grid,.grid2{grid-template-columns:1fr}.app{padding-left:10px;padding-right:10px}.metric{min-width:46%}}
+
+.update-toast{position:fixed;left:12px;right:12px;bottom:72px;z-index:50;max-width:796px;margin:auto;background:#172554;border:1px solid #3b82f6;border-radius:14px;padding:12px;box-shadow:0 10px 30px rgba(0,0,0,.35);display:none;align-items:center;gap:10px}.update-toast.show{display:flex}.update-toast .msg{flex:1;font-size:13px}.version-pill{display:inline-block;font-size:11px;padding:3px 7px;border-radius:999px;background:#0f2f1f;color:#86efac;margin-left:6px}
+
+.routine-line{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.routine-line:last-child{border-bottom:0}.routine-time{font-weight:800;color:#bae6fd}
+.adaptive-banner{border-left:4px solid var(--accent);background:#10281d;padding:12px;border-radius:12px;margin:12px 0}
+.review-good{border-left-color:var(--accent)}.review-watch{border-left-color:var(--warn);background:#2b210c}.review-recovery{border-left-color:var(--danger);background:#351616}
+.review-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.review-stat{background:var(--card2);padding:10px;border-radius:12px}
+.copybox{white-space:pre-wrap;background:#0b1326;border:1px solid #31405e;border-radius:12px;padding:10px;font-size:12px;color:#dbeafe}
+@media(max-width:560px){.routine-line{grid-template-columns:80px 1fr}.review-grid{grid-template-columns:1fr 1fr}}
+
+
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.brand-mark{width:34px;height:34px;flex:0 0 34px}
+.brand-name{font-size:24px;font-weight:900;letter-spacing:.14em;line-height:1}
+.brand-meta{display:flex;align-items:center;gap:8px}
+
+
+/* Atlas v3.0.1 — identidade monocromática */
+:root{--bg:#050505;--card:#101010;--card2:#18181b;--text:#fafafa;--muted:#a1a1aa;--accent:#f4f4f5;--blue:#d4d4d8;--warn:#a3a3a3;--danger:#737373;--line:#2a2a2e}
+body{background:#050505;color:var(--text)}
+header{background:rgba(5,5,5,.96);border-bottom:1px solid #18181b}
+.card{background:#101010;border-color:#27272a;box-shadow:0 8px 24px rgba(0,0,0,.28)}
+.hero{background:linear-gradient(145deg,#171717,#0a0a0a 68%,#202020)}
+.metric,.review-stat{background:#18181b}
+.tab{background:#111113;border-color:#303036;color:#d4d4d8}
+.tab.active{background:#f4f4f5;color:#050505;border-color:#f4f4f5}
+.btn{background:#f4f4f5;color:#050505}
+.btn.secondary{background:#27272a;color:#fafafa;border:1px solid #3f3f46}
+.btn.warn{background:#a3a3a3;color:#050505}
+.btn.danger{background:#3f3f46;color:#fff;border:1px solid #71717a}
+.day-card{border-left-color:#d4d4d8}
+.exercise{background:#0b0b0c;border-color:#27272a}
+.exercise.done{opacity:.72;border-color:#737373}
+input,select,textarea{background:#09090b;color:#fafafa;border-color:#3f3f46}
+.green,.yellow,.red,.blue{background:#1c1c1f;color:#e4e4e7;border:1px solid #3f3f46}
+.progress{background:#27272a}
+.progress>div{background:linear-gradient(90deg,#a1a1aa,#fafafa)}
+.notice{border-left-color:#a3a3a3;background:#171717;color:#e5e5e5}
+.bottomnav{background:rgba(5,5,5,.98);border-top-color:#27272a}
+.bottomnav button{color:#a1a1aa}
+.bottomnav button.active{color:#fff}
+.update-toast{background:#111;border-color:#71717a}
+.version-pill{background:#27272a;color:#e4e4e7;border:1px solid #3f3f46}
+.routine-time{color:#f4f4f5}
+.adaptive-banner,.review-good,.review-watch,.review-recovery{border-left-color:#a3a3a3;background:#171717}
+.copybox{background:#09090b;border-color:#3f3f46;color:#e4e4e7}
+.brand-mark rect{fill:#050505}.brand-mark path:first-of-type{fill:#fff}
+
+</style>
+
+<link rel="manifest" href="./manifest-v301.webmanifest?v=301">
+<link rel="icon" href="./assets/icons/icon-atlas-v301-192.png?v=301" type="image/png">
+<link rel="apple-touch-icon" href="./assets/icons/icon-atlas-v301-192.png?v=301">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+<div class="app">
+<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v3.0.1</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
+<section id="home" class="active">
+<div class="card hero"><div class="small">Treino de hoje</div><h2 id="todayTitle" style="margin:4px 0 6px"></h2><div id="todayObjective" class="subtitle"></div><div class="row" style="margin-top:12px"><span class="badge green">Joelho</span><span class="badge blue">Hipertrofia</span><span class="badge yellow">Virilha/Core</span></div></div>
+<div class="card"><div class="grid2"><div><label>Como foi seu sono?</label><select id="sleepMode"><option value="normal">🟢 Razoável / bom</option><option value="tired">🟡 Noite ruim / cansado</option><option value="exhausted">🔴 Exausto</option></select></div><div><label>Dor geral hoje (0–10)</label><input id="dailyPain" type="number" min="0" max="10" value="0"></div></div><p class="small" id="sleepAdvice"></p></div>
+<div id="adaptiveHome"></div><div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><div><b>Progresso do treino</b><div class="small" id="progressText"></div></div><button class="btn secondary" id="resetToday">Limpar hoje</button></div><div class="progress" style="margin-top:10px"><div id="progressBar"></div></div></div>
+<div id="todayWorkout"></div>
+<div class="card">
+  <h3 style="margin-top:0">🚶 Atividade fora do treino</h3>
+  <div class="small" style="margin-bottom:10px">Use para deslocamentos a pé, bike, futebol casual ou qualquer atividade que não faça parte do treino planejado.</div>
+  <div class="grid2">
+    <div><label>Atividade</label>
+      <select id="extraActivityType">
+        <option value="">Nenhuma / não preencher</option>
+        <option value="Caminhada">Caminhada</option>
+        <option value="Bicicleta">Bicicleta</option>
+        <option value="Futebol">Futebol</option>
+        <option value="Outro">Outro</option>
+      </select>
+    </div>
+    <div><label>Intensidade percebida</label>
+      <select id="extraActivityIntensity">
+        <option value="">—</option>
+        <option value="Leve">Leve</option>
+        <option value="Moderada">Moderada</option>
+        <option value="Intensa">Intensa</option>
+      </select>
+    </div>
+    <div><label>Distância total (km)</label><input id="extraActivityKm" type="number" min="0" step="0.1" placeholder="Ex.: 3,2"></div>
+    <div><label>Tempo total (min)</label><input id="extraActivityMin" type="number" min="0" step="1" placeholder="Ex.: 46"></div>
+    <div><label>Nº de blocos / deslocamentos</label><input id="extraActivityBouts" type="number" min="1" step="1" placeholder="Ex.: 4"></div>
+    <div><label>Esforço (0–10)</label><input id="extraActivityRpe" type="number" min="0" max="10" step="1" placeholder="Opcional"></div>
+  </div>
+  <label style="margin-top:10px">Observações</label>
+  <textarea id="extraActivityNotes" rows="2" placeholder="Ex.: ida e volta do trabalho + almoço em casa, 4 caminhadas de 800 m."></textarea>
+  <div class="small" style="margin-top:8px">Isso conta como atividade física acumulada. Em dias sem treino obrigatório pode cumprir o objetivo de movimento; em dias A/B/C não substitui a musculação.</div>
+</div><div class="card">
+  <h3 style="margin-top:0">🍽️ Alimentação de hoje</h3>
+  <div class="small" style="margin-bottom:10px">Registre o que realmente comeu. Não precisa pesar ou calcular calorias; detalhes simples já ajudam na revisão quinzenal.</div>
+  <label>Café da manhã</label>
+  <textarea id="breakfastFood" rows="2" placeholder="Ex.: café com leite, 2 ovos, pão, fruta..."></textarea>
+  <label style="margin-top:10px">Almoço</label>
+  <textarea id="lunchFood" rows="2" placeholder="Ex.: arroz, feijão, frango, salada..."></textarea>
+  <label style="margin-top:10px">Jantar</label>
+  <textarea id="dinnerFood" rows="2" placeholder="Ex.: omelete, arroz, carne, legumes..."></textarea>
+  <div class="grid2" style="margin-top:10px">
+    <div><label>Fome ao longo do dia (0–10)</label><input id="hungerDay" type="number" min="0" max="10"></div>
+    <div><label>Qualidade da alimentação hoje (0–10)</label><input id="foodQuality" type="number" min="0" max="10"></div>
+  </div>
+</div><div class="card"><h3 style="margin-top:0">Check-out</h3><div class="grid2"><div><label>Dor joelho pós-treino</label><input id="kneePost" type="number" min="0" max="10"></div><div><label>Dor virilha pós-treino</label><input id="groinPost" type="number" min="0" max="10"></div><div><label>Energia (0–10)</label><input id="energyPost" type="number" min="0" max="10"></div><div><label>Confiança perna esquerda (0–10)</label><input id="leftConfidence" type="number" min="0" max="10"></div></div><label style="margin-top:10px">Observações</label><textarea id="dailyNotes" rows="3" placeholder="Ex.: extensora confortável, virilha 2/10..."></textarea><div id="draftStatus" class="small" style="margin-top:10px">Sem alterações pendentes.</div><button class="btn full" id="saveDay" style="margin-top:8px">✅ Salvar e finalizar o dia</button><div class="small" style="margin-top:6px">Os rascunhos ficam apenas neste aparelho e não entram na revisão de 14 dias até você finalizar o dia.</div></div>
+</section>
+<section id="week"><div class="card"><h3 style="margin-top:0">Rotina semanal</h3><div class="small">A semana começa no domingo. Trabalho 08h–17h; treino de academia só depois do expediente. Pela manhã, no máximo atividades leves em casa.</div></div><div id="weekCards"></div></section>
+
+<section id="routine">
+  <div class="card hero">
+    <div class="small">Rotina realista</div>
+    <h2 style="margin:4px 0 6px">Trabalho, treino, idiomas, lazer e recuperação</h2>
+    <div class="subtitle">Trabalho 08h–17h • almoço flexível • academia após o expediente • Duolingo 15 min/dia • LoL em janela noturna.</div>
+  </div>
+  <div class="card">
+    <div class="grid2">
+      <div><label>Almoço de hoje</label>
+        <select id="lunchSlot">
+          <option value="12-13">12h–13h</option>
+          <option value="13-14">13h–14h</option>
+        </select>
+      </div>
+      <div><label>League of Legends</label>
+        <select id="lolGoal">
+          <option value="2">2 partidas</option>
+          <option value="3">2–3 partidas</option>
+        </select>
+      </div>
+    </div>
+    <div class="small" style="margin-top:10px">O almoço continua sendo almoço. Duolingo entra em 15 minutos da janela ou, se o dia apertar, depois do jantar. LoL é hobby planejado, não obrigação.</div>
+  </div>
+  <div id="routineCards"></div>
+</section>
+
+<section id="review">
+  <div class="card hero">
+    <div class="small">Revisão adaptativa</div>
+    <h2 style="margin:4px 0 6px">Avaliação a cada 14 dias</h2>
+    <div class="subtitle">O Atlas usa somente os dias que você finalizou e considera treino planejado, alimentação e atividade física fora do treino. Rascunhos não entram na análise até você tocar em “Salvar e finalizar o dia”.</div>
+  </div>
+  <div id="reviewStatus"></div>
+  <div class="card">
+    <button class="btn full" id="runReviewNow">Analisar últimos 14 dias agora</button>
+    <button class="btn secondary full" id="copyReview" style="margin-top:8px">Copiar resumo para enviar ao Atlas no ChatGPT</button>
+    <div class="small" style="margin-top:8px">A revisão automática local ocorre no fim do sábado a cada 14 dias; se o app estiver fechado, ela roda na próxima abertura. O app registra suas refeições, mas a interpretação nutricional detalhada do texto é feita quando você usa “Copiar resumo” e me envia no ChatGPT.</div>
+  </div>
+  <div class="card"><h3 style="margin-top:0">Histórico de revisões</h3><div id="reviewHistory"></div></div>
+</section>
+
+<section id="progress"><div class="card"><h3 style="margin-top:0">Evolução</h3><div class="grid2"><div><label>Peso corporal (kg)</label><input id="bodyWeight" type="number" step="0.1"></div><div><label>Coxa esquerda (cm)</label><input id="leftThigh" type="number" step="0.1"></div><div><label>Coxa direita (cm)</label><input id="rightThigh" type="number" step="0.1"></div><div><label>Cintura (cm)</label><input id="waist" type="number" step="0.1"></div></div><button class="btn full" id="saveMeasures" style="margin-top:10px">Registrar medidas</button></div><div class="card"><h3 style="margin-top:0">Últimos registros</h3><div id="history"></div></div><div class="card notice"><b>Sinais para não “forçar por cima”:</b><br>dor crescente, dor ≥5/10, piora persistente por mais de 24h, inchaço do joelho, ou dor na virilha ao tossir acompanhada de caroço/inchaço. Nesses casos, priorize avaliação presencial.</div></section>
+<section id="settings">
+  <div class="card" id="installCard">
+    <h3 style="margin-top:0">Instalar Atlas</h3>
+    <div class="small" id="installState" style="margin-bottom:10px">Verificando o estado de instalação…</div>
+    <button class="btn full" id="installAppBtn">📲 Instalar Atlas</button>
+    <button class="btn secondary full" id="checkInstallBtn" style="margin-top:8px">🔄 Verificar instalação</button>
+    <div class="small" id="installHint" style="margin-top:10px"></div>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Backup de segurança</h3>
+    <div class="small" style="margin-bottom:10px">Use antes de remover a instalação antiga. O backup inclui registros, rascunhos, medidas, revisões e configurações locais.</div>
+    <button class="btn full" id="exportBackupBtn">⬇️ Exportar backup</button>
+    <button class="btn secondary full" id="importBackupBtn" style="margin-top:8px">⬆️ Restaurar backup</button>
+    <input id="importBackupFile" type="file" accept="application/json,.json" style="display:none">
+    <div class="small" id="backupHint" style="margin-top:8px"></div>
+  </div>
+<div class="card notice"><b>Rotina com recém-nascida ainda não ativa.</b><div class="small">Ela só será aplicada quando você me avisar que sua filha nasceu. Até lá, o Atlas usa sua rotina atual.</div></div><div class="card"><h3 style="margin-top:0">Sua rotina-base</h3><ul>
+  <li>Trabalho: 08h–17h, segunda a sexta.</li>
+  <li>Almoço: 12h–13h ou 13h–14h, conforme a intensidade do dia.</li>
+  <li>Academia: depois das 17h; sábado à tarde, terminando antes das 17h.</li>
+  <li>Manhã: nenhuma sessão pesada; somente caminhada/mobilidade leve em casa, quando fizer sentido.</li>
+  <li>Duolingo: mínimo de 15 minutos todos os dias.</li>
+  <li>League of Legends: 2 partidas como base; 3ª somente quando não sacrificar sono, treino ou tempo com a família.</li>
+  </ul></div><div class="card"><h3 style="margin-top:0">Regras do Atlas</h3><ul><li>Perna esquerda começa primeiro nos exercícios unilaterais.</li><li>Volume extra pequeno para a esquerda; não dobrar o treino.</li><li>Dor até 2–3/10 pode ser aceitável se não aumentar e normalizar depois.</li><li>Se estiver muito cansado ou tiver dormido mal: reduza 1 série por exercício.</li><li>Se estiver exausto: troque treino pesado por caminhada + mobilidade.</li><li>Se perder um treino de academia, continue a sequência A → B → C; não faça dois treinos pesados no mesmo dia.</li></ul></div><div class="card"><h3 style="margin-top:0">Ciclo de 12 semanas</h3><table><tr><th>Fase</th><th>Foco</th></tr><tr><td>Semanas 1–4</td><td>Reentrada, tolerância do joelho/virilha, técnica.</td></tr><tr><td>Semanas 5–8</td><td>Hipertrofia e força, principalmente quadríceps esquerdo.</td></tr><tr><td>Semanas 9–12</td><td>Força unilateral, estabilidade e preparação para voltar ao futebol.</td></tr></table></div><div class="card"><button class="btn danger full" id="clearAll">Apagar todos os dados salvos</button></div></section>
+</div>
+<div class="update-toast" id="updateToast"><div class="msg"><b>Nova versão disponível</b><div class="small">O Atlas será atualizado sem apagar seus registros.</div></div><button class="btn" id="applyUpdate">Atualizar</button></div>
+<nav class="bottomnav"><button data-nav="home" class="active">🏠 Hoje</button><button data-nav="week">📅 Semana</button><button data-nav="routine">🕒 Rotina</button><button data-nav="progress">📈 Evolução</button><button data-nav="review">🔄 14d</button><button data-nav="settings">⚙️ Ajustes</button></nav>
 <script>
-(async()=>{
- try{
-   if('serviceWorker' in navigator){
-     const regs=await navigator.serviceWorker.getRegistrations();
-     await Promise.all(regs.filter(r=>r.scope.endsWith('/treino-kayque/')).map(r=>r.unregister()));
-   }
-   if('caches' in window){
-     for(const k of await caches.keys()) if(k.startsWith('atlas-')&&!k.startsWith('atlas-app-')) await caches.delete(k);
-   }
- }catch(e){}
- location.replace('./atlas/?v=300');
-})();
-</script></body></html>
+const days={
+0:{name:"Domingo",title:"Recuperação + Reabilitação",objective:"Recuperar, manter mobilidade e fortalecer core/virilha sem academia.",exercises:[["Caminhada","20–30 min","Ritmo confortável. Pode dividir em 2×10 min."],["Cat-Camel","2×10","Movimento controlado."],["Mobilidade de quadril","2×10/lado","Sem forçar amplitude."],["Mobilidade de tornozelo","2×10/lado","Controle e conforto."],["Flexor do quadril","2×30s/lado","Alongamento leve."],["Adução isométrica","4×20–30s","50–60% da força; bola/almofada entre os joelhos."],["Dead Bug","3×8/lado","Lombar estável."],["Prancha lateral","2×20–30s/lado","Sem provocar a virilha."],["Bird Dog","2×8/lado","Segure 2–3s."]]},
+1:{name:"Segunda",title:"Academia A — Quadríceps + Joelho",objective:"Principal estímulo de quadríceps, coxa esquerda e full body.",exercises:[["Bicicleta","5–7 min","Aquecimento leve."],["Agachamento sem peso","1×10","Amplitude confortável."],["Step-up baixo","1×10/lado","Ativação."],["Extensora leve","1×15","Somente aquecimento."],["Leg Press unilateral","E 4×10 • D 3×10","Comece por ~10–12,5 kg ou RIR 3–4. Descida 3s."],["Step-up","E 4×10 • D 3×10","Peso corporal. Descida 3s."],["Stiff","3×10","Referência inicial ~20 kg. Controle."],["Extensora unilateral","2×12/lado","~8–10 kg ou carga confortável. 1s no topo, 3s descida."],["Adutora","2×15","~20–25 kg. Sem explosão."],["Supino máquina","3×10–12","Referência ~20 kg."],["Puxador frente","3×10–12","Referência ~25–30 kg."],["Pallof Press","3×10/lado","1–2s com braços estendidos."],["Cardio final","10 min","Bike/caminhada leve, se estiver bem."]]},
+2:{name:"Terça",title:"Cardio + Virilha + Core",objective:"Ajudar na perda de gordura, capacidade aeróbica e fortalecimento da virilha/core.",exercises:[["Cardio leve","25–35 min","Bike, elíptico ou caminhada inclinada. Sem HIIT/corrida."],["Adução isométrica","4×30s","Força moderada."],["Adução leve máquina/polia","2×12","Somente se dor ≤3/10."],["Dead Bug","3×10","Controle."],["Prancha lateral","3×20–30s","Sem provocar virilha."],["Pallof Press","3×10/lado","Controle da pelve/tronco."]]},
+3:{name:"Quarta",title:"Academia B — Posterior + Full Body",objective:"Posteriores, glúteos, tronco e manutenção do trabalho do joelho.",exercises:[["Bicicleta","5–7 min","Aquecimento."],["Agachamento Smith","3×8–10","Amplitude confortável. 3s descida."],["Mesa/Cadeira flexora","3×10–12","Controle."],["Hip Thrust","3×10–12","Segure 2s no topo."],["Abdutora","3×15","Carga moderada."],["Extensora unilateral","2×15","Carga leve/moderada."],["Supino inclinado/máquina","3×10","Controle."],["Remada máquina","3×10–12","Controle."],["Desenvolvimento máquina","2×10–12","Referência ~20 kg na volta."],["Elevação lateral","2×12–15","Leve/moderado."],["Prancha","3×30–40s","Respiração normal."]]},
+4:{name:"Quinta",title:"Recuperação Ativa",objective:"Reduzir fadiga, manter mobilidade e preparar para sábado.",exercises:[["Caminhada","20–30 min","Leve."],["Mobilidade quadril","2×10/lado","Confortável."],["Mobilidade tornozelo","2×10/lado","Confortável."],["Cat-Camel","2×10","Controle."],["Alongamento leve","5–8 min","Quadríceps, posterior, panturrilha, flexor do quadril."],["Adução isométrica","3×20s","Somente se confortável."]]},
+5:{name:"Sexta",title:"Livre / Família",objective:"Dia propositalmente flexível para descanso e vida pessoal.",exercises:[["Descanso","Livre","Se estiver bem, caminhada leve opcional. Não precisa compensar."]]},
+6:{name:"Sábado",title:"Academia C — Hipertrofia de Pernas",objective:"Maior foco em hipertrofia das pernas e estímulo extra controlado para a coxa esquerda.",exercises:[["Bicicleta","5–7 min","Aquecimento."],["Leg Press unilateral","E 4×10 • D 3×10","Esquerda primeiro."],["Afundo com apoio","3×8/lado","Sem carga na 1ª semana. Priorize controle."],["Extensora unilateral","E 3×12 • D 2×12","Se dor >3/10, faça 2×12 em ambos."],["Flexora","3×10–12","Controle."],["Hip Thrust","3×10","Controle."],["Adutora","3×12–15","Carga confortável."],["Panturrilha","3×12–15","Pausa no topo."],["Supino máquina","2×12","Moderado."],["Puxador","2×12","Moderado."],["Dead Bug","3×10","Controle."],["Prancha lateral","2×30s/lado","Sem provocar virilha."]]}}
+const today=new Date(),dateKey=today.toISOString().slice(0,10),dow=today.getDay();
+function storage(){return JSON.parse(localStorage.getItem("atlasData")||'{"days":{},"drafts":{},"measures":[]}')}
+function saveStorage(d){localStorage.setItem("atlasData",JSON.stringify(d))}
+function getWorkingDay(){
+  const data=storage(),finalized=data.days?.[dateKey]||{},draft=data.drafts?.[dateKey]||{};
+  return {...finalized,...draft,exercises:{...(finalized.exercises||{}),...(draft.exercises||{})}};
+}
+function setDraftStatus(text){
+  const el=document.getElementById("draftStatus");
+  if(el)el.textContent=text;
+}
+function autosaveDraft(){
+  const data=storage();data.drafts=data.drafts||{};data.drafts[dateKey]=data.drafts[dateKey]||{};
+  Object.assign(data.drafts[dateKey],{
+    sleep:sleepMode.value,
+    dailyPain:dailyPain.value,
+    kneePost:kneePost.value,
+    groinPost:groinPost.value,
+    energyPost:energyPost.value,
+    leftConfidence:leftConfidence.value,
+    notes:dailyNotes.value,
+    breakfastFood:window.breakfastFood?breakfastFood.value:"",
+    lunchFood:window.lunchFood?lunchFood.value:"",
+    dinnerFood:window.dinnerFood?dinnerFood.value:"",
+    hungerDay:window.hungerDay?hungerDay.value:"",
+    foodQuality:window.foodQuality?foodQuality.value:"",
+    extraActivityType:window.extraActivityType?extraActivityType.value:"",
+    extraActivityIntensity:window.extraActivityIntensity?extraActivityIntensity.value:"",
+    extraActivityKm:window.extraActivityKm?extraActivityKm.value:"",
+    extraActivityMin:window.extraActivityMin?extraActivityMin.value:"",
+    extraActivityBouts:window.extraActivityBouts?extraActivityBouts.value:"",
+    extraActivityRpe:window.extraActivityRpe?extraActivityRpe.value:"",
+    extraActivityNotes:window.extraActivityNotes?extraActivityNotes.value:"",
+    draftUpdatedAt:new Date().toISOString()
+  });
+  saveStorage(data);
+  const tm=new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+  setDraftStatus("📝 Rascunho salvo automaticamente às "+tm+" • ainda não enviado.");
+}
+function showTab(id){document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));document.querySelectorAll(".bottomnav button").forEach(b=>b.classList.toggle("active",b.dataset.nav===id))}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));document.querySelectorAll(".bottomnav button").forEach(b=>b.onclick=()=>showTab(b.dataset.nav));
+function renderToday(){const d=days[dow];document.getElementById("todayLabel").textContent=`${d.name} • ${today.toLocaleDateString("pt-BR")}`;document.getElementById("todayTitle").textContent=d.title;document.getElementById("todayObjective").textContent=d.objective;const data=storage(),saved=getWorkingDay();sleepMode.value=saved.sleep||"normal";dailyPain.value=saved.dailyPain??0;kneePost.value=saved.kneePost??"";groinPost.value=saved.groinPost??"";energyPost.value=saved.energyPost??"";leftConfidence.value=saved.leftConfidence??"";dailyNotes.value=saved.notes??"";if(window.breakfastFood)breakfastFood.value=saved.breakfastFood??"";if(window.lunchFood)lunchFood.value=saved.lunchFood??"";if(window.dinnerFood)dinnerFood.value=saved.dinnerFood??"";if(window.hungerDay)hungerDay.value=saved.hungerDay??"";if(window.foodQuality)foodQuality.value=saved.foodQuality??"";if(window.extraActivityType)extraActivityType.value=saved.extraActivityType??"";if(window.extraActivityIntensity)extraActivityIntensity.value=saved.extraActivityIntensity??"";if(window.extraActivityKm)extraActivityKm.value=saved.extraActivityKm??"";if(window.extraActivityMin)extraActivityMin.value=saved.extraActivityMin??"";if(window.extraActivityBouts)extraActivityBouts.value=saved.extraActivityBouts??"";if(window.extraActivityRpe)extraActivityRpe.value=saved.extraActivityRpe??"";if(window.extraActivityNotes)extraActivityNotes.value=saved.extraActivityNotes??"";updateSleepAdvice();const wrap=document.getElementById("todayWorkout");wrap.innerHTML="";d.exercises.forEach((e,i)=>{const done=saved.exercises?.[i]?.done||false,ex=saved.exercises?.[i]||{},div=document.createElement("div");div.className="card exercise"+(done?" done":"");div.innerHTML=`<h4>${i+1}. ${e[0]}</h4><div class="meta"><b>${e[1]}</b> • ${e[2]}</div><div class="exercise-grid"><div><label>Carga</label><input data-i="${i}" data-f="load" value="${ex.load||""}" placeholder="kg"></div><div><label>Reps feitas</label><input data-i="${i}" data-f="reps" value="${ex.reps||""}" placeholder="ex.: 10,10,10"></div><div><label>Dor 0–10</label><input data-i="${i}" data-f="pain" type="number" min="0" max="10" value="${ex.pain??""}"></div></div><div class="checkline"><input type="checkbox" data-check="${i}" ${done?"checked":""}><span>Concluído</span></div>`;wrap.appendChild(div)});document.querySelectorAll("[data-check]").forEach(c=>c.onchange=saveExerciseState);document.querySelectorAll("[data-i]").forEach(inp=>{inp.onchange=saveExerciseState;inp.oninput=saveExerciseState});updateProgress();const hasDraft=Boolean(storage().drafts?.[dateKey]);setDraftStatus(hasDraft?"📝 Rascunho recuperado deste aparelho • ainda não enviado.":"Sem alterações pendentes.")}
+function saveExerciseState(){const data=storage();data.drafts=data.drafts||{};data.drafts[dateKey]=data.drafts[dateKey]||{};data.drafts[dateKey].exercises=data.drafts[dateKey].exercises||{};document.querySelectorAll(".exercise").forEach((div,i)=>{data.drafts[dateKey].exercises[i]=data.drafts[dateKey].exercises[i]||{};const ex=data.drafts[dateKey].exercises[i],chk=div.querySelector("[data-check]");ex.done=chk.checked;div.querySelectorAll("[data-i]").forEach(inp=>ex[inp.dataset.f]=inp.value);div.classList.toggle("done",chk.checked)});data.drafts[dateKey].draftUpdatedAt=new Date().toISOString();saveStorage(data);setDraftStatus("📝 Progresso do treino salvo como rascunho • ainda não enviado.");updateProgress()}
+function updateProgress(){const d=days[dow],ex=getWorkingDay().exercises||{},total=d.exercises.length,done=Object.values(ex).filter(x=>x.done).length,pct=Math.round(done/total*100);progressText.textContent=`${done}/${total} concluídos`;progressBar.style.width=pct+"%"}
+function updateSleepAdvice(){const v=sleepMode.value,t={normal:"Treino completo. Mantenha a margem de 3–4 repetições na reserva na reentrada.",tired:"Faça o treino, mas retire 1 série dos exercícios principais e não aumente carga hoje.",exhausted:"Troque treino pesado por caminhada leve + mobilidade. Priorize recuperação e família."};sleepAdvice.textContent=t[v]}sleepMode.onchange=()=>{updateSleepAdvice();autosaveDraft()};
+["dailyPain","kneePost","groinPost","energyPost","leftConfidence","dailyNotes","breakfastFood","lunchFood","dinnerFood","hungerDay","foodQuality","extraActivityType","extraActivityIntensity","extraActivityKm","extraActivityMin","extraActivityBouts","extraActivityRpe","extraActivityNotes"].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el){el.addEventListener("input",autosaveDraft);el.addEventListener("change",autosaveDraft);}
+});
+window.addEventListener("pagehide",()=>{try{autosaveDraft()}catch(e){}});
+saveDay.onclick=()=>{const data=storage(),working=getWorkingDay();data.days=data.days||{};data.days[dateKey]={...working,sleep:sleepMode.value,dailyPain:dailyPain.value,kneePost:kneePost.value,groinPost:groinPost.value,energyPost:energyPost.value,leftConfidence:leftConfidence.value,notes:dailyNotes.value,breakfastFood:window.breakfastFood?breakfastFood.value:"",lunchFood:window.lunchFood?lunchFood.value:"",dinnerFood:window.dinnerFood?dinnerFood.value:"",hungerDay:window.hungerDay?hungerDay.value:"",foodQuality:window.foodQuality?foodQuality.value:"",extraActivityType:window.extraActivityType?extraActivityType.value:"",extraActivityIntensity:window.extraActivityIntensity?extraActivityIntensity.value:"",extraActivityKm:window.extraActivityKm?extraActivityKm.value:"",extraActivityMin:window.extraActivityMin?extraActivityMin.value:"",extraActivityBouts:window.extraActivityBouts?extraActivityBouts.value:"",extraActivityRpe:window.extraActivityRpe?extraActivityRpe.value:"",extraActivityNotes:window.extraActivityNotes?extraActivityNotes.value:"",title:days[dow].title,submittedAt:new Date().toISOString()};if(data.drafts)delete data.drafts[dateKey];saveStorage(data);setDraftStatus("✅ Dia finalizado e incluído no histórico/revisão.");alert("Dia finalizado. Agora ele entra no histórico e na revisão de 14 dias.");renderHistory();updateProgress()};
+resetToday.onclick=()=>{if(confirm("Limpar o registro e o rascunho de hoje?")){const data=storage();if(data.days)delete data.days[dateKey];if(data.drafts)delete data.drafts[dateKey];saveStorage(data);renderToday();renderHistory()}};
+function renderWeek(){const wrap=weekCards;wrap.innerHTML="";[0,1,2,3,4,5,6].forEach(k=>{const d=days[k],div=document.createElement("div");div.className="card day-card";div.innerHTML=`<div class="small">${d.name}</div><h3 style="margin:4px 0">${d.title}</h3><div class="small">${d.objective}</div><hr>${d.exercises.map(e=>`<div style="margin:8px 0"><b>${e[0]}</b> — ${e[1]}<div class="small">${e[2]}</div></div>`).join("")}`;wrap.appendChild(div)})}
+saveMeasures.onclick=()=>{const m={date:new Date().toLocaleDateString("pt-BR"),weight:bodyWeight.value,left:leftThigh.value,right:rightThigh.value,waist:waist.value},data=storage();data.measures.unshift(m);data.measures=data.measures.slice(0,20);saveStorage(data);bodyWeight.value=leftThigh.value=rightThigh.value=waist.value="";renderHistory();alert("Medidas salvas.")};
+function renderHistory(){const data=storage(),h=history,daysList=Object.entries(data.days).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,7);let html="";if(daysList.length){html+="<b>Dias</b><table><tr><th>Data</th><th>Joelho</th><th>Virilha</th><th>Confiança E</th></tr>";daysList.forEach(([date,x])=>html+=`<tr><td>${date.split("-").reverse().join("/")}</td><td>${x.kneePost||"—"}</td><td>${x.groinPost||"—"}</td><td>${x.leftConfidence||"—"}</td></tr>`);html+="</table>"}if(data.measures.length){html+="<br><b>Medidas</b><table><tr><th>Data</th><th>Peso</th><th>Coxa E/D</th><th>Cintura</th></tr>";data.measures.slice(0,7).forEach(m=>html+=`<tr><td>${m.date}</td><td>${m.weight||"—"}</td><td>${m.left||"—"} / ${m.right||"—"}</td><td>${m.waist||"—"}</td></tr>`);html+="</table>"}h.innerHTML=html||'<div class="small">Nenhum registro ainda.</div>'}
+clearAll.onclick=()=>{if(confirm("Apagar TODOS os dados do Atlas salvos neste navegador?")){localStorage.removeItem("atlasData");location.reload()}};
+
+const routineSlots={
+0:[["Manhã","Livre. Se quiser, apenas caminhada ou mobilidade leve."],["16:00–16:35","Recuperação + reabilitação em casa."],["17:30–17:45","Duolingo — 15 min."],["Noite","Tempo livre / recuperação."],["20:30–22:15","League of Legends: 2 partidas; 3ª só se não sacrificar o sono."]],
+1:[["08:00–17:00","Trabalho."],["Almoço","12h–13h ou 13h–14h. Refeição + Duolingo 15 min; caminhada de 5–10 min se sobrar tempo."],["17:45–19:00","Academia A — quadríceps + joelho."],["19:00–20:30","Banho, jantar e tempo livre."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
+2:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["17:45–18:30","Cardio + virilha + core."],["18:30–20:30","Jantar e tempo livre."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
+3:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["17:45–19:00","Academia B — posterior + full body."],["19:00–20:30","Jantar e tempo livre."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
+4:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["18:00–18:30","Recuperação ativa em casa."],["18:30–20:30","Tempo livre / recuperação."],["20:30–22:15","League of Legends: 2 partidas; 3ª opcional."]],
+5:[["08:00–17:00","Trabalho."],["Almoço","Refeição + Duolingo 15 min."],["17:00–20:30","Livre; nenhuma obrigação de treino."],["20:30–22:30","League of Legends: melhor noite para 2–3 partidas, se o sono estiver sob controle."]],
+6:[["Manhã","Livre. Nada de treino pesado pela manhã."],["14:30–15:45","Academia C — hipertrofia de pernas; terminar com folga antes das 17h."],["16:00–17:15","Recuperação / tempo livre."],["17:15–17:30","Duolingo — 15 min."],["20:00","A cada 14 dias: revisão Atlas."],["20:15–22:30","League of Legends: 2–3 partidas se energia e sono permitirem."]]
+};
+
+function getAdaptiveProfile(){return storage().adaptiveProfile||"maintain";}
+function getAdaptiveDay(k){
+  const base=JSON.parse(JSON.stringify(days[k]));
+  const p=getAdaptiveProfile();
+  if(p==="recovery"){
+    base.objective+=" • Modo recuperação ativo.";
+    base.exercises=base.exercises.map((e,i)=>{
+      const x=[...e];
+      if(k===2 && i===0) x[1]="20–25 min";
+      if([1,3,6].includes(k) && i>0) x[2]+=" • Revisão 14d: reduza 1 série e não aumente carga.";
+      if(/adutora|adução/i.test(x[0])) x[2]+=" • Mantenha leve; pare se dor >3/10.";
+      return x;
+    });
+  }else if(p==="progress"){
+    base.objective+=" • Progressão liberada pela revisão.";
+    base.exercises=base.exercises.map((e,i)=>{
+      const x=[...e];
+      if(k===2 && i===0) x[1]="30–40 min";
+      if([1,3,6].includes(k) && i>0) x[2]+=" • Se dor ≤2/10 e técnica boa: aumente reps; no topo por 2 sessões, +2,5–5% de carga.";
+      return x;
+    });
+  }
+  return base;
+}
+
+function renderRoutine(){
+ const wrap=document.getElementById("routineCards"); if(!wrap)return; wrap.innerHTML="";
+ const d=storage(); if(window.lunchSlot)lunchSlot.value=d.lunchSlot||"12-13"; if(window.lolGoal)lolGoal.value=d.lolGoal||"3";
+ [0,1,2,3,4,5,6].forEach(k=>{
+   const day=getAdaptiveDay(k), card=document.createElement("div"); card.className="card day-card";
+   card.innerHTML=`<div class="small">${day.name}</div><h3 style="margin:4px 0">${day.title}</h3>${routineSlots[k].map(r=>`<div class="routine-line"><div class="routine-time">${r[0]}</div><div>${r[1]}</div></div>`).join("")}`;
+   wrap.appendChild(card);
+ });
+}
+if(window.lunchSlot) lunchSlot.onchange=()=>{const d=storage();d.lunchSlot=lunchSlot.value;saveStorage(d)};
+if(window.lolGoal) lolGoal.onchange=()=>{const d=storage();d.lolGoal=lolGoal.value;saveStorage(d)};
+
+function _nums(a){return a.map(v=>Number(v)).filter(Number.isFinite)}
+function _avg(a){const n=_nums(a);return n.length?n.reduce((x,y)=>x+y,0)/n.length:null}
+function analyze14Days(){
+ const now=new Date(), data=storage(); data.reviews=data.reviews||[];
+ const start=new Date(now); start.setDate(start.getDate()-13); start.setHours(0,0,0,0);
+ const entries=Object.entries(data.days||{}).filter(([k])=>{const dt=new Date(k+"T12:00:00");return dt>=start&&dt<=now});
+ const knee=[],groin=[],energy=[],conf=[],general=[],exercisePain=[],hunger=[],foodQuality=[],extraKm=[],extraMin=[]; const meals=[],extraActivities=[]; let completed=0,total=0,badSleep=0;
+ entries.forEach(([k,x])=>{
+   knee.push(x.kneePost);groin.push(x.groinPost);energy.push(x.energyPost);conf.push(x.leftConfidence);general.push(x.dailyPain);
+   if(x.sleep==="tired"||x.sleep==="exhausted") badSleep++;hunger.push(x.hungerDay);foodQuality.push(x.foodQuality);if(x.breakfastFood||x.lunchFood||x.dinnerFood)meals.push({date:k,breakfast:x.breakfastFood||"",lunch:x.lunchFood||"",dinner:x.dinnerFood||""});if(x.extraActivityType||x.extraActivityKm||x.extraActivityMin){extraKm.push(x.extraActivityKm);extraMin.push(x.extraActivityMin);extraActivities.push({date:k,type:x.extraActivityType||"Atividade",intensity:x.extraActivityIntensity||"",km:x.extraActivityKm||"",min:x.extraActivityMin||"",bouts:x.extraActivityBouts||"",rpe:x.extraActivityRpe||"",notes:x.extraActivityNotes||""});}
+   Object.values(x.exercises||{}).forEach(ex=>{total++;if(ex.done)completed++;exercisePain.push(ex.pain)});
+ });
+ const ak=_avg(knee),ag=_avg(groin),ae=_avg(energy),ac=_avg(conf),ap=_avg(exercisePain),gd=_avg(general),ah=_avg(hunger),afq=_avg(foodQuality);const totalExtraKm=_nums(extraKm).reduce((a,b)=>a+b,0),totalExtraMin=_nums(extraMin).reduce((a,b)=>a+b,0);
+ const maxPain=Math.max(0,..._nums([...knee,...groin,...general,...exercisePain]));
+ const adherence=total?Math.round(completed/total*100):0;
+ let profile="maintain",title="Manter e consolidar",reason="Os registros não mostram necessidade clara de aumentar ou reduzir o treino.";
+ if(maxPain>=6||(ak!==null&&ak>4)||(ag!==null&&ag>4)||(ae!==null&&ae<4)||badSleep>=6){
+   profile="recovery";title="Reduzir temporariamente";reason="Dor, fadiga ou sono ruim acima do desejado. O Atlas reduz volume, trava progressão e mantém cardio leve.";
+ }else if(entries.length>=6&&ak!==null&&ag!==null&&ae!==null&&ac!==null&&ak<=2.5&&ag<=2.5&&ae>=6&&ac>=6&&maxPain<=4&&badSleep<=4){
+   profile="progress";title="Progredir com controle";reason="Boa tolerância geral. O Atlas libera progressão por repetições e depois pequenos aumentos de carga.";
+ }
+ const result={date:now.toISOString().slice(0,10),profile,title,reason,stats:{days:entries.length,knee:ak,groin:ag,energy:ae,confidence:ac,general:gd,exercisePain:ap,maxPain,adherence,badSleep,hunger:ah,foodQuality:afq,mealDays:meals.length,extraActivityDays:extraActivities.length,totalExtraKm,totalExtraMin},meals,extraActivities};
+ data.adaptiveProfile=profile;data.lastReviewDate=result.date;data.reviews.unshift(result);data.reviews=data.reviews.slice(0,12);saveStorage(data);
+ renderReview();renderToday();renderWeek();renderRoutine();renderAdaptiveHome();
+ return result;
+}
+
+function reviewDue(){
+ const d=storage(),now=new Date(),first=new Date("2026-10-03T19:00:00");
+ if(now<first)return false;
+ const last=d.lastReviewDate?new Date(d.lastReviewDate+"T19:00:00"):null;
+ const elapsed=last?((now-last)/86400000):999;
+ return elapsed>=14&&((now.getDay()===6&&now.getHours()>=19)||elapsed>=16);
+}
+function maybeRunReview(){if(reviewDue())analyze14Days()}
+function fmtStat(v){return v===null||v===undefined?"—":Number(v).toFixed(1)}
+function buildReviewText(r){
+ if(!r)return "Ainda não há revisão quinzenal.";
+ return `Atlas — revisão de 14 dias (${r.date})
+Decisão local do app: ${r.title}
+Motivo: ${r.reason}
+Dias registrados: ${r.stats.days}
+Dor média joelho: ${fmtStat(r.stats.knee)}/10
+Dor média virilha: ${fmtStat(r.stats.groin)}/10
+Dor máxima registrada: ${fmtStat(r.stats.maxPain)}/10
+Energia média: ${fmtStat(r.stats.energy)}/10
+Confiança perna esquerda: ${fmtStat(r.stats.confidence)}/10
+Conclusão dos exercícios: ${r.stats.adherence}%
+Noites ruins/exaustas: ${r.stats.badSleep}
+Fome média: ${fmtStat(r.stats.hunger)}/10
+Qualidade alimentar média: ${fmtStat(r.stats.foodQuality)}/10
+Dias com refeições registradas: ${r.stats.mealDays||0}
+Atividade fora do treino: ${r.stats.extraActivityDays||0} dias • ${Number(r.stats.totalExtraKm||0).toFixed(1)} km • ${Math.round(r.stats.totalExtraMin||0)} min
+
+Refeições registradas:
+${(r.meals||[]).map(m=>`${m.date.split("-").reverse().join("/")} | Café: ${m.breakfast||"—"} | Almoço: ${m.lunch||"—"} | Jantar: ${m.dinner||"—"}`).join("\n")||"Nenhuma refeição registrada."}
+
+Atividades fora do treino:
+${(r.extraActivities||[]).map(a=>`${a.date.split("-").reverse().join("/")} | ${a.type} | ${a.km||"—"} km | ${a.min||"—"} min | ${a.bouts||"—"} blocos | ${a.intensity||"—"} | esforço ${a.rpe||"—"}/10 | ${a.notes||""}`).join("\n")||"Nenhuma atividade extra registrada."}
+
+Quero que você avalie esses dados como Atlas e ajuste meu treino/rotina para os próximos 14 dias, preservando meu trabalho 08h–17h, Duolingo 15 min/dia, tempo livre, recuperação e espaço para League of Legends.`;
+}
+function renderReview(){
+ const data=storage(),r=data.reviews?.[0],p=data.adaptiveProfile||"maintain",status=document.getElementById("reviewStatus"),hist=document.getElementById("reviewHistory");
+ if(!status)return;
+ if(!r){
+   status.innerHTML='<div class="card adaptive-banner review-watch"><b>Primeira revisão automática: sábado, 03/10/2026, no fim do dia.</b><div class="small">Registre sono, dor, energia, confiança, exercícios e alimentação. Quanto mais você preencher, melhor a revisão.</div></div>';
+ }else{
+   const cls=p==="progress"?"review-good":p==="recovery"?"review-recovery":"review-watch";
+   const next=new Date(r.date+"T12:00:00"); next.setDate(next.getDate()+14);
+   status.innerHTML=`<div class="card adaptive-banner ${cls}"><b>${r.title}</b><p>${r.reason}</p><div class="review-grid"><div class="review-stat">Joelho <b>${fmtStat(r.stats.knee)}</b></div><div class="review-stat">Virilha <b>${fmtStat(r.stats.groin)}</b></div><div class="review-stat">Energia <b>${fmtStat(r.stats.energy)}</b></div><div class="review-stat">Confiança E <b>${fmtStat(r.stats.confidence)}</b></div><div class="review-stat">Dor máx. <b>${fmtStat(r.stats.maxPain)}</b></div><div class="review-stat">Conclusão <b>${r.stats.adherence}%</b></div><div class="review-stat">Alimentação <b>${fmtStat(r.stats.foodQuality)}</b></div><div class="review-stat">Fome <b>${fmtStat(r.stats.hunger)}</b></div><div class="review-stat">Atividade extra <b>${r.stats.totalExtraKm?Number(r.stats.totalExtraKm).toFixed(1)+" km":"—"}</b></div><div class="review-stat">Tempo extra <b>${r.stats.totalExtraMin?Math.round(r.stats.totalExtraMin)+" min":"—"}</b></div></div><div class="small" style="margin-top:10px">Próxima revisão prevista: ${next.toLocaleDateString("pt-BR")}.</div></div>`;
+ }
+ if(hist){
+   hist.innerHTML=(data.reviews||[]).map(x=>`<div style="margin:9px 0"><b>${x.date.split("-").reverse().join("/")} — ${x.title}</b><div class="small">Joelho ${fmtStat(x.stats.knee)} • Virilha ${fmtStat(x.stats.groin)} • Energia ${fmtStat(x.stats.energy)} • Confiança E ${fmtStat(x.stats.confidence)}</div></div>`).join("")||'<div class="small">Nenhuma revisão ainda.</div>';
+ }
+}
+function renderAdaptiveHome(){
+ const box=document.getElementById("adaptiveHome");if(!box)return;
+ const p=getAdaptiveProfile(),labels={progress:["review-good","Progressão liberada","Se dor e técnica continuarem boas, avance reps e depois carga."],maintain:["review-watch","Fase de consolidação","Mantenha o plano atual e continue registrando sintomas."],recovery:["review-recovery","Modo recuperação","Volume reduzido e sem progressão até os indicadores melhorarem."]};
+ const x=labels[p];box.innerHTML=`<div class="card adaptive-banner ${x[0]}"><b>${x[1]}</b><div class="small">${x[2]}</div></div>`;
+}
+if(window.runReviewNow)runReviewNow.onclick=()=>analyze14Days();
+if(window.copyReview)copyReview.onclick=async()=>{const r=storage().reviews?.[0];const t=buildReviewText(r);try{await navigator.clipboard.writeText(t);alert("Resumo copiado. Cole no ChatGPT para eu fazer a revisão completa.");}catch(e){prompt("Copie o resumo:",t)}};
+
+const _oldRenderToday=renderToday;
+renderToday=function(){
+ const original=days[dow];days[dow]=getAdaptiveDay(dow);_oldRenderToday();days[dow]=original;renderAdaptiveHome();
+};
+const _oldRenderWeek=renderWeek;
+renderWeek=function(){
+ const backup={};[0,1,2,3,4,5,6].forEach(k=>{backup[k]=days[k];days[k]=getAdaptiveDay(k)});_oldRenderWeek();[0,1,2,3,4,5,6].forEach(k=>days[k]=backup[k]);
+};
+
+renderToday();renderWeek();renderHistory();renderRoutine();renderReview();renderAdaptiveHome();maybeRunReview();
+</script>
+\n<script>\nlet deferredPrompt = null;
+const installBtn = document.getElementById('installAppBtn');
+const installHint = document.getElementById('installHint');
+const installState = document.getElementById('installState');
+const checkInstallBtn = document.getElementById('checkInstallBtn');
+
+function isStandaloneAtlas(){
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+function isAndroidChrome(){
+  return /Android/i.test(navigator.userAgent) && /Chrome/i.test(navigator.userAgent);
+}
+function refreshInstallUI(){
+  if(!installBtn) return;
+  if(isStandaloneAtlas()){
+    installState.textContent='Este site está aberto em modo aplicativo.';
+    installBtn.disabled=true;
+    installBtn.textContent='✓ Aplicativo já aberto';
+    installHint.textContent='Atlas já está aberto em modo aplicativo.';
+    return;
+  }
+  if(deferredPrompt){
+    installState.textContent='Atlas está pronto para ser instalado.';
+    installBtn.disabled=false;
+    installBtn.textContent='📲 Instalar Atlas';
+    installHint.textContent='Toque em “Instalar Atlas” e confirme a janela do Chrome.';
+  }else{
+    installState.textContent='O Chrome ainda não liberou o pedido de instalação.';
+    installBtn.disabled=false;
+    installBtn.textContent='📲 Como instalar Atlas';
+    installHint.textContent=isAndroidChrome()
+      ? 'Se o Chrome ainda não mostrar o pedido, toque no menu ⋮ e escolha “Instalar app”.'
+      : 'Abra esta página no Chrome e use o menu do navegador → Instalar app / Adicionar à tela inicial.';
+  }
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  refreshInstallUI();
+});
+
+if (installBtn) {
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installHint.textContent = choice.outcome === 'accepted'
+        ? 'Instalação aceita. Aguarde o Chrome concluir.'
+        : 'Instalação cancelada. Você pode tentar novamente depois.';
+      refreshInstallUI();
+    } else {
+      refreshInstallUI();
+      alert('O Chrome ainda não liberou o prompt. Use o menu ⋮ do Chrome → “Instalar app” e tente novamente.');
+    }
+  });
+}
+
+if(checkInstallBtn){
+  checkInstallBtn.addEventListener('click', async ()=>{
+    installState.textContent='Verificando…';
+    try{
+      if('serviceWorker' in navigator){
+        const reg=await navigator.serviceWorker.ready;
+        await reg.update();
+      }
+      await fetch('./manifest-v301.webmanifest?t='+Date.now(),{cache:'no-store'});
+    }catch(e){}
+    setTimeout(refreshInstallUI,300);
+  });
+}
+
+window.addEventListener('appinstalled', () => {
+  if (installHint) installHint.textContent = 'Atlas instalado com sucesso.';
+  if (installState) installState.textContent = 'Instalação concluída.';
+  refreshInstallUI();
+});
+window.addEventListener('load',refreshInstallUI);
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw-v301.js'));
+}
+
+// Backup e restauração
+const exportBackupBtn=document.getElementById('exportBackupBtn');
+const importBackupBtn=document.getElementById('importBackupBtn');
+const importBackupFile=document.getElementById('importBackupFile');
+const backupHint=document.getElementById('backupHint');
+
+if(exportBackupBtn){
+  exportBackupBtn.addEventListener('click',()=>{
+    const payload={
+      app:'Atlas',
+      schema:1,
+      exportedAt:new Date().toISOString(),
+      atlasData:storage()
+    };
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='atlas-backup-'+new Date().toISOString().slice(0,10)+'.json';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    if(backupHint)backupHint.textContent='Backup exportado. Guarde esse arquivo até confirmar que o Atlas novo está funcionando.';
+  });
+}
+if(importBackupBtn && importBackupFile){
+  importBackupBtn.addEventListener('click',()=>importBackupFile.click());
+  importBackupFile.addEventListener('change',async()=>{
+    const file=importBackupFile.files?.[0]; if(!file)return;
+    try{
+      const parsed=JSON.parse(await file.text());
+      const data=parsed?.atlasData || parsed;
+      if(!data || typeof data!=='object' || !data.days) throw new Error('Formato inválido');
+      if(!confirm('Restaurar este backup? Os dados locais atuais serão substituídos pelo conteúdo do arquivo.'))return;
+      saveStorage(data);
+      if(backupHint)backupHint.textContent='Backup restaurado com sucesso.';
+      alert('Backup restaurado. O Atlas será recarregado.');
+      location.reload();
+    }catch(e){
+      if(backupHint)backupHint.textContent='Não foi possível restaurar: arquivo inválido.';
+    }
+  });
+}
+</script>\n
+<script>
+const ATLAS_VERSION = "3.0.1";
+let atlasSwRegistration = null;
+let atlasRefreshing = false;
+const atlasUpdateToast = document.getElementById('updateToast');
+const atlasApplyUpdate = document.getElementById('applyUpdate');
+
+async function checkAtlasUpdate(){
+  if(!atlasSwRegistration) return;
+  try{
+    await atlasSwRegistration.update();
+    const r = await fetch('./version.json?t=' + Date.now(), {cache:'no-store'});
+    if(r.ok){
+      const remote = await r.json();
+      if(remote.version && remote.version !== ATLAS_VERSION) atlasUpdateToast?.classList.add('show');
+    }
+  }catch(e){}
+}
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', async ()=>{
+    try{
+      atlasSwRegistration = await navigator.serviceWorker.register('./sw-v301.js', {updateViaCache:'none'});
+      await checkAtlasUpdate();
+      setInterval(checkAtlasUpdate, 60*60*1000);
+      atlasSwRegistration.addEventListener('updatefound', ()=>{
+        const worker = atlasSwRegistration.installing;
+        if(!worker) return;
+        worker.addEventListener('statechange', ()=>{
+          if(worker.state==='installed' && navigator.serviceWorker.controller){
+            atlasUpdateToast?.classList.add('show');
+          }
+        });
+      });
+    }catch(e){}
+  });
+  navigator.serviceWorker.addEventListener('controllerchange', ()=>{
+    if(atlasRefreshing) return; atlasRefreshing=true; location.reload();
+  });
+}
+atlasApplyUpdate?.addEventListener('click', ()=>{
+  const waiting = atlasSwRegistration?.waiting;
+  if(waiting) waiting.postMessage('SKIP_WAITING'); else location.reload();
+});
+</script>
+</body>
+</html>

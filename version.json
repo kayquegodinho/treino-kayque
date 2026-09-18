@@ -1,1 +1,1 @@
-{"version":"2.4.2","released":"2026-09-18","notes":"Adiciona diagnóstico de instalação, orientações para substituir o PWA antigo e backup/restauração local dos dados."}
+{"version":"3.0.1","released":"2026-09-18","notes":"Atlas reinstalado na raiz com manifesto, Service Worker e ícones completamente novos."}

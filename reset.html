@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050505"><title>Redefinir Atlas</title>
+<style>body{margin:0;background:#050505;color:#fff;font-family:system-ui;display:grid;place-items:center;min-height:100vh}.box{max-width:420px;text-align:center;padding:28px}.a{font-size:36px;font-weight:900;letter-spacing:.14em}.s{color:#aaa;margin:14px 0 22px}.ok{color:#fff}</style></head>
+<body><div class="box"><div class="a">ATLAS</div><div class="s" id="status">Limpando a instalação antiga…</div></div>
+<script>
+(async()=>{
+ const status=document.getElementById('status');
+ try{
+   if('serviceWorker' in navigator){
+     const regs=await navigator.serviceWorker.getRegistrations();
+     for(const r of regs) await r.unregister();
+   }
+   if('caches' in window){
+     const ks=await caches.keys();
+     for(const k of ks) await caches.delete(k);
+   }
+   localStorage.clear();
+   sessionStorage.clear();
+   status.textContent='Limpeza concluída. Abrindo o Atlas novo…';
+ }catch(e){status.textContent='Abrindo o Atlas novo…';}
+ setTimeout(()=>location.replace('./?clean=301&ts='+Date.now()),800);
+})();
+</script></body></html>
