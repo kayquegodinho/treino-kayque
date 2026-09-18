@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111827">
-<title>Atlas • Treino & Recuperação</title>
+<title>Atlas</title>
 <style>
 :root{--bg:#0b1020;--card:#121a2d;--card2:#18223a;--text:#f8fafc;--muted:#9ca3af;--accent:#22c55e;--blue:#38bdf8;--warn:#f59e0b;--danger:#ef4444;--line:#26334f}
 *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#08111f,#0b1020 30%,#0b1020);color:var(--text)}
@@ -29,17 +29,24 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 .copybox{white-space:pre-wrap;background:#0b1326;border:1px solid #31405e;border-radius:12px;padding:10px;font-size:12px;color:#dbeafe}
 @media(max-width:560px){.routine-line{grid-template-columns:80px 1fr}.review-grid{grid-template-columns:1fr 1fr}}
 
+
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.brand-mark{width:34px;height:34px;flex:0 0 34px}
+.brand-name{font-size:24px;font-weight:900;letter-spacing:.14em;line-height:1}
+.brand-meta{display:flex;align-items:center;gap:8px}
+
 </style>
 
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icons/icon.svg">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
 <div class="app">
-<header><h1>Atlas • Treino & Recuperação <span class="version-pill" id="appVersion">v2.3.4</span></h1><div class="subtitle" id="todayLabel"></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
+<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v2.3.5</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
 <section id="home" class="active">
 <div class="card hero"><div class="small">Treino de hoje</div><h2 id="todayTitle" style="margin:4px 0 6px"></h2><div id="todayObjective" class="subtitle"></div><div class="row" style="margin-top:12px"><span class="badge green">Joelho</span><span class="badge blue">Hipertrofia</span><span class="badge yellow">Virilha/Core</span></div></div>
 <div class="card"><div class="grid2"><div><label>Como foi seu sono?</label><select id="sleepMode"><option value="normal">🟢 Razoável / bom</option><option value="tired">🟡 Noite ruim / cansado</option><option value="exhausted">🔴 Exausto</option></select></div><div><label>Dor geral hoje (0–10)</label><input id="dailyPain" type="number" min="0" max="10" value="0"></div></div><p class="small" id="sleepAdvice"></p></div>
@@ -135,7 +142,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 <section id="progress"><div class="card"><h3 style="margin-top:0">Evolução</h3><div class="grid2"><div><label>Peso corporal (kg)</label><input id="bodyWeight" type="number" step="0.1"></div><div><label>Coxa esquerda (cm)</label><input id="leftThigh" type="number" step="0.1"></div><div><label>Coxa direita (cm)</label><input id="rightThigh" type="number" step="0.1"></div><div><label>Cintura (cm)</label><input id="waist" type="number" step="0.1"></div></div><button class="btn full" id="saveMeasures" style="margin-top:10px">Registrar medidas</button></div><div class="card"><h3 style="margin-top:0">Últimos registros</h3><div id="history"></div></div><div class="card notice"><b>Sinais para não “forçar por cima”:</b><br>dor crescente, dor ≥5/10, piora persistente por mais de 24h, inchaço do joelho, ou dor na virilha ao tossir acompanhada de caroço/inchaço. Nesses casos, priorize avaliação presencial.</div></section>
 <section id="settings">
   <div class="card" id="installCard">
-    <h3 style="margin-top:0">Instalar Atlas no celular</h3>
+    <h3 style="margin-top:0">Instalar Atlas</h3>
     <div class="small" style="margin-bottom:10px">Quando disponível, toque abaixo para instalar como aplicativo.</div>
     <button class="btn full" id="installAppBtn">📲 Instalar aplicativo</button>
     <div class="small" id="installHint" style="margin-top:8px"></div>
@@ -361,7 +368,7 @@ renderToday();renderWeek();renderHistory();renderRoutine();renderReview();render
 </script>
 \n<script>\nlet deferredPrompt = null;\nconst installBtn = document.getElementById('installAppBtn');\nconst installHint = document.getElementById('installHint');\n\nwindow.addEventListener('beforeinstallprompt', (e) => {\n  e.preventDefault();\n  deferredPrompt = e;\n  if (installBtn) installBtn.style.display = 'block';\n  if (installHint) installHint.textContent = 'Pronto para instalar.';\n});\n\nif (installBtn) {\n  installBtn.addEventListener('click', async () => {\n    if (deferredPrompt) {\n      deferredPrompt.prompt();\n      await deferredPrompt.userChoice;\n      deferredPrompt = null;\n    } else {\n      installHint.textContent = 'Se o botão do navegador não aparecer, abra o menu ⋮ e escolha “Adicionar à tela inicial” ou “Instalar app”.';\n    }\n  });\n}\n\nwindow.addEventListener('appinstalled', () => {\n  if (installHint) installHint.textContent = 'Atlas instalado com sucesso.';\n});\n\nif ('serviceWorker' in navigator) {\n  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));\n}\n</script>\n
 <script>
-const ATLAS_VERSION = "2.3.4";
+const ATLAS_VERSION = "2.3.5";
 let atlasSwRegistration = null;
 let atlasRefreshing = false;
 const atlasUpdateToast = document.getElementById('updateToast');

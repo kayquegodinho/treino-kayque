@@ -1,12 +1,12 @@
-const APP_VERSION = "2.3.4";
+const APP_VERSION = "2.3.5";
 const CACHE = `atlas-${APP_VERSION}`;
 const CORE = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./version.json",
-  "./assets/icons/icon-192.png",
-  "./assets/icons/icon-512.png"
+  "./assets/icons/icon.svg",
+  "./assets/icons/icon.svg"
 ];
 
 self.addEventListener("install", event => {
