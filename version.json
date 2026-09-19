@@ -1,1 +1,1 @@
-{"version":"3.2.0","released":"2026-09-19","notes":"Refeições dinâmicas: quantidade livre, tipo, horário, descrição, remoção e inclusão completa na revisão quinzenal."}
+{"version":"3.2.1","released":"2026-09-19","notes":"Adiciona botão em Ajustes para buscar e aplicar atualizações manualmente, limpando somente o cache e preservando os dados locais."}

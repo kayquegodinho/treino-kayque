@@ -38,7 +38,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 .brand-meta{display:flex;align-items:center;gap:8px}
 
 
-/* Atlas v3.2.0 — identidade monocromática */
+/* Atlas v3.2.1 — identidade monocromática */
 :root{--bg:#050505;--card:#101010;--card2:#18181b;--text:#fafafa;--muted:#a1a1aa;--accent:#f4f4f5;--blue:#d4d4d8;--warn:#a3a3a3;--danger:#737373;--line:#2a2a2e}
 body{background:#050505;color:var(--text)}
 header{background:rgba(5,5,5,.96);border-bottom:1px solid #18181b}
@@ -70,7 +70,7 @@ input,select,textarea{background:#09090b;color:#fafafa;border-color:#3f3f46}
 .brand-mark rect{fill:#050505}.brand-mark path:first-of-type{fill:#fff}
 
 
-/* Atlas v3.2.0 — responsividade e áreas seguras */
+/* Atlas v3.2.1 — responsividade e áreas seguras */
 html,body{width:100%;min-height:100%;overflow-x:hidden}
 body{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .app{width:100%;max-width:820px;margin:0 auto;padding:12px 12px 104px}
@@ -132,7 +132,7 @@ textarea{min-height:96px;resize:vertical}
 </head>
 <body>
 <div class="app">
-<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v3.2.0</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
+<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v3.2.1</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
 <section id="home" class="active">
 <div class="card hero"><div class="small">Treino de hoje</div><h2 id="todayTitle" style="margin:4px 0 6px"></h2><div id="todayObjective" class="subtitle"></div><div class="row" style="margin-top:12px"><span class="badge green">Joelho</span><span class="badge blue">Hipertrofia</span><span class="badge yellow">Virilha/Core</span></div></div>
 <div class="card"><div class="grid2"><div><label>Como foi seu sono?</label><select id="sleepMode"><option value="normal">🟢 Razoável / bom</option><option value="tired">🟡 Noite ruim / cansado</option><option value="exhausted">🔴 Exausto</option></select></div><div><label>Dor geral hoje (0–10)</label><input id="dailyPain" type="number" min="0" max="10" value="0"></div></div><p class="small" id="sleepAdvice"></p></div>
@@ -230,6 +230,12 @@ textarea{min-height:96px;resize:vertical}
     <button class="btn full" id="installAppBtn">📲 Instalar Atlas</button>
     <button class="btn secondary full" id="checkInstallBtn" style="margin-top:8px">🔄 Verificar instalação</button>
     <div class="small" id="installHint" style="margin-top:10px"></div>
+  </div>
+  <div class="card" id="manualUpdateCard">
+    <h3 style="margin-top:0">Atualizações</h3>
+    <div class="small" style="margin-bottom:10px">Versão instalada: <b id="manualCurrentVersion">v3.2.1</b>. Use o botão para consultar o GitHub e forçar a aplicação da versão mais recente sem apagar seus dados.</div>
+    <button class="btn full" id="forceUpdateBtn" type="button">🔄 Buscar atualização agora</button>
+    <div class="small" id="manualUpdateStatus" style="margin-top:9px">Pronto para verificar.</div>
   </div>
   <div class="card">
     <h3 style="margin-top:0">Backup de segurança</h3>
@@ -641,23 +647,88 @@ if(importBackupBtn && importBackupFile){
 }
 </script>\n
 <script>
-const ATLAS_VERSION = "3.2.0";
+const ATLAS_VERSION = "3.2.1";
 let atlasSwRegistration = null;
 let atlasRefreshing = false;
 const atlasUpdateToast = document.getElementById('updateToast');
 const atlasApplyUpdate = document.getElementById('applyUpdate');
+const forceUpdateBtn = document.getElementById('forceUpdateBtn');
+const manualUpdateStatus = document.getElementById('manualUpdateStatus');
+const manualCurrentVersion = document.getElementById('manualCurrentVersion');
+if(manualCurrentVersion) manualCurrentVersion.textContent = 'v' + ATLAS_VERSION;
+
+async function fetchRemoteAtlasVersion(){
+  const r = await fetch('./version.json?manual=' + Date.now(), {
+    cache:'no-store',
+    headers:{'Cache-Control':'no-cache'}
+  });
+  if(!r.ok) throw new Error('Não foi possível consultar a versão publicada.');
+  return await r.json();
+}
 
 async function checkAtlasUpdate(){
-  if(!atlasSwRegistration) return;
   try{
-    await atlasSwRegistration.update();
-    const r = await fetch('./version.json?t=' + Date.now(), {cache:'no-store'});
-    if(r.ok){
-      const remote = await r.json();
-      if(remote.version && remote.version !== ATLAS_VERSION) atlasUpdateToast?.classList.add('show');
+    if(atlasSwRegistration) await atlasSwRegistration.update();
+    const remote = await fetchRemoteAtlasVersion();
+    if(remote.version && remote.version !== ATLAS_VERSION){
+      atlasUpdateToast?.classList.add('show');
+      return remote;
     }
-  }catch(e){}
+    return remote;
+  }catch(e){
+    return null;
+  }
 }
+
+async function forceAtlasUpdate(){
+  if(forceUpdateBtn){
+    forceUpdateBtn.disabled=true;
+    forceUpdateBtn.textContent='⏳ Buscando atualização…';
+  }
+  if(manualUpdateStatus) manualUpdateStatus.textContent='Consultando o GitHub e atualizando o cache do Atlas…';
+
+  try{
+    const remote = await fetchRemoteAtlasVersion();
+    const remoteVersion = remote?.version || 'desconhecida';
+
+    if(manualUpdateStatus){
+      manualUpdateStatus.textContent = remoteVersion !== ATLAS_VERSION
+        ? 'Nova versão v' + remoteVersion + ' encontrada. Aplicando agora…'
+        : 'Você já está na v' + ATLAS_VERSION + '. Recarregando os arquivos para garantir que tudo esteja atualizado…';
+    }
+
+    if('serviceWorker' in navigator){
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for(const reg of regs){
+        try{ await reg.update(); }catch(e){}
+        if(reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
+      }
+    }
+
+    if('caches' in window){
+      const keys = await caches.keys();
+      for(const key of keys){
+        if(key.startsWith('atlas-')) await caches.delete(key);
+      }
+    }
+
+    const params=new URLSearchParams(location.search);
+    if(/AtlasAndroid\//i.test(navigator.userAgent)) params.set('android','1');
+    params.set('refresh',Date.now().toString());
+
+    setTimeout(()=>{
+      location.replace(location.pathname + '?' + params.toString());
+    },650);
+  }catch(e){
+    if(manualUpdateStatus) manualUpdateStatus.textContent='Não consegui consultar a atualização. Verifique sua internet e tente novamente.';
+    if(forceUpdateBtn){
+      forceUpdateBtn.disabled=false;
+      forceUpdateBtn.textContent='🔄 Buscar atualização agora';
+    }
+  }
+}
+
+forceUpdateBtn?.addEventListener('click',forceAtlasUpdate);
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', async ()=>{
@@ -677,13 +748,12 @@ if('serviceWorker' in navigator){
     }catch(e){}
   });
   navigator.serviceWorker.addEventListener('controllerchange', ()=>{
-    if(atlasRefreshing) return; atlasRefreshing=true; location.reload();
+    if(atlasRefreshing) return;
+    atlasRefreshing=true;
   });
 }
-atlasApplyUpdate?.addEventListener('click', ()=>{
-  const waiting = atlasSwRegistration?.waiting;
-  if(waiting) waiting.postMessage('SKIP_WAITING'); else location.reload();
-});
+
+atlasApplyUpdate?.addEventListener('click',forceAtlasUpdate);
 </script>
 </body>
 </html>
