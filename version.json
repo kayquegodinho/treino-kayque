@@ -1,1 +1,1 @@
-{"version":"4.0.0","released":"2026-10-19","notes":"Redesenho completo de UI/UX: tela Hoje orientada ao essencial, atalhos de registro, navegação simplificada, linguagem comum, detalhes opcionais e Ajustes organizados."}
+{"version":"4.0.1","released":"2026-10-19","notes":"Atualização rápida direta do GitHub: o Atlas deixa de depender do deploy do GitHub Pages, baixa o HTML do main e guarda a versão mais recente localmente."}
