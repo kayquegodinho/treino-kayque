@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<script data-atlas-shell="4.0.1">
+<script data-atlas-shell="4.0.2">
 (()=>{
   try{
-    const current="4.0.1";
+    const current="4.0.2";
     const cachedVersion=localStorage.getItem("atlasShellVersion")||"";
     const cachedHtml=localStorage.getItem("atlasShellHtml")||"";
     const parts=v=>String(v).split(".").map(n=>parseInt(n,10)||0);
@@ -52,7 +52,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px
 .brand-meta{display:flex;align-items:center;gap:8px}
 
 
-/* Atlas v4.0.1 — identidade monocromática */
+/* Atlas v4.0.2 — identidade monocromática */
 :root{--bg:#050505;--card:#101010;--card2:#18181b;--text:#fafafa;--muted:#a1a1aa;--accent:#f4f4f5;--blue:#d4d4d8;--warn:#a3a3a3;--danger:#737373;--line:#2a2a2e}
 body{background:#050505;color:var(--text)}
 header{background:rgba(5,5,5,.96);border-bottom:1px solid #18181b}
@@ -84,7 +84,7 @@ input,select,textarea{background:#09090b;color:#fafafa;border-color:#3f3f46}
 .brand-mark rect{fill:#050505}.brand-mark path:first-of-type{fill:#fff}
 
 
-/* Atlas v4.0.1 — responsividade e áreas seguras */
+/* Atlas v4.0.2 — responsividade e áreas seguras */
 html,body{width:100%;min-height:100%;overflow-x:hidden}
 body{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .app{width:100%;max-width:820px;margin:0 auto;padding:12px 12px 104px}
@@ -136,7 +136,7 @@ textarea{min-height:96px;resize:vertical}
 }
 
 
-/* Atlas v4.0.1 — interface simples e orientada ao dia */
+/* Atlas v4.0.2 — interface simples e orientada ao dia */
 :root{
  --bg:#050505;--surface:#0d0d0f;--surface2:#151518;--surface3:#1d1d21;
  --text:#fafafa;--muted:#9b9ba3;--subtle:#707078;--line:#29292e;
@@ -211,7 +211,7 @@ table{font-size:12.5px}th{color:#a9a9b0}th,td{padding:10px 7px}
 </head>
 <body>
 <div class="app">
-<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v4.0.1</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
+<header><div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#050505"/><path d="M16 48 32 14 48 48h-9l-7-16-7 16z" fill="#fff"/><path d="M17 44Q32 35 47 44" fill="none" stroke="#9ca3af" stroke-width="4" stroke-linecap="round"/></svg><div><div class="brand-meta"><div class="brand-name">ATLAS</div><span class="version-pill" id="appVersion">v4.0.2</span></div><div class="subtitle" id="todayLabel"></div></div></div><div class="tabs"><button class="tab active" data-tab="home">Hoje</button><button class="tab" data-tab="week">Semana</button><button class="tab" data-tab="routine">Rotina</button><button class="tab" data-tab="progress">Progresso</button><button class="tab" data-tab="review">14 dias</button><button class="tab" data-tab="settings">Ajustes</button></div></header>
 <section id="home" class="active">
 <div class="lifestyle-hero" id="daySummary">
   <div class="eyebrow">Seu dia</div>
@@ -233,7 +233,8 @@ table{font-size:12.5px}th{color:#a9a9b0}th,td{padding:10px 7px}
     <button type="button" class="quick-action" data-scroll="activityCard">Adicionar atividade</button>
   </div>
 </div>
-<div class="card hero focus-card"><div class="eyebrow">Plano de hoje</div><h2 id="todayTitle" style="margin:4px 0 6px"></h2><div id="todayObjective" class="subtitle"></div><div class="row" style="margin-top:12px"><span class="badge green">Joelho</span><span class="badge blue">Hipertrofia</span><span class="badge yellow">Virilha/Core</span></div></div>
+<div class="card notice" data-family-notice></div>
+<div class="card hero focus-card"><div class="eyebrow">Plano de hoje — conforme sua disponibilidade</div><h2 id="todayTitle" style="margin:4px 0 6px"></h2><div id="todayObjective" class="subtitle"></div><div class="row" style="margin-top:12px"><span class="badge green">Joelho</span><span class="badge blue">Hipertrofia</span><span class="badge yellow">Virilha/Core</span></div></div>
 <div class="card"><div class="grid2"><div><label>Como você está hoje?</label><select id="sleepMode"><option value="normal">Bem / normal</option><option value="tired">Cansado</option><option value="exhausted">Muito cansado</option></select></div><div><label>Dor geral hoje (0–10)</label><input id="dailyPain" type="number" min="0" max="10" value="0"></div></div><p class="small" id="sleepAdvice"></p></div>
 <div id="adaptiveHome"></div><div class="card" id="workoutProgressCard"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><div><b>Treino de hoje</b><div class="small" id="progressText"></div></div><button class="btn secondary" id="resetToday">Limpar hoje</button></div><div class="progress" style="margin-top:10px"><div id="progressBar"></div></div></div>
 <div id="todayWorkout"></div>
@@ -274,20 +275,20 @@ table{font-size:12.5px}th{color:#a9a9b0}th,td{padding:10px 7px}
 <section id="routine">
   <div class="lifestyle-hero">
     <div class="eyebrow">Sua rotina</div>
-    <div class="hero-row"><div><h2>Veja o dia e a semana sem complicação</h2><div class="hero-copy">Trabalho, treino, Duolingo, limpeza da casa e tempo livre organizados em um só lugar.</div></div></div>
+    <div class="hero-row"><div><h2>Veja o dia e a semana sem complicação</h2><div class="hero-copy">Sua filha, descanso, trabalho e atividades pessoais, com horários flexíveis nesta nova fase.</div></div></div>
   </div>
   <div class="card">
     <div class="section-heading"><div><h3>Preferências do dia</h3><div class="small">O Atlas usa isso para encaixar sua rotina de forma realista.</div></div></div>
     <div class="grid2">
       <div><label>Horário de almoço mais provável</label><select id="lunchSlot"><option value="12-13">12h–13h</option><option value="13-14">13h–14h</option></select></div>
-      <div><label>Tempo para League of Legends</label><select id="lolGoal"><option value="2">2 partidas</option><option value="3">2–3 partidas</option></select></div>
+      <div><label>League of Legends, se houver tempo livre</label><select id="lolGoal"><option value="0">Sem meta de partidas</option><option value="1">Até 1 partida</option><option value="2">2 partidas</option><option value="3">2–3 partidas</option></select></div>
     </div>
   </div>
   <div class="section-switch" id="routineSwitch">
     <button type="button" class="active" data-routine-view="agenda">Agenda</button>
     <button type="button" data-routine-view="training">Treinos da semana</button>
   </div>
-  <div id="routineAgendaView"><div id="routineCards"></div></div>
+  <div id="routineAgendaView"><div class="card notice" data-family-notice></div><p class="small">Agenda desta semana. Os treinos são opções: combine uma janela com a família, sem obrigação de cumprir todos os blocos.</p><div id="routineCards"></div></div>
   <div id="routineTrainingView" hidden><div id="weekCards"></div></div>
 </section>
 
@@ -326,7 +327,7 @@ table{font-size:12.5px}th{color:#a9a9b0}th,td{padding:10px 7px}
   </div>
 
   <div class="card settings-fold" id="manualUpdateCard"><details open><summary>Atualizar o Atlas</summary><div class="settings-body">
-    <div class="small">Versão neste aparelho: <b id="manualCurrentVersion">v4.0.1</b>. O Atlas consulta diretamente o repositório para não depender da demora do GitHub Pages. Seus registros não são apagados.</div>
+    <div class="small">Versão neste aparelho: <b id="manualCurrentVersion">v4.0.2</b>. O Atlas consulta diretamente o repositório para não depender da demora do GitHub Pages. Seus registros não são apagados.</div>
     <button class="btn full" id="forceUpdateBtn" type="button" style="margin-top:12px">Buscar atualização</button>
     <div class="small" id="manualUpdateStatus" style="margin-top:9px">Pronto para verificar.</div>
   </div></details></div>
@@ -345,15 +346,16 @@ table{font-size:12.5px}th{color:#a9a9b0}th,td{padding:10px 7px}
     <div class="small" id="installHint" style="margin-top:10px"></div>
   </div></details></div>
 
-  <div class="card notice"><b>Rotina com sua filha ainda não está ativa.</b><div class="small">Ela só será aplicada quando você me avisar que ela nasceu.</div></div>
+  <div class="card notice" data-family-notice></div>
 
   <div class="card settings-fold"><details><summary>Minha rotina atual</summary><div class="settings-body"><ul>
-    <li>Trabalho: 08h–17h, de segunda a sexta.</li>
+    <li>Sua filha nasceu em 02/10/2026.</li>
+    <li>Licença-paternidade de 20 dias: 02 a 21/10/2026. Retorno ao trabalho em 22/10/2026, das 08h às 17h, de segunda a sexta.</li>
     <li>Almoço: geralmente 12h–13h ou 13h–14h.</li>
-    <li>Academia: depois das 17h; sábado à tarde, antes das 17h.</li>
-    <li>Duolingo: pelo menos 15 minutos por dia.</li>
-    <li>League of Legends: normalmente 2 partidas; uma 3ª quando não atrapalhar sono, treino ou recuperação.</li>
-    <li>Limpeza da casa: geralmente no fim de quinta ou sexta; às vezes sábado de manhã.</li>
+    <li>Durante a licença, academia somente em uma janela combinada com a família. Após o retorno, depois do trabalho; sábado à tarde continua sendo uma opção.</li>
+    <li>Duolingo: até 15 minutos quando couber, podendo dividir em pequenos momentos.</li>
+    <li>League of Legends: opcional, sem meta obrigatória. Jogue apenas quando houver tempo livre combinado, sem ocupar o descanso.</li>
+    <li>Casa: dividir as tarefas essenciais em pequenos blocos. Quinta, sexta ou sábado são possibilidades, não compromissos fixos.</li>
   </ul></div></details></div>
 
   <div class="card settings-fold"><details><summary>Regras do treino</summary><div class="settings-body"><ul>
@@ -553,17 +555,74 @@ function getAdaptiveDay(k){
   return base;
 }
 
+const FAMILY_ROUTINE = Object.freeze({birthDate:"2026-10-02",returnDate:"2026-10-22",leaveDays:20});
+function localDateKey(date){
+ return [date.getFullYear(),String(date.getMonth()+1).padStart(2,"0"),String(date.getDate()).padStart(2,"0")].join("-");
+}
+function familyPhase(date=new Date()){
+ const key=localDateKey(date);
+ return key<FAMILY_ROUTINE.birthDate?"before":key<FAMILY_ROUTINE.returnDate?"leave":"working";
+}
+function familySummary(date=new Date()){
+ const phase=familyPhase(date);
+ if(phase==="before")return "Rotina anterior ao nascimento de sua filha.";
+ if(phase==="leave")return "Licença-paternidade até 21/10. Sua filha nasceu em 02/10/2026. Retorno ao trabalho em 22/10, das 08h às 17h. Agora, organize o dia em torno da família, das refeições e do descanso.";
+ return "Rotina com sua filha ativa. Retorno ao trabalho em 22/10/2026: 08h às 17h, de segunda a sexta. Fora do trabalho, combine os cuidados com sua filha e as tarefas da casa; treino e lazer entram quando houver espaço.";
+}
+function routineWeekDates(date=new Date()){
+ const monday=new Date(date.getFullYear(),date.getMonth(),date.getDate(),12);
+ monday.setDate(monday.getDate()-(monday.getDay()+6)%7);
+ return Array.from({length:7},(_,i)=>{const day=new Date(monday);day.setDate(day.getDate()+i);return day;});
+}
+function familyRoutineSlots(date,preferences={}){
+ const k=date.getDay(),phase=familyPhase(date);
+ if(phase==="before")return routineSlots[k];
+ const lunch=preferences.lunchSlot==="13-14"?"13h–14h":"12h–13h";
+ const leisure=({"1":"Até 1 partida", "2":"Até 2 partidas", "3":"Até 2–3 partidas"})[preferences.lolGoal]||"Sem meta de partidas";
+ const optional=[
+   ["Se couber","Duolingo: até 15 minutos, juntos ou divididos. Pode deixar para outro dia."],
+   ["Tempo livre",`${leisure}, apenas se houver uma janela combinada. Descanso e necessidades da família vêm primeiro.`]
+ ];
+ if(phase==="leave")return [
+   ["Durante o dia","Licença-paternidade: sem trabalho. Cuidados com sua filha e apoio à família, conforme a necessidade."],
+   ["Refeições","Separar tempo para comer e organizar as refeições da casa."],
+   ["Casa","Dividir as tarefas essenciais em pequenos blocos, sem horário rígido."],
+   ["Janela livre",`Se houver disponibilidade: ${days[k].title}. O treino é opcional e pode ficar para outro dia.`],
+   ["Descanso","Aproveitar as oportunidades de descanso. Não precisa compensar atividades que ficaram pendentes."],
+   ...optional
+ ];
+ if(k>=1&&k<=5)return [
+   ["Antes das 08h","Café da manhã, cuidados com sua filha e preparação para o trabalho. Reserve seu tempo de deslocamento."],
+   ["08:00–17:00","Trabalho."],
+   ["Almoço",`${lunch}: refeição e pausa. Duolingo é opcional, se houver tempo.`],
+   ["Após o trabalho","Retorno para casa, cuidados com sua filha, jantar e divisão das tarefas essenciais."],
+   ["Se houver espaço",`${days[k].title}: somente em uma janela combinada com a família, sem horário obrigatório.`],
+   ["Noite","Descanso e cuidados com sua filha. A rotina pode mudar conforme a necessidade."],
+   ...optional.slice(1)
+ ];
+ return [
+   ["Manhã","Cuidados com sua filha, refeições e divisão das tarefas essenciais da casa."],
+   ["Janela combinada",`${days[k].title}: opcional. ${k===6?"Sábado à tarde, antes das 17h, continua sendo uma possibilidade.":"Reserve espaço para descansar."}`],
+   ["Fim do dia","Tempo com a família e descanso. A revisão do Atlas pode ser feita quando houver disponibilidade."],
+   ...optional
+ ];
+}
+function renderFamilyNotices(){
+ document.querySelectorAll("[data-family-notice]").forEach(el=>{el.textContent=familySummary();});
+}
 function renderRoutine(){
  const wrap=document.getElementById("routineCards"); if(!wrap)return; wrap.innerHTML="";
- const d=storage(); if(window.lunchSlot)lunchSlot.value=d.lunchSlot||"12-13"; if(window.lolGoal)lolGoal.value=d.lolGoal||"3";
- [0,1,2,3,4,5,6].forEach(k=>{
-   const day=getAdaptiveDay(k), card=document.createElement("div"); card.className="card day-card";
-   card.innerHTML=`<div class="small">${day.name}</div><h3 style="margin:4px 0">${day.title}</h3>${routineSlots[k].map(r=>`<div class="routine-line"><div class="routine-time">${r[0]}</div><div>${r[1]}</div></div>`).join("")}`;
+ renderFamilyNotices();
+ const d=storage(); if(window.lunchSlot)lunchSlot.value=d.lunchSlot||"12-13"; if(window.lolGoal)lolGoal.value=d.lolGoal||"0";
+ routineWeekDates().forEach(date=>{
+   const k=date.getDay(),day=getAdaptiveDay(k),card=document.createElement("div");card.className="card day-card";
+   const phase=familyPhase(date),title=phase==="leave"?"Licença-paternidade":phase==="working"?(k>=1&&k<=5?"Trabalho e família":"Família e tempo flexível"):day.title;
+   card.innerHTML=`<div class="small">${day.name} • ${date.toLocaleDateString("pt-BR")}</div><h3 style="margin:4px 0">${title}</h3>${familyRoutineSlots(date,d).map(r=>`<div class="routine-line"><div class="routine-time">${r[0]}</div><div>${r[1]}</div></div>`).join("")}`;
    wrap.appendChild(card);
  });
 }
-if(window.lunchSlot) lunchSlot.onchange=()=>{const d=storage();d.lunchSlot=lunchSlot.value;saveStorage(d)};
-if(window.lolGoal) lolGoal.onchange=()=>{const d=storage();d.lolGoal=lolGoal.value;saveStorage(d)};
+if(window.lunchSlot) lunchSlot.onchange=()=>{const d=storage();d.lunchSlot=lunchSlot.value;saveStorage(d);renderRoutine()};
+if(window.lolGoal) lolGoal.onchange=()=>{const d=storage();d.lolGoal=lolGoal.value;saveStorage(d);renderRoutine()};
 
 function _nums(a){return a.map(v=>Number(v)).filter(Number.isFinite)}
 function _avg(a){const n=_nums(a);return n.length?n.reduce((x,y)=>x+y,0)/n.length:null}
@@ -626,7 +685,7 @@ ${(r.meals||[]).map(m=>`${m.date.split("-").reverse().join("/")} | ${m.time||"se
 Atividades fora do treino:
 ${(r.extraActivities||[]).map(a=>`${a.date.split("-").reverse().join("/")} | ${a.type} | ${a.km||"—"} km | ${a.min||"—"} min | ${a.bouts||"—"} blocos | ${a.intensity||"—"} | esforço ${a.rpe||"—"}/10 | ${a.notes||""}`).join("\n")||"Nenhuma atividade extra registrada."}
 
-Quero que você avalie esses dados como Atlas e ajuste meu treino/rotina para os próximos 14 dias, preservando meu trabalho 08h–17h, Duolingo 15 min/dia, limpeza da casa no fim da quinta/sexta ou ocasionalmente sábado de manhã, tempo livre, recuperação e espaço para League of Legends.`;
+Quero que você avalie esses dados como Atlas e ajuste meu treino/rotina para os próximos 14 dias, considerando que minha filha nasceu em 02/10/2026, minha licença-paternidade vai de 02 a 21/10 e retorno ao trabalho em 22/10/2026 (08h–17h, segunda a sexta). Contexto atual: ${familySummary()}. Priorize uma agenda flexível, divisão dos cuidados e tarefas, refeições e descanso; Duolingo, treino e League of Legends são opcionais conforme a disponibilidade.`;
 }
 function renderReview(){
  const data=storage(),r=data.reviews?.[0],p=data.adaptiveProfile||"maintain",status=document.getElementById("reviewStatus"),hist=document.getElementById("reviewHistory");
@@ -792,7 +851,7 @@ if(importBackupBtn && importBackupFile){
 }
 </script>\n
 <script>
-const ATLAS_VERSION = "4.0.1";
+const ATLAS_VERSION = "4.0.2";
 const ATLAS_RAW_BASE = "https://raw.githubusercontent.com/kayquegodinho/treino-kayque/main/";
 let atlasSwRegistration = null;
 let atlasRefreshing = false;

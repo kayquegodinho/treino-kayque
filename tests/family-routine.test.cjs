@@ -1,0 +1,24 @@
+const fs=require('node:fs');
+const vm=require('node:vm');
+const assert=require('node:assert/strict');
+const html=fs.readFileSync(require('node:path').join(__dirname,'../index.html'),'utf8');
+for(const match of html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g))new vm.Script(match[1]);
+const source=html.slice(html.indexOf('const FAMILY_ROUTINE'),html.indexOf('function renderFamilyNotices'));
+const context=vm.createContext({days:Array.from({length:7},()=>({title:'Treino existente'})),routineSlots:{1:[['08:00–17:00','Trabalho.']]}});
+vm.runInContext(source,context);
+function evaluate(expression){return vm.runInContext(expression,context);}
+assert.equal(evaluate('familyPhase(new Date(2026,9,1,23,59))'),'before');
+assert.equal(evaluate('familyPhase(new Date(2026,9,2,0,0))'),'leave');
+assert.equal(evaluate('familyPhase(new Date(2026,9,21,23,59))'),'leave');
+assert.equal(evaluate('familyPhase(new Date(2026,9,22,0,0))'),'working');
+assert.equal(evaluate('familyPhase(new Date(2026,10,1))'),'working');
+assert.equal(evaluate('routineWeekDates(new Date(2026,9,19)).map(localDateKey).join(",")'),'2026-10-19,2026-10-20,2026-10-21,2026-10-22,2026-10-23,2026-10-24,2026-10-25');
+assert.equal(evaluate('routineWeekDates(new Date(2026,9,25))[0].getDate()'),19);
+assert.equal(evaluate('familyRoutineSlots(new Date(2026,9,21)).some(r=>r[0]==="08:00–17:00")'),false);
+assert.equal(evaluate('familyRoutineSlots(new Date(2026,9,22)).some(r=>r[0]==="08:00–17:00")'),true);
+assert.equal(evaluate('familyRoutineSlots(new Date(2026,9,24)).some(r=>r[0]==="08:00–17:00")'),false);
+assert.equal(evaluate('familyRoutineSlots(new Date(2026,9,22),{lunchSlot:"13-14"}).some(r=>r[1].includes("13h–14h"))'),true);
+assert.equal(evaluate('familyRoutineSlots(new Date(2026,9,22)).some(r=>r[1].includes("Sem meta de partidas"))'),true);
+assert(!html.includes('Rotina com sua filha ainda não está ativa'));
+assert(html.includes('const ATLAS_VERSION = "4.0.2"'));
+console.log('Family routine: 14 assertions passed; all inline scripts parsed.');
