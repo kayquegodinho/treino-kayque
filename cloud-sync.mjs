@@ -176,10 +176,11 @@ export class OlympusCloudSync {
     await backup(this.app, await encryptData(this.app, device.id, device.key, local), 'antes-de-conectar');
     device.revision = remote.revision;
     device.lastDigest = await digest(payload);
-    // Credenciais de acesso persistem antes da importação (Atlas pode recarregar a página).
+    // Nunca ativar o cofre antes de confirmar a importação local.
+    // Em caso de erro de armazenamento, o cofre remoto permanece intacto.
+    await this.applyData(payload);
     await saveDevice(this.app, device);
     this.device = device;
-    await this.applyData(payload);
     return { status: 'imported', revision: remote.revision };
   }
   async sync() {
