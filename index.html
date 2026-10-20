@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<script data-atlas-shell="4.0.2">
+<script data-atlas-shell="4.0.3">
 (()=>{
   try{
-    const current="4.0.2";
+    const current="4.0.3";
     const cachedVersion=localStorage.getItem("atlasShellVersion")||"";
     const cachedHtml=localStorage.getItem("atlasShellHtml")||"";
     const parts=v=>String(v).split(".").map(n=>parseInt(n,10)||0);
@@ -852,7 +852,7 @@ if(importBackupBtn && importBackupFile){
 }
 </script>\n
 <script>
-const ATLAS_VERSION = "4.0.2";
+const ATLAS_VERSION = "4.0.3";
 const ATLAS_RAW_BASE = "https://raw.githubusercontent.com/kayquegodinho/treino-kayque/main/";
 let atlasSwRegistration = null;
 let atlasRefreshing = false;
@@ -976,6 +976,6 @@ if('serviceWorker' in navigator){
 
 atlasApplyUpdate?.addEventListener('click',forceAtlasUpdate);
 </script>
-<script type="module" src="./atlas-sync.mjs"></script>
+<script type="module" src="./atlas-sync.mjs?v=4.0.3"></script>
 </body>
 </html>
