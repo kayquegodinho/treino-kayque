@@ -251,3 +251,6 @@ export class OlympusCloudSync {
     } finally { this.running = false; }
   }
 }
+
+// Funções puras reutilizáveis para validar interoperabilidade e integridade.
+export { derive as deriveSyncKeys, encryptData as sealSyncData, decryptData as unsealSyncData };
