@@ -26,8 +26,8 @@ self.addEventListener("fetch",event=>{
   const scope=new URL(self.registration.scope);
   if(!url.pathname.startsWith(scope.pathname))return;
 
-  const script=/\\.(?:mjs|js)$/i.test(url.pathname);
-  const metadata=/(?:version\\.json|manifest-v301\\.webmanifest)$/.test(url.pathname);
+  const script=/\.(?:mjs|js)$/i.test(url.pathname);
+  const metadata=/(?:version\.json|manifest-v301\.webmanifest)$/.test(url.pathname);
   if(event.request.mode==="navigate" || script || metadata){
     // Scripts DEVEM ser buscados no servidor a cada nova execução.
     // O método cache-first anterior mantinha atlas-sync.mjs obsoleto por tempo indefinido.
