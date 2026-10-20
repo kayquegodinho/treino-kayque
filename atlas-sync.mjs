@@ -146,6 +146,19 @@ function setupPanel() {
     });
     body.append(codeInput, join);
   } else {
+    // Identificação curta derivada do ID do cofre: NÃO é a chave de recuperação,
+    // NÃO é o bearer e nunca concede acesso ao cofre. Útil para conferir que
+    // computador e celular apontam para a MESMA cópia criptografada.
+    const id = sync.device?.id;
+    if (/^[0-9a-f]{64}$/.test(id || '')) {
+      const fingerprint = id.slice(0, 8) + '-' + id.slice(8, 16);
+      const identity = el('p', 'small', 'Identificação do cofre: ' + fingerprint);
+      identity.id = 'atlasVaultFingerprint';
+      identity.style.cssText = 'overflow-wrap:anywhere;font-weight:700;margin:8px 0';
+      body.append(identity);
+      body.append(el('p', 'small',
+        'Confira se essa identificação é IGUAL no celular e no Olimpo. Ela não é sua chave secreta. Se for diferente, não use “Resolver conflito de dados”.'));
+    }
     const upload = el('button', 'btn full', 'Sincronizar agora');
     upload.type = 'button';
     upload.addEventListener('click', () => syncNow(true));
