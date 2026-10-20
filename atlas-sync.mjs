@@ -106,8 +106,17 @@ function setupPanel() {
           try { await navigator.clipboard.writeText(code); inform('Código copiado. Guarde fora do aparelho.'); }
           catch { inform('Não foi possível copiar automaticamente. Selecione o texto.'); }
         });
+        const finish = el('button', 'btn full', 'Guardei o código com segurança — concluir');
+        finish.type = 'button';
+        finish.addEventListener('click', () => {
+          if (window.confirm('Confirma que guardou o código de recuperação fora do Atlas? Ele não poderá ser exibido novamente.')) {
+            window.location.reload();
+          }
+        });
         secretOutput.replaceChildren(el('p', 'small', 'CÓDIGO DE RECUPERAÇÃO — copie antes de sair:'), value, copy,
-          el('p', 'small', 'Quem possuir este código poderá decifrar seus backups. Não compartilhe.'));
+          el('p', 'small', 'Quem possuir este código poderá decifrar seus backups. Não compartilhe.'),
+          finish);
+        create.hidden = true;
         ensureAutoSync();
       } catch (error) { toast(error.message); }
       finally { create.disabled = false; }
