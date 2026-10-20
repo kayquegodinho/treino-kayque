@@ -26,8 +26,7 @@ const sync = new OlympusCloudSync({
       throw new Error('Backup Atlas incompatível. Seus registros foram preservados.');
     }
     localStorage.setItem('atlasData', JSON.stringify(data));
-    // O núcleo do Atlas lê atlasData ao iniciar. A recarga restaura todas as visões.
-    setTimeout(() => window.location.reload(), 450);
+    // Recarregamos somente APÓS registrar a revisão no IndexedDB.
   },
   apiUrl: () => API,
 });
@@ -51,7 +50,7 @@ async function syncNow(manual = false) {
   try {
     const result = await sync.sync();
     if (result.status === 'uploaded') inform('Alterações salvas com criptografia na nuvem.');
-    else if (result.status === 'downloaded') inform('Registros atualizados. Abrindo a nova versão…');
+    else if (result.status === 'downloaded') { inform('Registros atualizados. Abrindo a nova versão…'); setTimeout(() => window.location.reload(), 300); }
     else if (manual) inform('Tudo em dia. Nenhuma mudança pendente.');
   } catch (error) {
     inform(error.message);
@@ -132,6 +131,7 @@ function setupPanel() {
         codeInput.value = '';
         inform('Conectado. Seus registros foram recebidos; abrindo Atlas…');
         ensureAutoSync();
+        setTimeout(() => window.location.reload(), 300);
       } catch (error) { toast(error.message); }
       finally { join.disabled = false; }
     });
@@ -148,7 +148,7 @@ function setupPanel() {
     cloud.type = 'button';
     cloud.addEventListener('click', async () => {
       if (!window.confirm('Receber os registros da nuvem, guardando antes cópia cifrada dos registros locais?')) return;
-      try { await sync.resolveConflict('cloud'); inform('Registros da nuvem recuperados.'); }
+      try { await sync.resolveConflict('cloud'); inform('Registros da nuvem recuperados.'); setTimeout(() => window.location.reload(), 300); }
       catch (error) { toast(error.message); }
     });
     const local = el('button', 'btn secondary full', 'Enviar registros deste dispositivo');
