@@ -80,7 +80,7 @@ try {
   if (-not $process) { throw 'Não foi possível iniciar o backup por ADB.' }
   $memory = New-Object IO.MemoryStream
   try {
-    $gzip = New-Object IO.Compression.GzipStream(
+    $gzip = [IO.Compression.GZipStream]::new(
       $memory, [IO.Compression.CompressionMode]::Compress, $true)
     try {
       # Saída BINÁRIA: não usar redirecionamento > do Windows PowerShell 5.1.
