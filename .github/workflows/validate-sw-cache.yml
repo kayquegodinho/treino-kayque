@@ -1,0 +1,32 @@
+name: Validate Atlas updates and shared-origin cache
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'sw-v301.js'
+      - 'atlas-sync.mjs'
+      - 'index.html'
+      - 'version.json'
+      - 'tests/sw-cache.test.mjs'
+      - '.github/workflows/validate-sw-cache.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validar o service worker e o versionamento
+        run: |
+          node --check sw-v301.js
+          node --check atlas-sync.mjs
+          node --check cloud-sync.mjs
+          node --test tests/sw-cache.test.mjs
