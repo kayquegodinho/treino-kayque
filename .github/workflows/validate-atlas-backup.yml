@@ -1,0 +1,80 @@
+name: Validate Atlas USB backup
+on:
+  push:
+    paths:
+      - 'scripts/backup-atlas-usb.ps1'
+      - '.github/workflows/validate-atlas-backup.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse script on Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          $tokens = $null
+          $errors = $null
+          [void][System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'scripts/backup-atlas-usb.ps1').Path,
+            [ref]$tokens, [ref]$errors
+          )
+          if ($errors.Count -ne 0) {
+            $errors | ForEach-Object { Write-Error $_.Message }
+            throw 'O script contém erros de sintaxe.'
+          }
+      - name: Simulate read-only ADB and validate encrypted backup round trip
+        shell: powershell
+        run: |
+          $src = @'
+          using System;
+          using System.Linq;
+          public class MockAdb {
+            public static int Main(string[] args) {
+              if (args.Length == 0) return 1;
+              if (args[0] == "devices") { Console.WriteLine("List of devices attached"); Console.WriteLine("MOCK\tdevice"); return 0; }
+              if (args[0] == "shell" && args.Length > 2 && args[1] == "pm") { Console.WriteLine("package:/data/app/atlas/base.apk"); return 0; }
+              if (args[0] == "shell" && args.Length > 3 && args[1] == "run-as" && args[3] == "id") { Console.WriteLine("uid=10123"); return 0; }
+              if (args[0] == "shell" && args.Length > 3 && args[1] == "run-as" && args[3] == "ls") { Console.WriteLine("Default"); return 0; }
+              if (args[0] == "shell" && args.Length > 2 && args[1] == "am") { return 0; }
+              if (args[0] == "exec-out") {
+                byte[] bytes = new byte[8192];
+                new Random(4567).NextBytes(bytes);
+                var stdout = Console.OpenStandardOutput();
+                stdout.Write(bytes, 0, bytes.Length);
+                stdout.Flush();
+                return 0;
+              }
+              return 2;
+            }
+          }
+          '@
+          $mock = Join-Path $env:RUNNER_TEMP 'adb.exe'
+          Add-Type -TypeDefinition $src -OutputType ConsoleApplication -OutputAssembly $mock
+          $dest = Join-Path $env:RUNNER_TEMP 'olimpo-usb-test'
+          & .\scripts\backup-atlas-usb.ps1 -AdbPath $mock -Destination $dest
+          if ($LASTEXITCODE -ne 0) { throw 'Falha ao criar backup criptografado no simulador.' }
+          $files = @(Get-ChildItem -LiteralPath $dest -Filter '*.tar.gz.dpapi')
+          if ($files.Count -ne 1) { throw 'Arquivo DPAPI esperado não encontrado.' }
+          Add-Type -AssemblyName System.Security
+          $entropy = [Text.Encoding]::UTF8.GetBytes('olimpo-atlas-usb-backup-v1')
+          $bytes = [IO.File]::ReadAllBytes($files[0].FullName)
+          $plain = [Security.Cryptography.ProtectedData]::Unprotect(
+            $bytes, $entropy, [Security.Cryptography.DataProtectionScope]::CurrentUser)
+          if ($plain.Length -lt 128 -or $plain[0] -ne 31 -or $plain[1] -ne 139) {
+            throw 'Backup DPAPI não pôde ser decifrado.'
+          }
+          $ms = New-Object IO.MemoryStream(,$plain)
+          $zip = [IO.Compression.GZipStream]::new($ms, [IO.Compression.CompressionMode]::Decompress)
+          $raw = New-Object IO.MemoryStream
+          $zip.CopyTo($raw)
+          $zip.Dispose()
+          if ($raw.Length -ne 8192) { throw 'Conteúdo recebido de ADB foi corrompido.' }
+          $raw.Dispose()
+          $ms.Dispose()
+          Write-Host 'USB backup mock round-trip OK.'
