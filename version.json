@@ -1,1 +1,1 @@
-{"version":"4.0.2","released":"2026-10-20","notes":"Sincronização opcional criptografada ponta a ponta entre Atlas Android, PWA e Olimpo; nenhum dado é enviado até configurar o cofre privado."}
+{"version":"4.0.3","released":"2026-10-20","notes":"Correção do cache do Atlas para obter scripts atualizados no Olimpo sem apagar dados locais; identificação não secreta do cofre em Ajustes."}
