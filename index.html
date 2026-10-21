@@ -1,19 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<script data-atlas-shell="4.0.3">
-(()=>{
-  try{
-    const current="4.0.3";
-    const cachedVersion=localStorage.getItem("atlasShellVersion")||"";
-    const cachedHtml=localStorage.getItem("atlasShellHtml")||"";
-    const parts=v=>String(v).split(".").map(n=>parseInt(n,10)||0);
-    const newer=(a,b)=>{const A=parts(a),B=parts(b);for(let i=0;i<Math.max(A.length,B.length);i++){const x=A[i]||0,y=B[i]||0;if(x!==y)return x>y}return false};
-    if(cachedHtml && cachedVersion && newer(cachedVersion,current)){
-      document.open();document.write(cachedHtml);document.close();
-    }
-  }catch(e){}
-})();
+<script data-atlas-shell="4.0.4">
+/* A atualização antiga injetava HTML na página e quebrava os eventos de navegação.
+   Limpar exclusivamente o cache obsoleto do código; NUNCA tocar em atlasData. */
+(()=>{ try{
+  localStorage.removeItem('atlasShellHtml');
+  localStorage.removeItem('atlasShellVersion');
+  localStorage.removeItem('atlasShellUpdatedAt');
+}catch(e){} })();
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -852,7 +847,7 @@ if(importBackupBtn && importBackupFile){
 }
 </script>\n
 <script>
-const ATLAS_VERSION = "4.0.3";
+const ATLAS_VERSION = "4.0.4";
 const ATLAS_RAW_BASE = "https://raw.githubusercontent.com/kayquegodinho/treino-kayque/main/";
 let atlasSwRegistration = null;
 let atlasRefreshing = false;
@@ -893,15 +888,20 @@ async function fetchRemoteAtlasHtml(expectedVersion){
   if(expectedVersion && m[1]!==expectedVersion) throw new Error("A atualização ainda está sendo publicada. Tente novamente em alguns segundos.");
   return {html,version:m[1]};
 }
-function storeAtlasShell(html,version){
-  localStorage.setItem("atlasShellHtml",html);
-  localStorage.setItem("atlasShellVersion",version);
-  localStorage.setItem("atlasShellUpdatedAt",new Date().toISOString());
+// Uma navegação real recria o contexto JS e todos os eventos das abas.
+function atlasFreshUrl(){
+  const url=new URL('./',document.baseURI);
+  if(atlasNativeAndroid) url.searchParams.set('android','1');
+  url.searchParams.set('atlasUpdate',String(Date.now()));
+  return url;
 }
-function applyAtlasShell(html){
-  document.open();
-  document.write(html);
-  document.close();
+async function fetchHostedAtlasVersion(url){
+  const response=await fetch(url.href,{cache:'no-store'});
+  if(!response.ok) throw new Error('Não foi possível conferir a versão publicada do Atlas.');
+  const html=await response.text();
+  const match=html.match(/const ATLAS_VERSION = ["']([^"']+)["']/);
+  if(!match) throw new Error('A versão publicada do Atlas não pôde ser confirmada.');
+  return match[1];
 }
 
 async function checkAtlasUpdate(){
@@ -920,53 +920,38 @@ async function checkAtlasUpdate(){
 async function forceAtlasUpdate(){
   if(forceUpdateBtn){
     forceUpdateBtn.disabled=true;
-    forceUpdateBtn.textContent="Buscando atualização…";
+    forceUpdateBtn.textContent='Buscando atualização…';
   }
-  if(manualUpdateStatus) manualUpdateStatus.textContent="Consultando diretamente o repositório…";
+  if(manualUpdateStatus) manualUpdateStatus.textContent='Conferindo as versões disponíveis…';
 
+  const reset=()=>{
+    if(forceUpdateBtn){
+      forceUpdateBtn.disabled=false;
+      forceUpdateBtn.textContent='Buscar atualização';
+    }
+  };
   try{
     const remote=await fetchRemoteAtlasVersion();
     const remoteVersion=remote?.version||ATLAS_VERSION;
-
-    if(manualUpdateStatus){
-      manualUpdateStatus.textContent = isNewerAtlasVersion(remoteVersion,ATLAS_VERSION)
-        ? "Versão v"+remoteVersion+" encontrada. Baixando…"
-        : "Buscando a cópia mais recente da v"+remoteVersion+"…";
+    await fetchRemoteAtlasHtml(remoteVersion); // Verifica integridade e versão da origem.
+    const target=atlasFreshUrl();
+    const hostedVersion=await fetchHostedAtlasVersion(target);
+    if(hostedVersion!==remoteVersion){
+      if(manualUpdateStatus) manualUpdateStatus.textContent=
+        'A versão v'+remoteVersion+' ainda não chegou a este endereço. '+
+        'Aguarde a publicação automática e tente novamente; seus dados permanecem intactos.';
+      reset();
+      return;
     }
-
-    const bundle=await fetchRemoteAtlasHtml(remoteVersion);
-    storeAtlasShell(bundle.html,bundle.version);
-
-    // No Android, o HTML é carregado no WebView; a página pode não ter um
-    // documento ativo para consultar registros de Service Worker. O download
-    // acima é o que determina o sucesso da atualização, não estas APIs opcionais.
-    if(!atlasNativeAndroid && 'serviceWorker' in navigator){
-      try{
-        const regs=await navigator.serviceWorker.getRegistrations();
-        for(const reg of regs){
-          try{
-            await reg.update();
-            if(reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
-          }catch(e){ /* Serviço de cache opcional; manter a atualização. */ }
-        }
-      }catch(e){ /* InvalidStateError em documentos sem registro ativo. */ }
-    }
-
-    if(!atlasNativeAndroid && 'caches' in window){
-      try{
-        const keys=await caches.keys();
-        for(const key of keys) if(key.startsWith('atlas-')) await caches.delete(key);
-      }catch(e){ /* Cache indisponível não invalida o HTML já baixado. */ }
-    }
-
-    if(manualUpdateStatus) manualUpdateStatus.textContent="Atualização pronta. Abrindo a versão v"+bundle.version+"…";
-    setTimeout(()=>applyAtlasShell(bundle.html),350);
+    if(manualUpdateStatus) manualUpdateStatus.textContent=
+      'Versão v'+hostedVersion+' confirmada. Reabrindo o Atlas sem perder seus dados…';
+    // NUNCA usar document.open/write/close aqui: isso quebra os listeners da interface
+    // em WebViews e no site do Olimpo quando scripts globais são reexecutados.
+    window.location.replace(target.href);
   }catch(e){
-    if(manualUpdateStatus) manualUpdateStatus.textContent=e?.message||"Não consegui buscar a atualização. Tente novamente.";
-    if(forceUpdateBtn){
-      forceUpdateBtn.disabled=false;
-      forceUpdateBtn.textContent="Buscar atualização";
-    }
+    if(manualUpdateStatus) manualUpdateStatus.textContent=
+      e?.message||'Não consegui conferir a atualização. Seus dados foram preservados.';
+    reset();
   }
 }
 
@@ -984,6 +969,6 @@ if('serviceWorker' in navigator){
 
 atlasApplyUpdate?.addEventListener('click',forceAtlasUpdate);
 </script>
-<script type="module" src="./atlas-sync.mjs?v=4.0.3"></script>
+<script type="module" src="./atlas-sync.mjs?v=4.0.4"></script>
 </body>
 </html>
