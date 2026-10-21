@@ -69,10 +69,10 @@ function serviceWorkerFixture() {
 
 test('versão e importações têm cache bust sincronizado',()=>{
   assert.equal(version,'4.0.4');
-  assert.match(index,/data-atlas-shell="4\.0\.3"/);
-  assert.match(index,/const ATLAS_VERSION = "4\.0\.3"/);
-  assert.match(index,/atlas-sync\.mjs\?v=4\.0\.3/);
-  assert.match(sync,/cloud-sync\.mjs\?v=4\.0\.3/);
+  assert.match(index,/data-atlas-shell="4\.0\.4"/);
+  assert.match(index,/const ATLAS_VERSION = "4\.0\.4"/);
+  assert.match(index,/atlas-sync\.mjs\?v=4\.0\.4/);
+  assert.match(sync,/cloud-sync\.mjs\?v=4\.0\.4/);
   assert.match(sync,/atlasVaultFingerprint/);
 });
 
