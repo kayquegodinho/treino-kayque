@@ -16,7 +16,7 @@ function serviceWorkerFixture() {
     ['atlas-clean-4.0.2',new Map()],
   ]);
   cacheData.get('atlas-clean-4.0.2').set(
-    'https://olimpo.example/atlas/atlas-sync.mjs?v=4.0.3',
+    'https://olimpo.example/atlas/atlas-sync.mjs?v=4.0.4',
     new Response('JS ANTIGO')
   );
   const network = [];
@@ -68,7 +68,7 @@ function serviceWorkerFixture() {
 }
 
 test('versão e importações têm cache bust sincronizado',()=>{
-  assert.equal(version,'4.0.3');
+  assert.equal(version,'4.0.4');
   assert.match(index,/data-atlas-shell="4\.0\.3"/);
   assert.match(index,/const ATLAS_VERSION = "4\.0\.3"/);
   assert.match(index,/atlas-sync\.mjs\?v=4\.0\.3/);
@@ -107,54 +107,54 @@ test('Atualizador Android faz GET simples ao GitHub, sem preflight CORS',async()
   }
 });
 
-test('Atlas atualiza mesmo com ServiceWorker com documento Android inválido',async()=>{
-  const start=index.indexOf('const ATLAS_VERSION = "4.0.3";');
+test('Atlas atualiza em novo documento sem perder registros nem travar abas, Android e Olimpo',async()=>{
+  const start=index.indexOf('const ATLAS_VERSION = "4.0.4";');
   const end=index.indexOf("forceUpdateBtn?.addEventListener('click',forceAtlasUpdate);",start);
-  assert.ok(start>=0 && end>start,'Código do atualizador precisa estar presente');
+  assert.ok(start>=0 && end>start,'Atualizador precisa estar presente');
   const updater=index.slice(start,end);
-  const html='<!doctype html><html><body>const ATLAS_VERSION = "4.0.3";</body></html>';
-  for(const native of [true,false]){
+  const html='<!doctype html><html><body>const ATLAS_VERSION = "4.0.4";</body></html>';
+  assert.doesNotMatch(index,/document\.(?:open|write|close)\s*\(/);
+  assert.match(index,/\.tab"\)\.forEach\(b=>b\.onclick=/);
+  assert.match(index,/\.bottomnav button"\)\.forEach\(b=>b\.onclick=/);
+  assert.doesNotMatch(index,/\blocalStorage\.setItem\(["']atlasShellHtml/);
+  for(const native of [false,true]){
+    const origin=native
+      ? 'https://kayquegodinho.github.io/treino-kayque/'
+      : 'https://olimpo.example/atlas/';
     const memory=new Map([['atlasData','{"days":{"2026-10-21":{"done":true}}}']]);
     const nodes=new Map([
       ['manualCurrentVersion',{textContent:''}],
       ['manualUpdateStatus',{textContent:''}],
       ['forceUpdateBtn',{disabled:false,textContent:''}],
     ]);
-    const writes=[];
-    let serviceCalls=0,cacheCalls=0,reload=null;
+    const navigations=[];
+    const downloads=[];
+    let workerCalls=0;
     const context={
-      Date,
+      Date, URL,
       document:{
+        baseURI:origin,
         getElementById:id=>nodes.get(id)||null,
-        open:()=>writes.push('open'),
-        write:value=>writes.push(value),
-        close:()=>writes.push('close'),
+        open:()=>{throw Error('document.open proibido durante update');},
+        write:()=>{throw Error('document.write proibido durante update');},
       },
-      navigator:{
-        serviceWorker:{
-          getRegistrations:async()=>{
-            serviceCalls++;
-            throw Error('Failed to get ServiceWorkerRegistration objects: The document is in an invalid state');
-          },
-        },
-      },
-      caches:{
-        keys:async()=>{
-          cacheCalls++;
-          throw Error('Cache unavailable');
-        },
-      },
-      window:{caches:true},
+      navigator:{serviceWorker:{getRegistrations:()=>{
+        workerCalls++;
+        throw Error('InvalidStateError: document invalid state');
+      }}},
+      window:{location:{replace:url=>navigations.push(url)}},
       localStorage:{
         getItem:key=>memory.get(key)||null,
         setItem:(key,value)=>memory.set(key,value),
       },
-      fetch:async url=>({
-        ok:true,
-        json:async()=>({version:'4.0.3'}),
-        text:async()=>html,
-      }),
-      setTimeout:fn=>{reload=fn;return 1;},
+      fetch:async url=>{
+        downloads.push(url);
+        return {
+          ok:true,
+          json:async()=>({version:'4.0.4'}),
+          text:async()=>html,
+        };
+      },
     };
     runInNewContext(
       'const atlasNativeAndroid='+native+';\n'+updater+'\nthis.triggerUpdate=forceAtlasUpdate;',
@@ -162,14 +162,59 @@ test('Atlas atualiza mesmo com ServiceWorker com documento Android inválido',as
     );
     await context.triggerUpdate();
     assert.equal(memory.get('atlasData'),'{"days":{"2026-10-21":{"done":true}}}');
-    assert.equal(memory.get('atlasShellVersion'),'4.0.3');
-    assert.match(nodes.get('manualUpdateStatus').textContent,/Atualização pronta/);
-    assert.equal(typeof reload,'function','Atualização deve aplicar o HTML baixado');
-    assert.equal(serviceCalls,native?0:1);
-    assert.equal(cacheCalls,native?0:1);
-    reload();
-    assert.deepEqual(writes,['open',html,'close']);
+    assert.equal(memory.has('atlasShellHtml'),false,'Não guardar HTML para injetar em outras abas');
+    assert.equal(navigations.length,1);
+    assert.ok(navigations[0].startsWith(origin));
+    assert.match(navigations[0],/atlasUpdate=\d+/);
+    if(native)assert.match(navigations[0],/android=1/);
+    assert.equal(workerCalls,0,'Service Worker opcional não deve bloquear atualização');
+    assert.equal(downloads.length,3,'Verifica versão e HTML da origem e a versão publicada');
+    assert.match(nodes.get('manualUpdateStatus').textContent,/Reabrindo o Atlas/);
   }
+});
+
+test('Atlas não troca documento enquanto o Olimpo ainda publica a nova versão',async()=>{
+  const start=index.indexOf('const ATLAS_VERSION = "4.0.4";');
+  const end=index.indexOf("forceUpdateBtn?.addEventListener('click',forceAtlasUpdate);",start);
+  const updater=index.slice(start,end);
+  const textForVersion=version=>
+    '<!doctype html><html><body>const ATLAS_VERSION = "'+version+'";</body></html>';
+  const nodes=new Map([
+    ['manualCurrentVersion',{textContent:''}],
+    ['manualUpdateStatus',{textContent:''}],
+    ['forceUpdateBtn',{disabled:false,textContent:''}],
+  ]);
+  const navigations=[];
+  const data='{"days":{"2026-10-21":{"done":true}}}';
+  const memory=new Map([['atlasData',data]]);
+  const context={
+    Date,URL,
+    document:{baseURI:'https://olimpo.example/atlas/',getElementById:id=>nodes.get(id)||null},
+    window:{location:{replace:url=>navigations.push(url)}},
+    fetch:async url=>({
+      ok:true,
+      json:async()=>({version:'4.0.4'}),
+      text:async()=>textForVersion(url.startsWith('https://olimpo.example/')?'4.0.3':'4.0.4'),
+    }),
+    localStorage:{getItem:key=>memory.get(key)||null,setItem:(key,value)=>memory.set(key,value)},
+  };
+  runInNewContext(
+    'const atlasNativeAndroid=false;\n'+updater+'\nthis.triggerUpdate=forceAtlasUpdate;',
+    context
+  );
+  await context.triggerUpdate();
+  assert.equal(navigations.length,0);
+  assert.equal(nodes.get('forceUpdateBtn').disabled,false);
+  assert.match(nodes.get('manualUpdateStatus').textContent,/ainda não chegou/);
+  assert.equal(memory.get('atlasData'),data);
+});
+
+test('Atualização antiga em cache não executa HTML guardado na inicialização',()=>{
+  const bootstrap=index.slice(index.indexOf('<script data-atlas-shell='),
+    index.indexOf('</script>',index.indexOf('<script data-atlas-shell=')));
+  assert.doesNotMatch(bootstrap,/document\.(?:open|write|close)\s*\(/);
+  assert.match(bootstrap,/removeItem\('atlasShellHtml'\)/);
+  assert.doesNotMatch(bootstrap,/removeItem\('atlasData'\)/);
 });
 
 test('worker preserva caches do Hermes e de outros apps no OLIMPO',async()=>{
@@ -181,7 +226,7 @@ test('worker preserva caches do Hermes e de outros apps no OLIMPO',async()=>{
 
 test('worker não usa JS obsoleto no cache em lugar de novas versões',async()=>{
   const fixture=serviceWorkerFixture();
-  const request=new Request('https://olimpo.example/atlas/atlas-sync.mjs?v=4.0.3');
+  const request=new Request('https://olimpo.example/atlas/atlas-sync.mjs?v=4.0.4');
   const response=await fixture.fire('fetch',request);
   assert.equal(await response.text(),'JS NOVO');
   assert.equal(fixture.network.length,1);
