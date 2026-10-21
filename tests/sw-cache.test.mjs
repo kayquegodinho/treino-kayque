@@ -76,6 +76,37 @@ test('versão e importações têm cache bust sincronizado',()=>{
   assert.match(sync,/atlasVaultFingerprint/);
 });
 
+test('Atualizador Android faz GET simples ao GitHub, sem preflight CORS',async()=>{
+  const start=index.indexOf('async function rawFetch(path){');
+  const end=index.indexOf('async function fetchRemoteAtlasVersion(){',start);
+  assert.ok(start>=0 && end>start, 'A função rawFetch deve estar presente');
+  const source=index.slice(start,end);
+  const requests=[];
+  const context={
+    Date,
+    fetch:async(url,options)=>{
+      requests.push({url,options});
+      return {ok:true};
+    },
+  };
+  runInNewContext(
+    'const ATLAS_RAW_BASE="https://raw.githubusercontent.com/kayquegodinho/treino-kayque/main/";\n'+
+    source+'\n'+
+    'globalThis.testUpdate=rawFetch;',
+    context
+  );
+  await context.testUpdate('version.json');
+  await context.testUpdate('index.html');
+  assert.equal(requests.length,2);
+  for(const req of requests){
+    assert.match(req.url,/^https:\/\/raw\.githubusercontent\.com\/.+\?t=\d+$/);
+    assert.equal(req.options.mode,'cors');
+    assert.equal(req.options.cache,'no-store');
+    assert.equal(Object.hasOwn(req.options,'headers'),false,
+      'Cabeçalhos não essenciais acionam OPTIONS e bloqueiam o raw.githubusercontent.com');
+  }
+});
+
 test('worker preserva caches do Hermes e de outros apps no OLIMPO',async()=>{
   const fixture=serviceWorkerFixture();
   await fixture.fire('activate');
