@@ -1,6 +1,6 @@
 // Sincronização Atlas: a interface Android já usa esta mesma página Web.
 // O conteúdo de atlasData é cifrado antes de sair do dispositivo.
-import { OlympusCloudSync } from './cloud-sync.mjs?v=4.0.3';
+import { OlympusCloudSync } from './cloud-sync.mjs?v=4.0.4';
 
 const API = 'https://hermes-finance-api.godinhokayque.workers.dev';
 const dataset = () => {
