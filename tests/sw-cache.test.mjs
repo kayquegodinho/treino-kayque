@@ -107,6 +107,71 @@ test('Atualizador Android faz GET simples ao GitHub, sem preflight CORS',async()
   }
 });
 
+test('Atlas atualiza mesmo com ServiceWorker com documento Android inválido',async()=>{
+  const start=index.indexOf('const ATLAS_VERSION = "4.0.3";');
+  const end=index.indexOf("forceUpdateBtn?.addEventListener('click',forceAtlasUpdate);",start);
+  assert.ok(start>=0 && end>start,'Código do atualizador precisa estar presente');
+  const updater=index.slice(start,end);
+  const html='<!doctype html><html><body>const ATLAS_VERSION = "4.0.3";</body></html>';
+  for(const native of [true,false]){
+    const memory=new Map([['atlasData','{"days":{"2026-10-21":{"done":true}}}']]);
+    const nodes=new Map([
+      ['manualCurrentVersion',{textContent:''}],
+      ['manualUpdateStatus',{textContent:''}],
+      ['forceUpdateBtn',{disabled:false,textContent:''}],
+    ]);
+    const writes=[];
+    let serviceCalls=0,cacheCalls=0,reload=null;
+    const context={
+      Date,
+      document:{
+        getElementById:id=>nodes.get(id)||null,
+        open:()=>writes.push('open'),
+        write:value=>writes.push(value),
+        close:()=>writes.push('close'),
+      },
+      navigator:{
+        serviceWorker:{
+          getRegistrations:async()=>{
+            serviceCalls++;
+            throw Error('Failed to get ServiceWorkerRegistration objects: The document is in an invalid state');
+          },
+        },
+      },
+      caches:{
+        keys:async()=>{
+          cacheCalls++;
+          throw Error('Cache unavailable');
+        },
+      },
+      window:{caches:true},
+      localStorage:{
+        getItem:key=>memory.get(key)||null,
+        setItem:(key,value)=>memory.set(key,value),
+      },
+      fetch:async url=>({
+        ok:true,
+        json:async()=>({version:'4.0.3'}),
+        text:async()=>html,
+      }),
+      setTimeout:fn=>{reload=fn;return 1;},
+    };
+    runInNewContext(
+      'const atlasNativeAndroid='+native+';\n'+updater+'\nthis.triggerUpdate=forceAtlasUpdate;',
+      context
+    );
+    await context.triggerUpdate();
+    assert.equal(memory.get('atlasData'),'{"days":{"2026-10-21":{"done":true}}}');
+    assert.equal(memory.get('atlasShellVersion'),'4.0.3');
+    assert.match(nodes.get('manualUpdateStatus').textContent,/Atualização pronta/);
+    assert.equal(typeof reload,'function','Atualização deve aplicar o HTML baixado');
+    assert.equal(serviceCalls,native?0:1);
+    assert.equal(cacheCalls,native?0:1);
+    reload();
+    assert.deepEqual(writes,['open',html,'close']);
+  }
+});
+
 test('worker preserva caches do Hermes e de outros apps no OLIMPO',async()=>{
   const fixture=serviceWorkerFixture();
   await fixture.fire('activate');
