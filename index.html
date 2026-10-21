@@ -937,17 +937,26 @@ async function forceAtlasUpdate(){
     const bundle=await fetchRemoteAtlasHtml(remoteVersion);
     storeAtlasShell(bundle.html,bundle.version);
 
-    if('serviceWorker' in navigator){
-      const regs=await navigator.serviceWorker.getRegistrations();
-      for(const reg of regs){
-        try{await reg.update()}catch(e){}
-        if(reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
-      }
+    // No Android, o HTML é carregado no WebView; a página pode não ter um
+    // documento ativo para consultar registros de Service Worker. O download
+    // acima é o que determina o sucesso da atualização, não estas APIs opcionais.
+    if(!atlasNativeAndroid && 'serviceWorker' in navigator){
+      try{
+        const regs=await navigator.serviceWorker.getRegistrations();
+        for(const reg of regs){
+          try{
+            await reg.update();
+            if(reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
+          }catch(e){ /* Serviço de cache opcional; manter a atualização. */ }
+        }
+      }catch(e){ /* InvalidStateError em documentos sem registro ativo. */ }
     }
 
-    if('caches' in window){
-      const keys=await caches.keys();
-      for(const key of keys) if(key.startsWith('atlas-')) await caches.delete(key);
+    if(!atlasNativeAndroid && 'caches' in window){
+      try{
+        const keys=await caches.keys();
+        for(const key of keys) if(key.startsWith('atlas-')) await caches.delete(key);
+      }catch(e){ /* Cache indisponível não invalida o HTML já baixado. */ }
     }
 
     if(manualUpdateStatus) manualUpdateStatus.textContent="Atualização pronta. Abrindo a versão v"+bundle.version+"…";
