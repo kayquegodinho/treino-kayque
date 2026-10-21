@@ -1,1 +1,1 @@
-{"version":"4.0.3","released":"2026-10-20","notes":"Correção do cache do Atlas para obter scripts atualizados no Olimpo sem apagar dados locais; identificação não secreta do cofre em Ajustes."}
+{"version":"4.0.4","released":"2026-10-21","notes":"Atualização segura com reabertura da interface e correção das abas no Android e no Olimpo, sem modificar os registros pessoais."}
