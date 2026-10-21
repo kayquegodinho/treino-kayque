@@ -876,8 +876,7 @@ async function rawFetch(path){
   const joiner=path.includes("?")?"&":"?";
   const r=await fetch(ATLAS_RAW_BASE+path+joiner+"t="+Date.now(),{
     cache:"no-store",
-    mode:"cors",
-    headers:{"Cache-Control":"no-cache"}
+    mode:"cors"
   });
   if(!r.ok) throw new Error("Falha ao buscar "+path);
   return r;
