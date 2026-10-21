@@ -1,9 +1,9 @@
 // O Atlas pode ser usado tanto em GitHub Pages quanto dentro do OLIMPO.
 // Nunca apagar caches de outros apps quando as páginas compartilham a origem.
-const APP_VERSION="4.0.3";
+const APP_VERSION="4.0.4";
 const CACHE="atlas-clean-"+APP_VERSION;
 const CORE=["./","./index.html","./manifest-v301.webmanifest","./version.json",
-  "./atlas-sync.mjs?v=4.0.3","./cloud-sync.mjs?v=4.0.3",
+  "./atlas-sync.mjs?v=4.0.4","./cloud-sync.mjs?v=4.0.4",
   "./assets/icons/icon-atlas-v301-192.png","./assets/icons/icon-atlas-v301-512.png",
   "./assets/icons/icon-atlas-v301-maskable-512.png"];
 const OWN_CACHE_PREFIX="atlas-";
